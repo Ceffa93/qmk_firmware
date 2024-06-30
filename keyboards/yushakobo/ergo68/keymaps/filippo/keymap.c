@@ -23,9 +23,10 @@
 #define MOD_7 MT(MOD_LALT, KC_7)
 #define MOD_6 MT(MOD_LGUI, KC_6)
 
-#define LT1_EN LT(MO(1), KC_ENT)
-#define LT2_DEL LT(MO(2), KC_DEL)
-#define LT3_BS LT(MO(3), KC_BSPC)
+#define MOD_F9 MT(MOD_LSFT, KC_F9)
+#define MOD_F8 MT(MOD_LCTL, KC_F8)
+#define MOD_F7 MT(MOD_LALT, KC_F7)
+#define MOD_F6 MT(MOD_LGUI, KC_F6)
 
 enum Layers {
     BaseLayer,
@@ -39,12 +40,12 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] = {
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,                              KC_NO,      KC_NO,     KC_NO,       KC_NO,      KC_NO,      KC_NO,
         KC_NO,      KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       KC_NO,      KC_NO,      KC_J,       KC_L,      KC_U,        KC_Y,       KC_TAB,     KC_NO,
         KC_NO,      MOD_A,      MOD_R,      MOD_S,      MOD_T,      KC_G,       KC_NO,      KC_NO,      KC_M,       MOD_N,     MOD_E,       MOD_I,      MOD_O,      KC_NO,
-        KC_NO,      KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,       KC_NO,      KC_NO,      KC_K,       KC_H,      KC_COMM,     KC_DOT,     KC_ESC,     KC_NO,
-        KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      LT3_BS,     LT2_DEL,    LT1_EN,     KC_SPC,     KC_NO,     KC_NO,       KC_NO,      KC_NO,      KC_NO
+        KC_NO,      KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,       KC_NO,      KC_NO,      KC_K,       KC_H,      KC_COMM,     KC_DOT,     MO(3),      KC_NO,
+        KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      MO(2),      KC_BSPC,    KC_SPC,     MO(1),      KC_NO,     KC_NO,       KC_NO,      KC_NO,      KC_NO
     ),
     [NumberNavigationLayer] = LAYOUT(
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,                              KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
-        KC_NO,      KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_NO,      KC_NO,      KC_PGUP,    KC_HOME,    KC_UP,      KC_END,     KC_NO,      KC_NO,
+        KC_NO,      KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_NO,      KC_NO,      KC_PGUP,    KC_HOME,    KC_UP,      KC_END,     KC_ESC,     KC_NO,
         KC_NO,      MOD_6,      MOD_7,      MOD_8,      MOD_9,      KC_0,       KC_NO,      KC_NO,      KC_PGDN,    KC_LEFT,    KC_DOWN,    KC_RIGHT,   KC_NO,      KC_NO,
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      S(KC_CAPS), KC_TRNS,    KC_TRNS,    KC_NO,      KC_NO,
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_TRNS,    KC_TRNS,    KC_NO,      KC_NO,      KC_TRNS,    KC_TRNS,    KC_NO,      KC_NO,      KC_NO,      KC_NO
@@ -58,11 +59,55 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [MiscellaneousLayer] = LAYOUT(
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,                              KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
-        KC_NO,      KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_NO,      KC_NO,      KC_PSCR,    KC_NO,      KC_NO,      KC_NO,      QK_BOOT,    KC_NO,
-        KC_NO,      KC_F6,      KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_NO,      KC_NO,      KC_NO,      RGB_TOG,    RGB_VAI,    RGB_HUI,    RGB_SAI,    KC_NO,
-        KC_NO,      KC_F10,     KC_F11,     KC_F12,     KC_F13,     KC_F14,     KC_NO,      KC_NO,      KC_NO,      RGB_MOD,    RGB_VAD,    RGB_HUD,    RGB_SAD,    KC_NO,
+        KC_NO,      KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_NO,      KC_NO,      KC_NO,      QK_BOOT,    KC_NO,      KC_NO,      KC_NO,      KC_NO,
+        KC_NO,      MOD_F6,     MOD_F7,     MOD_F8,     MOD_F9,     KC_F10,     KC_NO,      KC_NO,      KC_NO,      KC_PSCR,    KC_NO,      KC_NO,      KC_NO,      KC_NO,
+        KC_NO,      KC_F10,     KC_F11,     KC_F12,     KC_F13,     KC_F14,     KC_NO,      KC_NO,      KC_NO,      RGB_TOG,    RGB_VAI,    RGB_HUI,    KC_NO,      KC_NO,
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_TRNS,    KC_TRNS,    KC_NO,      KC_NO,      KC_TRNS,    KC_TRNS,    KC_NO,      KC_NO,      KC_NO,      KC_NO
     )
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    uint8_t mod_state = get_mods();
+    switch (keycode) {
+    
+    case KC_SPC: // Shift + Space = Enter
+        static bool entkey_registered;
+        if (record->event.pressed) {
+            if (mod_state & MOD_MASK_SHIFT) {
+                del_mods(MOD_MASK_SHIFT);
+                register_code(KC_ENT);
+                entkey_registered = true;
+                set_mods(mod_state);
+                return false;
+            }
+        } else { 
+            if (entkey_registered) {
+                unregister_code(KC_ENT);
+                entkey_registered = false;
+                return false;
+            }
+        }
+        return true;
+    case KC_BSPC: // Shift + Backspace = Del
+        static bool delkey_registered;
+        if (record->event.pressed) {
+            if (mod_state & MOD_MASK_SHIFT) {
+                del_mods(MOD_MASK_SHIFT);
+                register_code(KC_DEL);
+                delkey_registered = true;
+                set_mods(mod_state);
+                return false;
+            }
+        } else { 
+            if (delkey_registered) {
+                unregister_code(KC_DEL);
+                delkey_registered = false;
+                return false;
+            }
+        }
+        return true;
+    }
+    return true;
 };
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
