@@ -64,43 +64,25 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] = {
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,                              KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      QK_BOOT,    KC_PSCR,    KC_NO,      KC_NO,      KC_NO,
         KC_NO,      MOD_F1,     MOD_F2,     MOD_F3,     MOD_F4,     KC_F5,      KC_NO,      KC_NO,      KC_NO,      KC_LSFT,    KC_LCTL,    KC_LALT,    KC_NO,      KC_NO,
-        KC_NO,      KC_F6,      KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_NO,      KC_NO,      KC_NO,      RGB_TOG,    RGB_VAI,    RGB_HUI,    KC_NO,      KC_NO,
+        KC_NO,      KC_F6,      KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_NO,      KC_NO,      KC_NO,      RGB_TOG,    RGB_VAI,    KC_NO,      KC_NO,      KC_NO,
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_F11,     KC_F12,     KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO
     )
 };
 
-bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    // caps lock cyan
-    if (host_keyboard_led_state().caps_lock) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(0, 0, 0, 128);
-    } else {
-        RGB_MATRIX_INDICATOR_SET_COLOR(0, 0, 0, 0);
-    }
-    // num lock cyan
-    if (host_keyboard_led_state().num_lock) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(1, 0, 0, 128);
-    } else {
-        RGB_MATRIX_INDICATOR_SET_COLOR(1, 0, 0, 0);
-    }
-
-    // scroll lock cyan
-    if (host_keyboard_led_state().scroll_lock) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(2, 0, 0, 128);
-    } else {
-        RGB_MATRIX_INDICATOR_SET_COLOR(2, 0, 0, 0);
-    }
-
-    // layer state
-    switch (get_highest_layer(layer_state)) {
-        case 1:
-            RGB_MATRIX_INDICATOR_SET_COLOR(37, 0, 0, 128);
+layer_state_t layer_state_set_user(layer_state_t state) {
+    switch (get_highest_layer(state)) {
+        case BaseLayer:
+            rgblight_sethsv(170, 255, rgblight_get_val());
             break;
-        case 2:
-            RGB_MATRIX_INDICATOR_SET_COLOR(38, 0, 0, 128);
+        case NumberNavigationLayer:
+            rgblight_sethsv(21, 255, rgblight_get_val());
             break;
-        case 3:
-            RGB_MATRIX_INDICATOR_SET_COLOR(39, 0, 0, 128);
+        case SymbolLayer:
+            rgblight_sethsv(85, 255, rgblight_get_val());
+            break;
+        case MiscellaneousLayer:
+            rgblight_sethsv(0, 0, rgblight_get_val());
             break;
     }
-    return false;
+  return state;
 }
