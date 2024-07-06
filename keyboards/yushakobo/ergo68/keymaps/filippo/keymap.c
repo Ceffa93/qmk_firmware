@@ -28,6 +28,8 @@
 #define MOD_F2 MT(MOD_LALT, KC_F2)
 #define MOD_F1 MT(MOD_LGUI, KC_F1)
 
+#define LT3_ENT LT(MO(3), KC_ENT)
+
 enum Layers {
     BaseLayer,
     NumberNavigationLayer,
@@ -38,9 +40,9 @@ enum Layers {
 const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] = {
     [BaseLayer] = LAYOUT(
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,                              KC_NO,      KC_NO,     KC_NO,       KC_NO,      KC_NO,      KC_NO,
-        KC_NO,      KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       KC_NO,      KC_NO,      KC_J,       KC_L,      KC_U,        KC_Y,       KC_ENT,     KC_NO,
+        KC_NO,      KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       KC_NO,      KC_NO,      KC_J,       KC_L,      KC_U,        KC_Y,       KC_NO,      KC_NO,
         KC_NO,      MOD_A,      MOD_R,      MOD_S,      MOD_T,      KC_G,       KC_NO,      KC_NO,      KC_M,       MOD_N,     MOD_E,       MOD_I,      MOD_O,      KC_NO,
-        KC_NO,      KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,       KC_NO,      KC_NO,      KC_K,       KC_H,      KC_COMM,     KC_DOT,     MO(3),      KC_NO,
+        KC_NO,      KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,       KC_NO,      KC_NO,      KC_K,       KC_H,      KC_COMM,     KC_DOT,     LT3_ENT,    KC_NO,
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      MO(2),      KC_BSPC,    KC_NO,      KC_NO,      KC_SPC,     MO(1),     KC_NO,       KC_NO,      KC_NO,      KC_NO
     ),
     [NumberNavigationLayer] = LAYOUT(
