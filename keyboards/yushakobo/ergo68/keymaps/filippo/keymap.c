@@ -44,45 +44,28 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] = {
         KC_NO,      KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       KC_NO,      KC_NO,      KC_J,       KC_L,      KC_U,        KC_Y,       KC_TAB,     KC_NO,
         KC_NO,      MOD_A,      MOD_R,      MOD_S,      MOD_T,      KC_G,       KC_NO,      KC_NO,      KC_M,       MOD_N,     MOD_E,       MOD_I,      MOD_O,      KC_NO,
         KC_NO,      KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,       KC_NO,      KC_NO,      KC_K,       KC_H,      KC_COMM,     KC_DOT,     MO(3),      KC_NO,
-        KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_BSPC,    LT2_DEL,    LT1_EN,     KC_SPC,     KC_NO,     KC_NO,       KC_NO,      KC_NO,      KC_NO
+        KC_NO,      KC_NO,      KC_NO,      KC_NO,      LT2_DEL,    KC_BSPC,    KC_NO,      KC_NO,      KC_SPC,     LT1_EN,    KC_NO,       KC_NO,      KC_NO,      KC_NO
     ),
     [NumberNavigationLayer] = LAYOUT(
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,                              KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_PGUP,    KC_HOME,    KC_UP,      KC_END,     KC_ESC,     KC_NO,
         KC_NO,      MOD_1,      MOD_2,      MOD_3,      MOD_4,      KC_5,       KC_NO,      KC_NO,      KC_PGDN,    KC_LEFT,    KC_DOWN,    KC_RIGHT,   KC_NO,      KC_NO,
-        KC_NO,      KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       KC_NO,      KC_NO,      KC_NO,      S(KC_CAPS), KC_TRNS,    KC_TRNS,    KC_NO,      KC_NO,
-        KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_BSPC,    KC_DEL,     KC_ENT,     KC_SPC,     KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO
+        KC_NO,      KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       KC_NO,      KC_NO,      KC_F7,      S(KC_CAPS), KC_TRNS,    KC_TRNS,    KC_NO,      KC_NO,
+        KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_DEL,     KC_BSPC,    KC_NO,      KC_NO,      KC_SPC,     KC_ENT,     KC_NO,      KC_NO,      KC_NO,      KC_NO
     ),
     [SymbolLayer] = LAYOUT(
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,                              KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
         KC_NO,      KC_GRV,     KC_QUOT,    S(KC_QUOT), S(KC_SLSH), S(KC_1),    KC_NO,      KC_NO,      KC_LBRC,    S(KC_COMM), S(KC_SCLN), S(KC_DOT),  KC_RBRC,    KC_NO,
         KC_NO,      S(KC_5),    KC_SLSH,    S(KC_8),    KC_MINS,    S(KC_EQL),  KC_NO,      KC_NO,      S(KC_LBRC), S(KC_9),    KC_SCLN,    S(KC_0),    S(KC_RBRC), KC_NO,
         KC_NO,      S(KC_4),    KC_BSLS,    KC_EQL,     S(KC_MINS), S(KC_3),    KC_NO,      KC_NO,      S(KC_6),    S(KC_7),    S(KC_BSLS), S(KC_GRV),  S(KC_2),    KC_NO,
-        KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_BSPC,    KC_DEL,     KC_ENT,     KC_SPC,     KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO
+        KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_DEL,     KC_BSPC,    KC_NO,      KC_NO,      KC_SPC,     KC_ENT,     KC_NO,      KC_NO,      KC_NO,      KC_NO
     ),
     [MiscellaneousLayer] = LAYOUT(
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,                              KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
-        KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      QK_BOOT,    KC_PSCR,    KC_NO,      KC_NO,      KC_NO,
+        KC_NO,      KC_F6,      KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_NO,      KC_NO,      KC_NO,      QK_BOOT,    KC_PSCR,    KC_NO,      KC_NO,      KC_NO,
         KC_NO,      MOD_F1,     MOD_F2,     MOD_F3,     MOD_F4,     KC_F5,      KC_NO,      KC_NO,      KC_NO,      KC_LSFT,    KC_LCTL,    KC_LALT,    KC_NO,      KC_NO,
-        KC_NO,      KC_F6,      KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_NO,      KC_NO,      KC_NO,      RGB_TOG,    RGB_VAI,    KC_NO,      KC_NO,      KC_NO,
+        KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      RGB_TOG,    RGB_HUI,    RGB_SAI,    RGB_VAI,    KC_NO,      KC_NO,
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_F11,     KC_F12,     KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO
     )
 };
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-    switch (get_highest_layer(state)) {
-        case BaseLayer:
-            rgblight_sethsv(170, 255, rgblight_get_val());
-            break;
-        case NumberNavigationLayer:
-            rgblight_sethsv(21, 255, rgblight_get_val());
-            break;
-        case SymbolLayer:
-            rgblight_sethsv(85, 255, rgblight_get_val());
-            break;
-        case MiscellaneousLayer:
-            rgblight_sethsv(0, 0, rgblight_get_val());
-            break;
-    }
-  return state;
-}
