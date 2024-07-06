@@ -28,9 +28,6 @@
 #define MOD_F2 MT(MOD_LALT, KC_F2)
 #define MOD_F1 MT(MOD_LGUI, KC_F1)
 
-#define LT1_EN LT(MO(1), KC_ENT)
-#define LT2_DEL LT(MO(2), KC_DEL)
-
 enum Layers {
     BaseLayer,
     NumberNavigationLayer,
@@ -41,10 +38,10 @@ enum Layers {
 const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] = {
     [BaseLayer] = LAYOUT(
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,                              KC_NO,      KC_NO,     KC_NO,       KC_NO,      KC_NO,      KC_NO,
-        KC_NO,      KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       KC_NO,      KC_NO,      KC_J,       KC_L,      KC_U,        KC_Y,       KC_TAB,     KC_NO,
+        KC_NO,      KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       KC_NO,      KC_NO,      KC_J,       KC_L,      KC_U,        KC_Y,       KC_ENT,     KC_NO,
         KC_NO,      MOD_A,      MOD_R,      MOD_S,      MOD_T,      KC_G,       KC_NO,      KC_NO,      KC_M,       MOD_N,     MOD_E,       MOD_I,      MOD_O,      KC_NO,
         KC_NO,      KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,       KC_NO,      KC_NO,      KC_K,       KC_H,      KC_COMM,     KC_DOT,     MO(3),      KC_NO,
-        KC_NO,      KC_NO,      KC_NO,      KC_NO,      LT2_DEL,    KC_BSPC,    KC_NO,      KC_NO,      KC_SPC,     LT1_EN,    KC_NO,       KC_NO,      KC_NO,      KC_NO
+        KC_NO,      KC_NO,      KC_NO,      KC_NO,      MO(2),      KC_BSPC,    KC_NO,      KC_NO,      KC_SPC,     MO(1),     KC_NO,       KC_NO,      KC_NO,      KC_NO
     ),
     [NumberNavigationLayer] = LAYOUT(
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,                              KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
@@ -64,8 +61,69 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] = {
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,                              KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
         KC_NO,      KC_F6,      KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_NO,      KC_NO,      KC_NO,      QK_BOOT,    KC_PSCR,    KC_NO,      KC_NO,      KC_NO,
         KC_NO,      MOD_F1,     MOD_F2,     MOD_F3,     MOD_F4,     KC_F5,      KC_NO,      KC_NO,      KC_NO,      KC_LSFT,    KC_LCTL,    KC_LALT,    KC_NO,      KC_NO,
-        KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      RGB_TOG,    RGB_HUI,    RGB_SAI,    RGB_VAI,    KC_NO,      KC_NO,
+        KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      RGB_TOG,    RGB_VAI,    KC_NO,      KC_NO,      KC_NO,
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_F11,     KC_F12,     KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO
     )
 };
 
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    uint8_t mod_state = get_mods();
+    switch (keycode) {
+    
+    case KC_SPC: // Shift + Space = Enter
+        static bool tabkey_registered;
+        if (record->event.pressed) {
+            if (mod_state & MOD_MASK_SHIFT) {
+                del_mods(MOD_MASK_SHIFT);
+                register_code(KC_TAB);
+                tabkey_registered = true;
+                set_mods(mod_state);
+                return false;
+            }
+        } else { 
+            if (tabkey_registered) {
+                unregister_code(KC_TAB);
+                tabkey_registered = false;
+                return false;
+            }
+        }
+        return true;
+    case KC_BSPC: // Shift + Backspace = Del
+        static bool delkey_registered;
+        if (record->event.pressed) {
+            if (mod_state & MOD_MASK_SHIFT) {
+                del_mods(MOD_MASK_SHIFT);
+                register_code(KC_DEL);
+                delkey_registered = true;
+                set_mods(mod_state);
+                return false;
+            }
+        } else { 
+            if (delkey_registered) {
+                unregister_code(KC_DEL);
+                delkey_registered = false;
+                return false;
+            }
+        }
+        return true;
+    }
+    return true;
+};
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    switch (get_highest_layer(state)) {
+        case BaseLayer:
+            rgblight_sethsv(0, 255, rgblight_get_val());
+            break;
+        case NumberNavigationLayer:
+            rgblight_sethsv(26, 255, rgblight_get_val());
+            break;
+        case SymbolLayer:
+            rgblight_sethsv(226, 255, rgblight_get_val());
+            break;
+        case MiscellaneousLayer:
+            rgblight_sethsv(0, 0, rgblight_get_val());
+            break;
+    }
+  return state;
+}
