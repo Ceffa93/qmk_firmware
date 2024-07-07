@@ -28,8 +28,6 @@
 #define MOD_F2 MT(MOD_LALT, KC_F2)
 #define MOD_F1 MT(MOD_LGUI, KC_F1)
 
-#define LT3_ENT LT(MO(3), KC_ENT)
-
 enum Layers {
     BaseLayer,
     NumberNavigationLayer,
@@ -40,16 +38,16 @@ enum Layers {
 const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] = {
     [BaseLayer] = LAYOUT(
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,                              KC_NO,      KC_NO,     KC_NO,       KC_NO,      KC_NO,      KC_NO,
-        KC_NO,      KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       KC_NO,      KC_NO,      KC_J,       KC_L,      KC_U,        KC_Y,       KC_NO,      KC_NO,
+        KC_NO,      KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       KC_NO,      KC_NO,      KC_J,       KC_L,      KC_U,        KC_Y,       KC_TAB,     KC_NO,
         KC_NO,      MOD_A,      MOD_R,      MOD_S,      MOD_T,      KC_G,       KC_NO,      KC_NO,      KC_M,       MOD_N,     MOD_E,       MOD_I,      MOD_O,      KC_NO,
-        KC_NO,      KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,       KC_NO,      KC_NO,      KC_K,       KC_H,      KC_COMM,     KC_DOT,     LT3_ENT,    KC_NO,
+        KC_NO,      KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,       KC_NO,      KC_NO,      KC_K,       KC_H,      KC_COMM,     KC_DOT,     MO(3),      KC_NO,
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      MO(2),      KC_BSPC,    KC_NO,      KC_NO,      KC_SPC,     MO(1),     KC_NO,       KC_NO,      KC_NO,      KC_NO
     ),
     [NumberNavigationLayer] = LAYOUT(
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,                              KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_PGUP,    KC_HOME,    KC_UP,      KC_END,     KC_ESC,     KC_NO,
         KC_NO,      MOD_1,      MOD_2,      MOD_3,      MOD_4,      KC_5,       KC_NO,      KC_NO,      KC_PGDN,    KC_LEFT,    KC_DOWN,    KC_RIGHT,   KC_NO,      KC_NO,
-        KC_NO,      KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       KC_NO,      KC_NO,      KC_F7,      S(KC_CAPS), KC_TRNS,    KC_TRNS,    KC_NO,      KC_NO,
+        KC_NO,      KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       KC_NO,      KC_NO,      KC_F7,      S(KC_CAPS), KC_TRNS,    KC_TRNS,    KC_LGUI,    KC_NO,
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_DEL,     KC_BSPC,    KC_NO,      KC_NO,      KC_SPC,     KC_ENT,     KC_NO,      KC_NO,      KC_NO,      KC_NO
     ),
     [SymbolLayer] = LAYOUT(
@@ -73,19 +71,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
     
     case KC_SPC: // Shift + Space = Enter
-        static bool tabkey_registered;
+        static bool entkey_registered;
         if (record->event.pressed) {
             if (mod_state & MOD_MASK_SHIFT) {
                 del_mods(MOD_MASK_SHIFT);
-                register_code(KC_TAB);
-                tabkey_registered = true;
+                register_code(KC_ENT);
+                entkey_registered = true;
                 set_mods(mod_state);
                 return false;
             }
         } else { 
-            if (tabkey_registered) {
-                unregister_code(KC_TAB);
-                tabkey_registered = false;
+            if (entkey_registered) {
+                unregister_code(KC_ENT);
+                entkey_registered = false;
                 return false;
             }
         }
