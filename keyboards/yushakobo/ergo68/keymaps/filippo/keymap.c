@@ -62,47 +62,72 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
-void matrix_scan_user(void) {
-  achordion_task();
+void matrix_scan_user(void) 
+{
+    achordion_task();
+}
+
+// Function that decides whether a hold should be disabled, depending on input-output key
+bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) 
+{
+  // Allow hold action if the row is different - I don't think I risk rolling vertically.
+  //if (other_record->event.key.row != tap_hold_record->event.key.row) return true;
+
+  // Allow hold action if the column is not adjacent - I don't think I risk rolling activation with 3 keys.
+  //if (abs(other_record->event.key.col - tap_hold_record->event.key.col) >= 2) return true;
+
+  // Otherwise, disable hold action if both keys are in the same hand.
+  return achordion_opposite_hands(tap_hold_record, other_record);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
 {
-    if (!process_achordion(keycode, record)) { return false; }
+    if (!process_achordion(keycode, record)) return false;
 
     uint8_t mod_state = get_mods();
     switch (keycode) {
     
     case KC_SPC: // Shift + Space = Enter
         static bool entkey_registered;
-        if (record->event.pressed) {
-            if (mod_state & MOD_MASK_SHIFT) {
+        if (record->event.pressed) 
+        {
+            if (mod_state & MOD_MASK_SHIFT) 
+            {
                 del_mods(MOD_MASK_SHIFT);
                 register_code(KC_ENT);
                 entkey_registered = true;
                 set_mods(mod_state);
                 return false;
             }
-        } else { 
-            if (entkey_registered) {
+        } 
+        else 
+        { 
+            if (entkey_registered) 
+            {
                 unregister_code(KC_ENT);
                 entkey_registered = false;
                 return false;
             }
         }
         return true;
+
     case KC_BSPC: // Shift + Backspace = Del
         static bool delkey_registered;
-        if (record->event.pressed) {
-            if (mod_state & MOD_MASK_SHIFT) {
+        if (record->event.pressed) 
+        {
+            if (mod_state & MOD_MASK_SHIFT) 
+            {
                 del_mods(MOD_MASK_SHIFT);
                 register_code(KC_DEL);
                 delkey_registered = true;
                 set_mods(mod_state);
                 return false;
             }
-        } else { 
-            if (delkey_registered) {
+        } 
+        else 
+        { 
+            if (delkey_registered)
+            {
                 unregister_code(KC_DEL);
                 delkey_registered = false;
                 return false;
