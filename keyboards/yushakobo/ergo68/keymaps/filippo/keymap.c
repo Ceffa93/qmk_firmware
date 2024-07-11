@@ -1,12 +1,6 @@
-// #define TAPPING_TERM 1
-// #define QUICK_TAP_TERM 1
-// #define IGNORE_MOD_TAP_INTERRUPT
-// #define TAPPING_FORCE_HOLD
-// #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY 
-// #define PERMISSIVE_HOLD
-// #define RETRO_TAPPING
-
 #include QMK_KEYBOARD_H
+
+#include "features/achordion.h"
 
 #define MOD_T MT(MOD_LSFT, KC_T)
 #define MOD_S MT(MOD_LCTL, KC_S)
@@ -68,7 +62,14 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+void matrix_scan_user(void) {
+  achordion_task();
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) 
+{
+    if (!process_achordion(keycode, record)) { return false; }
+
     uint8_t mod_state = get_mods();
     switch (keycode) {
     
