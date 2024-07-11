@@ -2,6 +2,12 @@
 // Hold following a tap on a mod key activates holds:
 #define QUICK_TAP_TERM 0 
 
+// Time before a key is considere held:
+#define TAPPING_TERM 175
+
+// Immediately activate holds if another key is pressed after
+#define PERMISSIVE_HOLD
+
 // When releasing a long-pressed modifier without pressing other keys, tap action invoked:
 #define RETRO_TAPPING 
 
