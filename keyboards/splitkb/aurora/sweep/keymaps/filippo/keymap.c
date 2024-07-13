@@ -13,10 +13,10 @@ combo_t key_combos[] =
 #define MOD_R MT(MOD_LALT, KC_R)
 #define MOD_A MT(MOD_LGUI, KC_A)
 
-#define MOD_N MT(MOD_RSFT, KC_N)
-#define MOD_E MT(MOD_RCTL, KC_E)
-#define MOD_I MT(MOD_RALT, KC_I)
-#define MOD_O MT(MOD_RGUI, KC_O)
+#define MOD_N MT(MOD_LSFT, KC_N)
+#define MOD_E MT(MOD_LCTL, KC_E)
+#define MOD_I MT(MOD_LALT, KC_I)
+#define MOD_O MT(MOD_LGUI, KC_O)
 
 #define MOD_0 MT(MOD_LSFT, KC_0)
 #define MOD_2 MT(MOD_LCTL, KC_2)
