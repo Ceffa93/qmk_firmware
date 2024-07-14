@@ -73,6 +73,7 @@
 #define F11__________ KC_F11
 #define F12__________ KC_F12
 
+#define AltL_________ KC_LALT
 #define And__________ S(KC_7)
 #define ArrowDown____ KC_DOWN
 #define ArrowLeft____ KC_LEFT
@@ -83,10 +84,14 @@
 #define Backslash____ KC_BSLS
 #define Backspace____ KC_BSPC
 #define BackTick_____ KC_GRV
+#define Boot_________ QK_BOOT
 #define Column_______ S(KC_SCLN)
 #define Comma________ KC_COMM
+#define ControlL_____ KC_LCTL
+#define Copy_________ LCTL(KC_C)
 #define CurlyBrackL__ S(KC_LBRC)
 #define CurlyBrackR__ S(KC_RBRC)
+#define Cut__________ LCTL(KC_X)
 #define Del__________ KC_DEL
 #define Dollar_______ S(KC_4)
 #define Dot__________ KC_DOT
@@ -94,11 +99,14 @@
 #define Enter________ KC_ENT
 #define End__________ KC_END
 #define Equal________ KC_EQL
+#define Esc__________ KC_ESC
 #define ExclamMark___ S(KC_1)
+#define Find_________ LCTL(KC_F)
+#define ToggleRomaji_ LSFT(KC_CAPS_LOCK)
 #define GreaterThan__ S(KC_DOT)
-#define Kana_________ KC_F7
-#define Kanji________ S(KC_CAPS)
+#define GuiL_________ KC_LGUI
 #define Home_________ KC_HOME
+#define Katakana_____ LALT(KC_CAPS_LOCK)
 #define LessThan_____ S(KC_COMM)
 #define Minus________ KC_MINS
 #define Modulo_______ S(KC_5)
@@ -109,17 +117,34 @@
 #define PageUp_______ KC_PGUP
 #define ParenthesisL_ S(KC_9)
 #define ParenthesisR_ S(KC_0)
+#define Paste________ LCTL(KC_V)
 #define Plus_________ S(KC_EQL)
+#define PrintScreen__ KC_PRINT_SCREEN
 #define QuestMark____ S(KC_SLSH)
+#define Redo_________ LCTL(KC_Y)
 #define SemiColumn___ KC_SCLN
 #define Sharp________ S(KC_3)
+#define ShiftL_______ KC_LSFT
 #define SinQuote_____ KC_QUOT
 #define Slash________ KC_SLSH
 #define Space________ KC_SPC
 #define SqareBrackL__ KC_LBRC
 #define SqareBrackR__ KC_RBRC
+#define Tab__________ KC_TAB
+#define Translate____ LCTL(KC_F9)
 #define UnderScore___ S(KC_MINS)
+#define Undo_________ LCTL(KC_Z)
 #define Xor__________ S(KC_6)
+
+#define AlphaT_S_____ MT(MOD_LSFT, KC_T)
+#define AlphaS_C_____ MT(MOD_LCTL, KC_S)
+#define AlphaR_A_____ MT(MOD_LALT, KC_R)
+#define AlphaA_G_____ MT(MOD_LGUI, KC_A)
+
+#define AlphaN_S_____ MT(MOD_LSFT, KC_N)
+#define AlphaE_C_____ MT(MOD_LCTL, KC_E)
+#define AlphaI_A_____ MT(MOD_LALT, KC_I)
+#define AlphaO_G_____ MT(MOD_LGUI, KC_O)
 
 #define Del_M1_______ LT(MO(1), Del__________)
 #define Enter_M2_____ LT(MO(2), Enter________)
@@ -130,34 +155,34 @@
 const uint16_t PROGMEM keymaps[5][MATRIX_ROWS][MATRIX_COLS] = 
 {
     [0] = LAYOUT(
-        AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, Noop_________,    
-        AlphaA_______, AlphaR_______, AlphaS_______, AlphaT_______, AlphaG_______, AlphaM_______, AlphaN_______, AlphaE_______, AlphaI_______, AlphaO_______,    
-        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, Dot__________, Comma________, Noop_________,    
-                                                     Del_M1_______, Backspace_M3_, Space_M4_____, MO(2)
+        AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____,    
+        AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______, AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____,    
+        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, Dot__________, Comma________, DoubQuote____,    
+                                                     Del_M1_______, Backspace_M3_, Space_M4_____, Enter_M2_____
     ),
     [1] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, Backslash____, ParenthesisR_, SqareBrackR__, CurlyBrackR__, GreaterThan__,    
-        DoubQuote____, SinQuote_____, Column_______, SemiColumn___, Modulo_______, Sharp________, ParenthesisL_, SqareBrackL__, CurlyBrackL__, LessThan_____,    
-        BackTick_____, ExclamMark___, QuestMark____, UnderScore___, At___________, Dollar_______, Or___________, And__________, Xor__________, Not__________,    
-                                                     Del__________, Backspace____, Space________, Noop_________
+        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, And__________, ParenthesisR_, SqareBrackR__, CurlyBrackR__, GreaterThan__,    
+        Backslash____, Column_______, SemiColumn___, UnderScore___, Modulo_______, Or___________, ParenthesisL_, SqareBrackL__, CurlyBrackL__, LessThan_____,    
+        BackTick_____, ExclamMark___, QuestMark____, Sharp________, At___________, Not__________, Xor__________, Dot__________, Comma________, Dollar_______,    
+                                                     Del__________, Backspace____, Space________, Enter________
     ),
     [2] = LAYOUT(
         Asterisk_____, Slash________, Equal________, Minus________, Plus_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,     
-        Num6_________, Num4_________, Num2_________, Num0_________, Num8_________, Kanji________, ArrowLeft____, ArrowUp______, ArrowDown____, ArrowRight___,  
-        Num7_________, Num5_________, Num3_________, Num1_________, Num9_________, Kana_________, Home_________, End__________, PageUp_______, PageDown_____,
-                                                     Del__________, Backspace____, Space________, Noop_________
+        Num6_________, Num4_________, Num2_________, Num0_________, Num8_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,  
+        Num7_________, Num5_________, Num3_________, Num1_________, Num9_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,  
+                                                     Del__________, Backspace____, Space________, Enter________
     ),
     [3] = LAYOUT(
-        KC_NO,      KC_NO,      KC_NO,      KC_F11,     KC_F12,             KC_NO,      QK_BOOT,    KC_PSCR,    KC_NO,      KC_NO,      
-        MOD_F6,     MOD_F4,     MOD_F2,     MOD_F10,    KC_F8,              KC_NO,      KC_LSFT,    KC_LCTL,    KC_LALT,    KC_NO,      
-        KC_F7,      KC_F5,      KC_F3,      KC_F1,      KC_F9,              KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      
-                                            KC_NO,      KC_NO,              KC_NO,      KC_NO
+        Translate____, Find_________, Enter________, Space________, Esc__________, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
+        GuiL_________, AltL_________, ControlL_____, ShiftL_______, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
+        Cut__________, Copy_________, Paste________, Undo_________, Redo_________, Noop_________, ToggleRomaji_, Katakana_____, Noop_________, Noop_________,
+                                                     Del__________, Backspace____, Space________, Enter________
     ),
     [4] = LAYOUT(
-        Noop_________, Noop_________, F12__________, F11__________, Noop_________,             KC_NO,      QK_BOOT,    KC_PSCR,    KC_NO,      KC_NO,      
-        F6___________, F4___________, F2___________, F10__________, F8___________,              KC_NO,      KC_LSFT,    KC_LCTL,    KC_LALT,    KC_NO,      
-        F7___________, F5___________, F3___________, F1___________, F9___________,              KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      
-                                                     Del__________, Backspace____, Space________, Noop_________
+        Noop_________, Noop_________, F12__________, F11__________, Noop_________, Noop_________, Boot_________, PrintScreen__, Noop_________, Noop_________,      
+        F6___________, F4___________, F2___________, F10__________, F8___________, Noop_________, ShiftL_______, ControlL_____, AltL_________, GuiL_________, 
+        F7___________, F5___________, F3___________, F1___________, F9___________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,      
+                                                     Del__________, Backspace____, Space________, Enter________
     )
 };
 
