@@ -28,11 +28,47 @@ combo_t key_combos[] =
 #define MOD_F4 MT(MOD_LALT, KC_F4)
 #define MOD_F6 MT(MOD_LGUI, KC_F6)
 
+#define And__________ S(KC_7)
+#define At___________ S(KC_2)
+#define Asterisk_____ S(KC_8)
+#define Backslash____ KC_BSLS
+#define Backspace____ KC_BSPC
+#define BackTick_____ KC_GRV
+#define Column_______ S(KC_SCLN)
+#define CurlyBrackL__ S(KC_LBRC)
+#define CurlyBrackR__ S(KC_RBRC)
+#define Dollar_______ S(KC_4)
+#define DoubQuote____ S(KC_QUOT)
+#define Equal________ KC_EQL
+#define ExclamMark___ S(KC_1)
+#define GreaterThan__ S(KC_DOT)
+#define LessThan_____ S(KC_COMM)
+#define Minus________ KC_MINS
+#define Modulo_______ S(KC_5)
+#define Noop_________ KC_NO
+#define Not__________ S(KC_GRV)
+#define Or___________ S(KC_BSLS)
+#define ParenthesisL_ S(KC_9)
+#define ParenthesisR_ S(KC_0)
+#define Plus_________ S(KC_EQL)
+#define QuestMark____ S(KC_SLSH)
+#define SemiColumn___ KC_SCLN
+#define Sharp________ S(KC_3)
+#define SinQuote_____ KC_QUOT
+#define Slash________ KC_SLSH
+#define Space________ KC_SPC
+#define SqareBrackL__ KC_LBRC
+#define SqareBrackR__ KC_RBRC
+#define UnderScore___ S(KC_MINS)
+#define Xor__________ S(KC_6)
+
+
 enum Layers {
     BaseLayer,
     SymbolLayer,
     NumberNavigationLayer,
-    MiscellaneousLayer, 
+    FNumberLayer, 
+    SingleHandLayer, 
 };
 
 const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] = 
@@ -44,10 +80,10 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
                                             MO(1),      KC_BSPC,            KC_SPC,     MO(2)
     ),
     [SymbolLayer] = LAYOUT(
-        KC_GRV,     KC_QUOT,    S(KC_QUOT), S(KC_SLSH), S(KC_1),            KC_LBRC,    S(KC_COMM), S(KC_SCLN), S(KC_DOT),  KC_RBRC,    
-        S(KC_5),    KC_SLSH,    S(KC_8),    KC_MINS,    S(KC_EQL),          S(KC_LBRC), S(KC_9),    KC_SCLN,    S(KC_0),    S(KC_RBRC), 
-        S(KC_4),    KC_BSLS,    KC_EQL,     S(KC_MINS), S(KC_3),            S(KC_6),    S(KC_7),    S(KC_BSLS), S(KC_GRV),  S(KC_2),    
-                                            KC_NO,      KC_BSPC,            KC_SPC,     KC_NO
+        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, Backslash____, ParenthesisR_, SqareBrackR__, CurlyBrackR__, GreaterThan__,    
+        DoubQuote____, SinQuote_____, Column_______, SemiColumn___, Modulo_______, Sharp________, ParenthesisL_, SqareBrackL__, CurlyBrackL__, LessThan_____,    
+        BackTick_____, ExclamMark___, QuestMark____, UnderScore___, At___________, Dollar_______, Or___________, And__________, Xor__________, Not__________,    
+                                                     Noop_________, Backspace____, Space________, Noop_________
     ),
     [NumberNavigationLayer] = LAYOUT(
         KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,              KC_PGUP,    KC_HOME,    KC_UP,      KC_END,     KC_ESC,     
@@ -55,7 +91,7 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
         KC_7,       KC_5,       KC_3,       KC_1,       KC_9,               KC_F7,      S(KC_CAPS), KC_TRNS,    KC_TRNS,    KC_LGUI,    
                                             KC_NO,      KC_BSPC,            KC_SPC,     KC_NO   
     ),
-    [MiscellaneousLayer] = LAYOUT(
+    [FNumberLayer] = LAYOUT(
         KC_NO,      KC_NO,      KC_NO,      KC_F11,     KC_F12,             KC_NO,      QK_BOOT,    KC_PSCR,    KC_NO,      KC_NO,      
         MOD_F6,     MOD_F4,     MOD_F2,     MOD_F10,    KC_F8,              KC_NO,      KC_LSFT,    KC_LCTL,    KC_LALT,    KC_NO,      
         KC_F7,      KC_F5,      KC_F3,      KC_F1,      KC_F9,              KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      
