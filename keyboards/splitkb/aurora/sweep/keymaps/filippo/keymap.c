@@ -71,70 +71,24 @@ void matrix_scan_user(void)
 // Function that decides whether a hold should be disabled, depending on input-output key
 bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) 
 {
-  // Allow hold action if the row is different - I don't think I risk rolling vertically.
-  //if (other_record->event.key.row != tap_hold_record->event.key.row) return true;
-
-  // Allow hold action if the column is not adjacent - I don't think I risk rolling activation with 3 keys.
-  //if (abs(other_record->event.key.col - tap_hold_record->event.key.col) >= 2) return true;
-
-  // Otherwise, disable hold action if both keys are in the same hand.
+  // Disable hold action if both keys are in the same hand.
   return achordion_opposite_hands(tap_hold_record, other_record);
+}
+
+uint16_t achordion_timeout(uint16_t tap_hold_keycode)
+{
+  return 800;
+}
+
+bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) 
+{
+  if (keycode == KC_LALT) return true;
+  if (keycode == KC_LGUI) return true;
+  return false;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
 {
     if (!process_achordion(keycode, record)) return false;
-
-    uint8_t mod_state = get_mods();
-    switch (keycode) {
-    
-    case KC_SPC: // Shift + Space = Enter
-        static bool entkey_registered;
-        if (record->event.pressed) 
-        {
-            if (mod_state & MOD_MASK_SHIFT) 
-            {
-                del_mods(MOD_MASK_SHIFT);
-                register_code(KC_ENT);
-                entkey_registered = true;
-                set_mods(mod_state);
-                return false;
-            }
-        } 
-        else 
-        { 
-            if (entkey_registered) 
-            {
-                unregister_code(KC_ENT);
-                entkey_registered = false;
-                return false;
-            }
-        }
-        return true;
-
-    case KC_BSPC: // Shift + Backspace = Del
-        static bool delkey_registered;
-        if (record->event.pressed) 
-        {
-            if (mod_state & MOD_MASK_SHIFT) 
-            {
-                del_mods(MOD_MASK_SHIFT);
-                register_code(KC_DEL);
-                delkey_registered = true;
-                set_mods(mod_state);
-                return false;
-            }
-        } 
-        else 
-        { 
-            if (delkey_registered)
-            {
-                unregister_code(KC_DEL);
-                delkey_registered = false;
-                return false;
-            }
-        }
-        return true;
-    }
     return true;
 };
