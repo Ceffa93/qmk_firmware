@@ -71,20 +71,19 @@ void matrix_scan_user(void)
 // Function that decides whether a hold should be disabled, depending on input-output key
 bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) 
 {
-  // Disable hold action if both keys are in the same hand.
-  return achordion_opposite_hands(tap_hold_record, other_record);
+    return achordion_opposite_hands(tap_hold_record, other_record);
 }
 
 uint16_t achordion_timeout(uint16_t tap_hold_keycode)
 {
-  return 800;
+    return 800;
 }
 
+// We disable Tap action of retrotapping always. 
+// We cannot disable retrotapping altoghether as it is required for mods neutralization
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) 
 {
-  if (keycode == KC_LALT) return true;
-  if (keycode == KC_LGUI) return true;
-  return false;
+    return false; 
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
