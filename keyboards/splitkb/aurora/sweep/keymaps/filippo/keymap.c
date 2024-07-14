@@ -91,3 +91,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     if (!process_achordion(keycode, record)) return false;
     return true;
 };
+
+// Achordion has a long timeout in which it waits for a tap-key to be pressed, so it can take a decision.
+// When using a mouse this is an issue, because combinations like Ctrl+Click do not trigger accordion function, 
+// and Ctrl is considered held only after the timeout is expired (QMK timeout + Accordion timeout).
+// The following function specifies modifiers that immediately triggered (after QMK timeout only).
+// If a tap occurs, the held action is either released or nulled according to neutralization rules.  
+bool achordion_eager_mod(uint8_t mod) {
+    switch (mod) 
+    {
+        case MOD_LSFT:
+        case MOD_LCTL:
+        case MOD_LALT:
+            return true;
+        default:
+            return false;
+    }
+}

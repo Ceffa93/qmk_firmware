@@ -72,6 +72,9 @@ static void recursively_process_record(keyrecord_t* record, uint8_t state) {
 
 // Clears eagerly-applied mods.
 static void clear_eager_mods(void) {
+// FILIPPO_EDIT_START
+  neutralize_flashing_modifiers(eager_mods);
+// FILIPPO_EDIT_END
   unregister_mods(eager_mods);
   eager_mods = 0;
 }
