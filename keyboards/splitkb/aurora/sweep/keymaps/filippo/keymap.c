@@ -168,7 +168,7 @@ const uint16_t PROGMEM keymaps[5][MATRIX_ROWS][MATRIX_COLS] =
     ),
     [2] = LAYOUT(
         Asterisk_____, Slash________, Equal________, Minus________, Plus_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,     
-        Num6_________, Num4_________, Num2_________, Num0_________, Num8_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,  
+        Num6_________, Num4_________, Num2_________, Num0_________, Num8_________, Noop_________, ShiftL_______, ControlL_____, AltL_________, GuiL_________, 
         Num7_________, Num5_________, Num3_________, Num1_________, Num9_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,  
                                                      Del__________, Backspace____, Space________, Enter________
     ),
