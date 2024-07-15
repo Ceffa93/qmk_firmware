@@ -173,7 +173,7 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
                                                      Del__________, Backspace____, Space________, Enter________
     ),
     [3] = LAYOUT(
-        Translate____, Noop_________, Enter________, Space________, Esc__________, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
+        Tab__________, Esc__________, Enter________, Space________, Translate____, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
         GuiL_________, Undo_A_______, Paste_C______, Copy_S_______, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
         Noop_________, Redo_________, Find_________, Cut__________, Noop_________, Katakana_____, Romaji_______, Hiragana_____, Noop_________, Noop_________,
                                                      Del__________, Backspace____, Space________, Enter________
