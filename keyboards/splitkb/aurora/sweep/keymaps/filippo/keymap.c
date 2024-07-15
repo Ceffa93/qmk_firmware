@@ -2,26 +2,6 @@
 
 #include "features/achordion.h"
 
-#define MOD_T MT(MOD_LSFT, KC_T)
-#define MOD_S MT(MOD_LCTL, KC_S)
-#define MOD_R MT(MOD_LALT, KC_R)
-#define MOD_A MT(MOD_LGUI, KC_A)
-
-#define MOD_N MT(MOD_LSFT, KC_N)
-#define MOD_E MT(MOD_LCTL, KC_E)
-#define MOD_I MT(MOD_LALT, KC_I)
-#define MOD_O MT(MOD_LGUI, KC_O)
-
-#define MOD_0 MT(MOD_LSFT, KC_0)
-#define MOD_2 MT(MOD_LCTL, KC_2)
-#define MOD_4 MT(MOD_LALT, KC_4)
-#define MOD_6 MT(MOD_LGUI, KC_6)
-
-#define MOD_F10 MT(MOD_LSFT, KC_F10)
-#define MOD_F2 MT(MOD_LCTL, KC_F2)
-#define MOD_F4 MT(MOD_LALT, KC_F4)
-#define MOD_F6 MT(MOD_LGUI, KC_F6)
-
 #define AlphaA_______ KC_A
 #define AlphaB_______ KC_B
 #define AlphaC_______ KC_C
@@ -102,9 +82,9 @@
 #define Esc__________ KC_ESC
 #define ExclamMark___ S(KC_1)
 #define Find_________ LCTL(KC_F)
-#define ToggleRomaji_ LSFT(KC_CAPS_LOCK)
 #define GreaterThan__ S(KC_DOT)
 #define GuiL_________ KC_LGUI
+#define Hiragana_____ LCTL(KC_CAPS_LOCK)
 #define Home_________ KC_HOME
 #define Katakana_____ LALT(KC_CAPS_LOCK)
 #define LessThan_____ S(KC_COMM)
@@ -115,13 +95,14 @@
 #define Or___________ S(KC_BSLS)
 #define PageDown_____ KC_PGDN
 #define PageUp_______ KC_PGUP
-#define ParenthesisL_ S(KC_9)
-#define ParenthesisR_ S(KC_0)
+#define ParentL______ S(KC_9)
+#define ParentR______ S(KC_0)
 #define Paste________ LCTL(KC_V)
 #define Plus_________ S(KC_EQL)
 #define PrintScreen__ KC_PRINT_SCREEN
 #define QuestMark____ S(KC_SLSH)
 #define Redo_________ LCTL(KC_Y)
+#define Romaji_______ LALT(KC_GRV)
 #define SemiColumn___ KC_SCLN
 #define Sharp________ S(KC_3)
 #define ShiftL_______ KC_LSFT
@@ -136,52 +117,52 @@
 #define Undo_________ LCTL(KC_Z)
 #define Xor__________ S(KC_6)
 
-#define AlphaT_S_____ MT(MOD_LSFT, KC_T)
-#define AlphaS_C_____ MT(MOD_LCTL, KC_S)
-#define AlphaR_A_____ MT(MOD_LALT, KC_R)
-#define AlphaA_G_____ MT(MOD_LGUI, KC_A)
+#define AlphaT_S_____ MT(MOD_LSFT, AlphaT_______)
+#define AlphaS_C_____ MT(MOD_LCTL, AlphaS_______)
+#define AlphaR_A_____ MT(MOD_LALT, AlphaR_______)
+#define AlphaA_G_____ MT(MOD_LGUI, AlphaA_______)
+#define AlphaN_S_____ MT(MOD_LSFT, AlphaN_______)
+#define AlphaE_C_____ MT(MOD_LCTL, AlphaE_______)
+#define AlphaI_A_____ MT(MOD_LALT, AlphaI_______)
+#define AlphaO_G_____ MT(MOD_LGUI, AlphaO_______)
 
-#define AlphaN_S_____ MT(MOD_LSFT, KC_N)
-#define AlphaE_C_____ MT(MOD_LCTL, KC_E)
-#define AlphaI_A_____ MT(MOD_LALT, KC_I)
-#define AlphaO_G_____ MT(MOD_LGUI, KC_O)
+#define Num0_S_______ MT(MOD_LSFT, Num0_________)
+#define Num2_C_______ MT(MOD_LCTL, Num2_________)
+#define Num4_A_______ MT(MOD_LALT, Num4_________)
+#define Num6_G_______ MT(MOD_LGUI, Num6_________)
+#define F10_S________ MT(MOD_LSFT, F10__________)
+#define F2_C_________ MT(MOD_LCTL, F2___________)
+#define F4_A_________ MT(MOD_LALT, F4___________)
+#define F6_G_________ MT(MOD_LGUI, F6___________)
 
 #define Del_M1_______ LT(MO(1), Del__________)
 #define Enter_M2_____ LT(MO(2), Enter________)
 #define Backspace_M3_ LT(MO(3), Backspace____)
-#define Space_M4_____ LT(MO(4), Space________)
 
-
-const uint16_t PROGMEM keymaps[5][MATRIX_ROWS][MATRIX_COLS] = 
+const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] = 
 {
     [0] = LAYOUT(
         AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____,    
         AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______, AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____,    
         AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, Dot__________, Comma________, DoubQuote____,    
-                                                     Del_M1_______, Backspace_M3_, Space_M4_____, Enter_M2_____
+                                                     Del_M1_______, Backspace_M3_, S(Space________), Enter_M2_____
     ),
     [1] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, And__________, ParenthesisR_, SqareBrackR__, CurlyBrackR__, GreaterThan__,    
-        Backslash____, Column_______, SemiColumn___, UnderScore___, Modulo_______, Or___________, ParenthesisL_, SqareBrackL__, CurlyBrackL__, LessThan_____,    
-        BackTick_____, ExclamMark___, QuestMark____, Sharp________, At___________, Not__________, Xor__________, Dot__________, Comma________, Dollar_______,    
+        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, Noop_________, Boot_________, PrintScreen__, Noop_________, Noop_________,     
+        Num6_G_______, Num4_A_______, Num2_C_______, Num0_S_______, Num8_________, Noop_________, F10_S________, F2_C_________, F4_A_________, F6_G_________, 
+        Num7_________, Num5_________, Num3_________, Num1_________, Num9_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,  
                                                      Del__________, Backspace____, Space________, Enter________
     ),
     [2] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,     
-        Num6_________, Num4_________, Num2_________, Num0_________, Num8_________, Noop_________, ShiftL_______, ControlL_____, AltL_________, GuiL_________, 
-        Num7_________, Num5_________, Num3_________, Num1_________, Num9_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,  
+        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, And__________, ParentR______, SqareBrackR__, CurlyBrackR__, GreaterThan__,    
+        Backslash____, Column_______, SemiColumn___, UnderScore___, Modulo_______, Or___________, ParentL______, SqareBrackL__, CurlyBrackL__, LessThan_____,    
+        BackTick_____, ExclamMark___, QuestMark____, Sharp________, At___________, Not__________, Xor__________, Dot__________, Comma________, Dollar_______,    
                                                      Del__________, Backspace____, Space________, Enter________
     ),
     [3] = LAYOUT(
         Translate____, Find_________, Enter________, Space________, Esc__________, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
         GuiL_________, AltL_________, ControlL_____, ShiftL_______, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
-        Cut__________, Copy_________, Paste________, Undo_________, Redo_________, Noop_________, ToggleRomaji_, Katakana_____, Noop_________, Noop_________,
-                                                     Del__________, Backspace____, Space________, Enter________
-    ),
-    [4] = LAYOUT(
-        Noop_________, Noop_________, F12__________, F11__________, Noop_________, Noop_________, Boot_________, PrintScreen__, Noop_________, Noop_________,      
-        F6___________, F4___________, F2___________, F10__________, F8___________, Noop_________, ShiftL_______, ControlL_____, AltL_________, GuiL_________, 
-        F7___________, F5___________, F3___________, F1___________, F9___________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,      
+        Cut__________, Copy_________, Paste________, Undo_________, Redo_________, Katakana_____, Romaji_______, Hiragana_____, Noop_________, Noop_________,
                                                      Del__________, Backspace____, Space________, Enter________
     )
 };
@@ -197,7 +178,6 @@ bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, ui
     if (tap_hold_keycode == Del_M1_______) return true;
     if (tap_hold_keycode == Enter_M2_____) return true;
     if (tap_hold_keycode == Backspace_M3_) return true;
-    if (tap_hold_keycode == Space_M4_____) return true;
     return achordion_opposite_hands(tap_hold_record, other_record);
 }
 
@@ -216,6 +196,19 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record)
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
 {
     if (!process_achordion(keycode, record)) return false;
+
+    // There is no key to set romaji, only toggle.
+    // We simulate set romaji behavior by first setting hiragana, and then toggling.
+    if (keycode == Romaji_______)
+    {
+        if (record->event.pressed)
+        {
+            tap_code16(Hiragana_____);
+            tap_code16(Romaji_______);
+            return false;
+        } 
+    }
+
     return true;
 };
 
