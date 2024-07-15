@@ -120,7 +120,7 @@
 #define Xor__________ S(KC_6)
 
 #define AlphaT_S_____ MT(MOD_LSFT, AlphaT_______)
-#define AlphaS_C_____ MT(MOD_LCTL, AlphaS_______)
+#define AlphaS_C_____ MT(MOD_LCTL, AlphaS_______)z
 #define AlphaR_A_____ MT(MOD_LALT, AlphaR_______)
 #define AlphaA_G_____ MT(MOD_LGUI, AlphaA_______)
 #define AlphaN_S_____ MT(MOD_LSFT, AlphaN_______)
@@ -169,9 +169,9 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
                                                      Del__________, Backspace____, Space________, Enter________
     ),
     [2] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, And__________, ParentR______, SqareBrackR__, CurlyBrackR__, GreaterThan__,    
-        Backslash_G__, Column_A_____, SemiColumn_C_, UnderScore_S_, Modulo_______, Or___________, ParentL_S____, SqareBrackL_C, CurlyBrackL_A, LessThan_G___,    
-        BackTick_____, ExclamMark___, QuestMark____, Sharp________, At___________, Not__________, Xor__________, Comma________, Dot__________, Dollar_______,    
+        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, At___________, ParentR______, SqareBrackR__, CurlyBrackR__, GreaterThan__,    
+        Backslash_G__, Column_A_____, SemiColumn_C_, UnderScore_S_, Modulo_______, Sharp________, ParentL_S____, SqareBrackL_C, CurlyBrackL_A, LessThan_G___,    
+        BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, QuestMark____, Comma________, Dot__________, Dollar_______,    
                                                      Del__________, Backspace____, Space________, Enter________
     ),
     [3] = LAYOUT(
