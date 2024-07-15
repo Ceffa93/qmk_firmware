@@ -104,6 +104,7 @@
 #define Redo_________ LCTL(KC_Y)
 #define Romaji_______ LALT(KC_GRV)
 #define SemiColumn___ KC_SCLN
+#define Save_________ C(KC_S)
 #define Sharp________ S(KC_3)
 #define ShiftL_______ KC_LSFT
 #define SinQuote_____ KC_QUOT
@@ -112,6 +113,7 @@
 #define SqareBrackL__ KC_LBRC
 #define SqareBrackR__ KC_RBRC
 #define Tab__________ KC_TAB
+#define ShiftedTab___ S(KC_TAB)
 #define Translate____ LCTL(KC_F9)
 #define UnderScore___ S(KC_MINS)
 #define Undo_________ LCTL(KC_Z)
@@ -173,9 +175,9 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
                                                      Del__________, Backspace____, Space________, Enter________
     ),
     [3] = LAYOUT(
-        Tab__________, Esc__________, Enter________, Space________, Translate____, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
+        Noop_________, Esc__________, Enter________, Space________, Translate____, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
         GuiL_________, Undo_A_______, Paste_C______, Copy_S_______, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
-        Noop_________, Redo_________, Find_________, Cut__________, Noop_________, Katakana_____, Romaji_______, Hiragana_____, Noop_________, Noop_________,
+        Save_________, Redo_________, Find_________, Cut__________, ShiftedTab___, Katakana_____, Romaji_______, Hiragana_____, Noop_________, Noop_________,
                                                      Del__________, Backspace____, Space________, Enter________
     )
 };
