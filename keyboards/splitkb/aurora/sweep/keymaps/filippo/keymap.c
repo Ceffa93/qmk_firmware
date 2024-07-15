@@ -130,13 +130,13 @@
 #define AlphaO_G_____ MT(MOD_LGUI, AlphaO_______)
 
 #define Num0_S_______ MT(MOD_LSFT, Num0_________)
-#define Num2_C_______ MT(MOD_LCTL, Num2_________)
-#define Num4_A_______ MT(MOD_LALT, Num4_________)
-#define Num6_G_______ MT(MOD_LGUI, Num6_________)
+#define Num1_C_______ MT(MOD_LCTL, Num1_________)
+#define Num2_A_______ MT(MOD_LALT, Num2_________)
+#define Num3_G_______ MT(MOD_LGUI, Num3_________)
 #define F10_S________ MT(MOD_LSFT, F10__________)
-#define F2_C_________ MT(MOD_LCTL, F2___________)
-#define F4_A_________ MT(MOD_LALT, F4___________)
-#define F6_G_________ MT(MOD_LGUI, F6___________)
+#define F1_C_________ MT(MOD_LCTL, F1___________)
+#define F2_A_________ MT(MOD_LALT, F2___________)
+#define F3_G_________ MT(MOD_LGUI, F3___________)
 
 #define ParentL_S____ MT(MOD_LSFT, ParentL______)
 #define SqareBrackL_C MT(MOD_LCTL, SqareBrackL__)
@@ -165,8 +165,8 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
     ),
     [1] = LAYOUT(
         Asterisk_____, Slash________, Equal________, Minus________, Plus_________, CapsLock_____, F11__________, F12__________, PrintScreen__, Boot_________,     
-        Num6_G_______, Num4_A_______, Num2_C_______, Num0_S_______, Num8_________, F8___________, F10_S________, F2_C_________, F4_A_________, F6_G_________, 
-        Num7_________, Num5_________, Num3_________, Num1_________, Num9_________, F9___________, F1___________, F3___________, F5___________, F7___________,  
+        Num3_G_______, Num2_A_______, Num1_C_______, Num0_S_______, Num4_________, F4___________, F10_S________, F1_C_________, F2_A_________, F3_G_________, 
+        Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, F9___________, F5___________, F6___________, F7___________, F8___________,  
                                                      Del__________, Backspace____, Space________, Enter________
     ),
     [2] = LAYOUT(
