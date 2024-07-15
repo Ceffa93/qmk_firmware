@@ -120,7 +120,7 @@
 #define Xor__________ S(KC_6)
 
 #define AlphaT_S_____ MT(MOD_LSFT, AlphaT_______)
-#define AlphaS_C_____ MT(MOD_LCTL, AlphaS_______)z
+#define AlphaS_C_____ MT(MOD_LCTL, AlphaS_______)
 #define AlphaR_A_____ MT(MOD_LALT, AlphaR_______)
 #define AlphaA_G_____ MT(MOD_LGUI, AlphaA_______)
 #define AlphaN_S_____ MT(MOD_LSFT, AlphaN_______)
@@ -141,9 +141,9 @@
 #define SqareBrackL_C MT(MOD_LCTL, SqareBrackL__)
 #define CurlyBrackL_A MT(MOD_LALT, CurlyBrackL__)
 #define LessThan_G___ MT(MOD_LGUI, LessThan_____)
-#define UnderScore_S_ MT(MOD_LSFT, UnderScore___)
-#define SemiColumn_C_ MT(MOD_LCTL, SemiColumn___)
-#define Column_A_____ MT(MOD_LALT, Column_______)
+#define SemiColumn_S_ MT(MOD_LSFT, SemiColumn___)
+#define Column_C_____ MT(MOD_LCTL, Column_______)
+#define UnderScore_A_ MT(MOD_LALT, UnderScore___)
 #define Backslash_G__ MT(MOD_LGUI, Backslash____)
 
 #define Copy_S_______ MT(MOD_LSFT, Copy_________)
@@ -170,7 +170,7 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
     ),
     [2] = LAYOUT(
         Asterisk_____, Slash________, Equal________, Minus________, Plus_________, At___________, ParentR______, SqareBrackR__, CurlyBrackR__, GreaterThan__,    
-        Backslash_G__, Column_A_____, SemiColumn_C_, UnderScore_S_, Modulo_______, Sharp________, ParentL_S____, SqareBrackL_C, CurlyBrackL_A, LessThan_G___,    
+        Backslash_G__, UnderScore_A_, Column_C_____, SemiColumn_S_, Modulo_______, Sharp________, ParentL_S____, SqareBrackL_C, CurlyBrackL_A, LessThan_G___,    
         BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, QuestMark____, Comma________, Dot__________, Dollar_______,    
                                                      Del__________, Backspace____, Space________, Enter________
     ),
@@ -232,8 +232,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
         if (keycode == ParentL_S____) { tap_code16(ParentL______); return false; }
         if (keycode == CurlyBrackL_A) { tap_code16(CurlyBrackL__); return false; }
         if (keycode == LessThan_G___) { tap_code16(LessThan_____); return false; }
-        if (keycode == UnderScore_S_) { tap_code16(UnderScore___); return false; }
-        if (keycode == Column_A_____) { tap_code16(Column_______); return false; }
+        if (keycode == UnderScore_A_) { tap_code16(UnderScore___); return false; }
+        if (keycode == Column_C_____) { tap_code16(Column_______); return false; }
         if (keycode == Copy_S_______) { tap_code16(Copy_________); return false; }
         if (keycode == Paste_C______) { tap_code16(Paste________); return false; }
         if (keycode == Undo_A_______) { tap_code16(Undo_________); return false; }
