@@ -135,6 +135,19 @@
 #define F4_A_________ MT(MOD_LALT, F4___________)
 #define F6_G_________ MT(MOD_LGUI, F6___________)
 
+#define ParentL_S____ MT(MOD_LSFT, ParentL______)
+#define SqareBrackL_C MT(MOD_LCTL, SqareBrackL__)
+#define CurlyBrackL_A MT(MOD_LALT, CurlyBrackL__)
+#define LessThan_G___ MT(MOD_LGUI, LessThan_____)
+#define UnderScore_S_ MT(MOD_LSFT, UnderScore___)
+#define SemiColumn_C_ MT(MOD_LCTL, SemiColumn___)
+#define Column_A_____ MT(MOD_LALT, Column_______)
+#define Backslash_G__ MT(MOD_LGUI, Backslash____)
+
+#define Copy_S_______ MT(MOD_LSFT, Copy_________)
+#define Paste_C______ MT(MOD_LCTL, Paste________)
+#define Undo_A_______ MT(MOD_LALT, Undo_________)
+
 #define Del_M1_______ LT(MO(1), Del__________)
 #define Enter_M2_____ LT(MO(2), Enter________)
 #define Backspace_M3_ LT(MO(3), Backspace____)
@@ -144,25 +157,25 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
     [0] = LAYOUT(
         AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____,    
         AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______, AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____,    
-        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, Dot__________, Comma________, DoubQuote____,    
+        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, Comma________, Dot__________, DoubQuote____,    
                                                      Del_M1_______, Backspace_M3_, S(Space________), Enter_M2_____
     ),
     [1] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, Noop_________, Boot_________, PrintScreen__, Noop_________, Noop_________,     
-        Num6_G_______, Num4_A_______, Num2_C_______, Num0_S_______, Num8_________, Noop_________, F10_S________, F2_C_________, F4_A_________, F6_G_________, 
-        Num7_________, Num5_________, Num3_________, Num1_________, Num9_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,  
+        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, Noop_________, F11__________, F12__________, PrintScreen__, Boot_________,     
+        Num6_G_______, Num4_A_______, Num2_C_______, Num0_S_______, Num8_________, F8___________, F10_S________, F2_C_________, F4_A_________, F6_G_________, 
+        Num7_________, Num5_________, Num3_________, Num1_________, Num9_________, F9___________, F1___________, F3___________, F5___________, F7___________,  
                                                      Del__________, Backspace____, Space________, Enter________
     ),
     [2] = LAYOUT(
         Asterisk_____, Slash________, Equal________, Minus________, Plus_________, And__________, ParentR______, SqareBrackR__, CurlyBrackR__, GreaterThan__,    
-        Backslash____, Column_______, SemiColumn___, UnderScore___, Modulo_______, Or___________, ParentL______, SqareBrackL__, CurlyBrackL__, LessThan_____,    
-        BackTick_____, ExclamMark___, QuestMark____, Sharp________, At___________, Not__________, Xor__________, Dot__________, Comma________, Dollar_______,    
+        Backslash_G__, Column_A_____, SemiColumn_C_, UnderScore_S_, Modulo_______, Or___________, ParentL_S____, SqareBrackL_C, CurlyBrackL_A, LessThan_G___,    
+        BackTick_____, ExclamMark___, QuestMark____, Sharp________, At___________, Not__________, Xor__________, Comma________, Dot__________, Dollar_______,    
                                                      Del__________, Backspace____, Space________, Enter________
     ),
     [3] = LAYOUT(
-        Translate____, Find_________, Enter________, Space________, Esc__________, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
-        GuiL_________, AltL_________, ControlL_____, ShiftL_______, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
-        Cut__________, Copy_________, Paste________, Undo_________, Redo_________, Katakana_____, Romaji_______, Hiragana_____, Noop_________, Noop_________,
+        Translate____, Noop_________, Enter________, Space________, Esc__________, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
+        GuiL_________, Undo_A_______, Paste_C______, Copy_S_______, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
+        Noop_________, Redo_________, Find_________, Cut__________, Noop_________, Katakana_____, Romaji_______, Hiragana_____, Noop_________, Noop_________,
                                                      Del__________, Backspace____, Space________, Enter________
     )
 };
@@ -206,9 +219,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             tap_code16(Hiragana_____);
             tap_code16(Romaji_______);
             return false;
-        } 
+        }
     }
-
+    
+    // MT only supports basic keycodes for tap action, and this is limiting.
+    // For example, we cannot have a hold-tap key on a parenthesis, as parenthesis is S(9).
+    // We manually patch those cases to have the intended behavior:
+    if (record->tap.count && record->event.pressed)
+    {
+        if (keycode == ParentL_S____) { tap_code16(ParentL______); return false; }
+        if (keycode == CurlyBrackL_A) { tap_code16(CurlyBrackL__); return false; }
+        if (keycode == LessThan_G___) { tap_code16(LessThan_____); return false; }
+        if (keycode == UnderScore_S_) { tap_code16(UnderScore___); return false; }
+        if (keycode == Column_A_____) { tap_code16(Column_______); return false; }
+        if (keycode == Copy_S_______) { tap_code16(Copy_________); return false; }
+        if (keycode == Paste_C______) { tap_code16(Paste________); return false; }
+        if (keycode == Undo_A_______) { tap_code16(Undo_________); return false; }
+    }    
+                    
     return true;
 };
 
