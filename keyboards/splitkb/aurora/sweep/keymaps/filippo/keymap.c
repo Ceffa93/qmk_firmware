@@ -139,9 +139,9 @@
 #define F3_G_________ MT(MOD_LGUI, F3___________)
 
 #define ParentL_S____ MT(MOD_LSFT, ParentL______)
-#define SqareBrackL_C MT(MOD_LCTL, SqareBrackL__)
+#define ParentR_C____ MT(MOD_LCTL, ParentR______)
 #define CurlyBrackL_A MT(MOD_LALT, CurlyBrackL__)
-#define LessThan_G___ MT(MOD_LGUI, LessThan_____)
+#define CurlyBrackR_G MT(MOD_LGUI, CurlyBrackR__)
 #define SemiColumn_S_ MT(MOD_LSFT, SemiColumn___)
 #define Column_C_____ MT(MOD_LCTL, Column_______)
 #define UnderScore_A_ MT(MOD_LALT, UnderScore___)
@@ -164,15 +164,15 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
                                                      Del_M1_______, Backspace_M3_, Space________, Enter_M2_____
     ),
     [1] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, CapsLock_____, F11__________, F12__________, PrintScreen__, Boot_________,     
-        Num3_G_______, Num2_A_______, Num1_C_______, Num0_S_______, Num4_________, F4___________, F10_S________, F1_C_________, F2_A_________, F3_G_________, 
-        Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, F9___________, F5___________, F6___________, F7___________, F8___________,  
+        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, At___________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__,    
+        Backslash_G__, UnderScore_A_, Column_C_____, SemiColumn_S_, Modulo_______, Sharp________, ParentL_S____, ParentR_C____, CurlyBrackL_A, CurlyBrackR_G,    
+        BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, QuestMark____, Comma________, Dot__________, Dollar_______,    
                                                      Del__________, Backspace____, Space________, Enter________
     ),
     [2] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, At___________, ParentR______, SqareBrackR__, CurlyBrackR__, GreaterThan__,    
-        Backslash_G__, UnderScore_A_, Column_C_____, SemiColumn_S_, Modulo_______, Sharp________, ParentL_S____, SqareBrackL_C, CurlyBrackL_A, LessThan_G___,    
-        BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, QuestMark____, Comma________, Dot__________, Dollar_______,    
+        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, CapsLock_____, F11__________, F12__________, PrintScreen__, Boot_________,     
+        Num3_G_______, Num2_A_______, Num1_C_______, Num0_S_______, Num4_________, F4___________, F10_S________, F1_C_________, F2_A_________, F3_G_________, 
+        Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, F9___________, F5___________, F6___________, F7___________, F8___________,  
                                                      Del__________, Backspace____, Space________, Enter________
     ),
     [3] = LAYOUT(
@@ -231,8 +231,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     if (record->tap.count && record->event.pressed)
     {
         if (keycode == ParentL_S____) { tap_code16(ParentL______); return false; }
+        if (keycode == ParentR_C____) { tap_code16(ParentR______); return false; }
         if (keycode == CurlyBrackL_A) { tap_code16(CurlyBrackL__); return false; }
-        if (keycode == LessThan_G___) { tap_code16(LessThan_____); return false; }
+        if (keycode == CurlyBrackR_G) { tap_code16(CurlyBrackR__); return false; }
         if (keycode == UnderScore_A_) { tap_code16(UnderScore___); return false; }
         if (keycode == Column_C_____) { tap_code16(Column_______); return false; }
         if (keycode == Copy_S_______) { tap_code16(Copy_________); return false; }
