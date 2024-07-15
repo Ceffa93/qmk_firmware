@@ -66,6 +66,7 @@
 #define BackTick_____ KC_GRV
 #define Boot_________ QK_BOOT
 #define Column_______ S(KC_SCLN)
+#define CapsLock_____ KC_CAPS_LOCK
 #define Comma________ KC_COMM
 #define ControlL_____ KC_LCTL
 #define Copy_________ LCTL(KC_C)
@@ -160,10 +161,10 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
         AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____,    
         AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______, AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____,    
         AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, Comma________, Dot__________, DoubQuote____,    
-                                                     Del_M1_______, Backspace_M3_, S(Space________), Enter_M2_____
+                                                     Del_M1_______, Backspace_M3_, Space________, Enter_M2_____
     ),
     [1] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, Noop_________, F11__________, F12__________, PrintScreen__, Boot_________,     
+        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, CapsLock_____, F11__________, F12__________, PrintScreen__, Boot_________,     
         Num6_G_______, Num4_A_______, Num2_C_______, Num0_S_______, Num8_________, F8___________, F10_S________, F2_C_________, F4_A_________, F6_G_________, 
         Num7_________, Num5_________, Num3_________, Num1_________, Num9_________, F9___________, F1___________, F3___________, F5___________, F7___________,  
                                                      Del__________, Backspace____, Space________, Enter________
