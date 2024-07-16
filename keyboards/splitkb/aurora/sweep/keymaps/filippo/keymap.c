@@ -69,10 +69,10 @@
 #define CapsLock_____ KC_CAPS_LOCK
 #define Comma________ KC_COMM
 #define ControlL_____ KC_LCTL
-#define Copy_________ LCTL(KC_C)
+#define Copy_________ C(KC_C)
 #define CurlyBrackL__ S(KC_LBRC)
 #define CurlyBrackR__ S(KC_RBRC)
-#define Cut__________ LCTL(KC_X)
+#define Cut__________ C(KC_X)
 #define Del__________ KC_DEL
 #define Dollar_______ S(KC_4)
 #define Dot__________ KC_DOT
@@ -82,10 +82,11 @@
 #define Equal________ KC_EQL
 #define Esc__________ KC_ESC
 #define ExclamMark___ S(KC_1)
-#define Find_________ LCTL(KC_F)
+#define Find_________ C(KC_F)
+#define ShiftedFind__ C(S(KC_F))
 #define GreaterThan__ S(KC_DOT)
 #define GuiL_________ KC_LGUI
-#define Hiragana_____ LCTL(KC_CAPS_LOCK)
+#define Hiragana_____ C(KC_CAPS_LOCK)
 #define Home_________ KC_HOME
 #define Katakana_____ LALT(KC_CAPS_LOCK)
 #define LessThan_____ S(KC_COMM)
@@ -98,11 +99,11 @@
 #define PageUp_______ KC_PGUP
 #define ParentL______ S(KC_9)
 #define ParentR______ S(KC_0)
-#define Paste________ LCTL(KC_V)
+#define Paste________ C(KC_V)
 #define Plus_________ S(KC_EQL)
 #define PrintScreen__ KC_PRINT_SCREEN
 #define QuestMark____ S(KC_SLSH)
-#define Redo_________ LCTL(KC_Y)
+#define Redo_________ C(KC_Y)
 #define Romaji_______ LALT(KC_GRV)
 #define SemiColumn___ KC_SCLN
 #define Save_________ C(KC_S)
@@ -115,9 +116,9 @@
 #define SqareBrackR__ KC_RBRC
 #define Tab__________ KC_TAB
 #define ShiftedTab___ S(KC_TAB)
-#define Translate____ LCTL(KC_F9)
+#define Translate____ C(KC_F9)
 #define UnderScore___ S(KC_MINS)
-#define Undo_________ LCTL(KC_Z)
+#define Undo_________ C(KC_Z)
 #define Xor__________ S(KC_6)
 
 #define AlphaT_S_____ MT(MOD_LSFT, AlphaT_______)
@@ -176,9 +177,9 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
                                                      Del__________, Backspace____, Space________, Enter________
     ),
     [3] = LAYOUT(
-        Noop_________, Esc__________, Enter________, Space________, Translate____, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
+        ShiftedFind__, Find_________, Enter________, Space________, Translate____, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
         GuiL_________, Undo_A_______, Paste_C______, Copy_S_______, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
-        Save_________, Redo_________, Find_________, Cut__________, ShiftedTab___, Katakana_____, Romaji_______, Hiragana_____, Noop_________, Noop_________,
+        Esc__________, Redo_________, Save_________, Cut__________, ShiftedTab___, Romaji_______, Hiragana_____, Katakana_____, Noop_________, Noop_________,
                                                      Del__________, Backspace____, Space________, Enter________
     )
 };
