@@ -165,21 +165,21 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
                                                      Del_M1_______, Backspace_M3_, Space________, Enter_M2_____
     ),
     [1] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, At___________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__,    
-        Backslash_G__, UnderScore_A_, Column_C_____, SemiColumn_S_, Modulo_______, Sharp________, ParentL_S____, ParentR_C____, CurlyBrackL_A, CurlyBrackR_G,    
-        BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, QuestMark____, Comma________, Dot__________, Dollar_______,    
-                                                     Del__________, Backspace____, Space________, Enter________
-    ),
-    [2] = LAYOUT(
         Asterisk_____, Slash________, Equal________, Minus________, Plus_________, CapsLock_____, F11__________, F12__________, PrintScreen__, Boot_________,     
         Num3_G_______, Num2_A_______, Num1_C_______, Num0_S_______, Num4_________, F4___________, F10_S________, F1_C_________, F2_A_________, F3_G_________, 
         Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, F9___________, F5___________, F6___________, F7___________, F8___________,  
                                                      Del__________, Backspace____, Space________, Enter________
     ),
+    [2] = LAYOUT(
+        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, At___________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__,    
+        Backslash_G__, UnderScore_A_, Column_C_____, SemiColumn_S_, Modulo_______, Sharp________, ParentL_S____, ParentR_C____, CurlyBrackL_A, CurlyBrackR_G,    
+        BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, QuestMark____, Comma________, Dot__________, Dollar_______,    
+                                                     Del__________, Backspace____, Space________, Enter________
+    ),
     [3] = LAYOUT(
-        ShiftedFind__, Find_________, Enter________, Space________, Translate____, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
+        F12__________, Find_________, Enter________, Space________, Translate____, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
         GuiL_________, Undo_A_______, Paste_C______, Copy_S_______, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
-        Esc__________, Redo_________, Save_________, Cut__________, ShiftedTab___, Romaji_______, Hiragana_____, Katakana_____, Noop_________, Noop_________,
+        Esc__________, Redo_________, Save_________, Cut__________, ShiftedTab___, Romaji_______, Hiragana_____, Noop_________, Noop_________, Katakana_____,
                                                      Del__________, Backspace____, Space________, Enter________
     )
 };
