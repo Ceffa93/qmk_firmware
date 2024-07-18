@@ -83,7 +83,7 @@
 #define Esc__________ KC_ESC
 #define ExclamMark___ S(KC_1)
 #define Find_________ C(KC_F)
-#define ShiftedFind__ C(S(KC_F))
+#define FindShifted__ C(S(KC_F))
 #define GreaterThan__ S(KC_DOT)
 #define GuiL_________ KC_LGUI
 #define Hiragana_____ C(KC_CAPS_LOCK)
@@ -148,8 +148,8 @@
 #define UnderScore_A_ MT(MOD_LALT, UnderScore___)
 #define Backslash_G__ MT(MOD_LGUI, Backslash____)
 
-#define Copy_S_______ MT(MOD_LSFT, Copy_________)
-#define Paste_C______ MT(MOD_LCTL, Paste________)
+#define Paste_S______ MT(MOD_LSFT, Paste________)
+#define Copy_C_______ MT(MOD_LCTL, Copy_________)
 #define Undo_A_______ MT(MOD_LALT, Undo_________)
 
 #define Del_M1_______ LT(MO(1), Del__________)
@@ -165,7 +165,7 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
                                                      Del_M1_______, Backspace_M3_, Space________, Enter_M2_____
     ),
     [1] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, CapsLock_____, F11__________, F12__________, PrintScreen__, Boot_________,     
+        Esc__________, Noop_________, Enter________, Space________, Translate____, CapsLock_____, F11__________, F12__________, PrintScreen__, Boot_________,     
         Num3_G_______, Num2_A_______, Num1_C_______, Num0_S_______, Num4_________, F4___________, F10_S________, F1_C_________, F2_A_________, F3_G_________, 
         Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, F9___________, F5___________, F6___________, F7___________, F8___________,  
                                                      Del__________, Backspace____, Space________, Enter________
@@ -177,9 +177,9 @@ const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] =
                                                      Del__________, Backspace____, Space________, Enter________
     ),
     [3] = LAYOUT(
-        F12__________, Find_________, Enter________, Space________, Translate____, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
-        GuiL_________, Undo_A_______, Paste_C______, Copy_S_______, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
-        Esc__________, Redo_________, Save_________, Cut__________, ShiftedTab___, Romaji_______, Hiragana_____, Noop_________, Noop_________, Katakana_____,
+        F10__________, F11__________, F12__________, Find_________, FindShifted__, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
+        GuiL_________, Undo_A_______, Copy_C_______, Paste_S______, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
+        Noop_________, Redo_________, Cut__________, Save_________, ShiftedTab___, Romaji_______, Hiragana_____, Noop_________, Noop_________, Katakana_____,
                                                      Del__________, Backspace____, Space________, Enter________
     )
 };
@@ -237,8 +237,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
         if (keycode == CurlyBrackR_G) { tap_code16(CurlyBrackR__); return false; }
         if (keycode == UnderScore_A_) { tap_code16(UnderScore___); return false; }
         if (keycode == Column_C_____) { tap_code16(Column_______); return false; }
-        if (keycode == Copy_S_______) { tap_code16(Copy_________); return false; }
-        if (keycode == Paste_C______) { tap_code16(Paste________); return false; }
+        if (keycode == Paste_S______) { tap_code16(Paste________); return false; }
+        if (keycode == Copy_C_______) { tap_code16(Copy_________); return false; }
         if (keycode == Undo_A_______) { tap_code16(Undo_________); return false; }
     }    
                     
