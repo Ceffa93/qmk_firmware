@@ -8,6 +8,8 @@
 // Immediately activate holds if another key is pressed after
 #define PERMISSIVE_HOLD
 
+#define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
+
 
 
 // When releasing a long-pressed modifier without pressing other keys:

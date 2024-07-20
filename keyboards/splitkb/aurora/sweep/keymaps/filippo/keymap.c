@@ -141,8 +141,6 @@
 #define F2_A_________ MT(MOD_LALT, F2___________)
 #define F3_G_________ MT(MOD_LGUI, F3___________)
 
-#define Undo_A_______ MT(MOD_LALT, Undo_________)
-
 #define Backspace_S__ MT(MOD_LSFT, Backspace____)
 #define Enter_C______ MT(MOD_LCTL, Enter________)
 
@@ -153,7 +151,7 @@
 #define LayerNumber__ TO(2)
 #define LayerFuncs___ TO(3)
 #define LayerOneHand_ TO(4)
-#define MagicLayer___ MO(5)
+#define MagicLayer___ LT(MO(5),TO(0)) 
 
 
 enum {
@@ -177,20 +175,20 @@ const uint16_t PROGMEM keymaps[6][MATRIX_ROWS][MATRIX_COLS] =
     ),
     [eLayerNumber] = LAYOUT(
         Backspace____, Space________, Tab__________, Enter________, Esc__________, Noop_________, Noop_________, Noop_________, Noop_________, Backspace____,     
-        Num1_________, Num2_________, Num3_________, Num4_________, Num5_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, 
+        Num1_________, Num2_________, Num3_________, Num4_________, Num5_________, Noop_________, ShiftL_______, ControlL_____, AltL_________, Del__________, 
         Num6_________, Num7_________, Num8_________, Num9_________, Num0_________, Noop_________, Noop_________, Noop_________, Noop_________, Enter________,  
                                                      ShiftL_______, MagicLayer___, Space________, AltL_________
     ),
     [eLayerFuncs] = LAYOUT(
         Backspace____, Space________, Tab__________, F11__________, F12__________, CapsLock_____, Noop_________, Noop_________, PrintScreen__, Backspace____,     
-        F1___________, F2___________, F3___________, F4___________, F5___________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, 
+        F1___________, F2___________, F3___________, F4___________, F5___________, Noop_________, ShiftL_______, ControlL_____, AltL_________, Del__________, 
         F6___________, F7___________, F8___________, F9___________, F10__________, Noop_________, Noop_________, Noop_________, Noop_________, Enter________,  
                                                      ShiftL_______, MagicLayer___, Space________, AltL_________
     ),
     [eLayerOneHand] = LAYOUT(
         Backspace____, Space________, Tab__________, Enter________, Find_________, PageUp_______, Home_________, ArrowUp______, End__________, Backspace____,       
-        GuiL_________, Undo_A_______, Copy_________, Paste________, AltTab_______, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
-        Noop_________, Redo_________, Cut__________, Save_________, ControlTab___, Romaji_______, Hiragana_____, Noop_________, Katakana_____, Enter________,
+        GuiL_________, Undo_________, Copy_________, Paste________, AltTab_______, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Del__________,   
+        Translate____, Redo_________, Cut__________, Save_________, ControlTab___, Romaji_______, Hiragana_____, Noop_________, Katakana_____, Enter________,
                                                      ShiftL_______, MagicLayer___, Space________, AltL_________
     ), 
     [eLayerSymbol] = LAYOUT(
@@ -201,7 +199,7 @@ const uint16_t PROGMEM keymaps[6][MATRIX_ROWS][MATRIX_COLS] =
     ),
     [eMagicLayer] = LAYOUT(
         Noop_________, Noop_________, Noop_________, Noop_________, Boot_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,       
-        LayerAlpha___, LayerNumber__, LayerFuncs___, LayerOneHand_, LayerSymbol__, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,   
+        LayerSymbol__, LayerNumber__, LayerFuncs___, LayerOneHand_, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,   
         Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,
                                                      Noop_________, Noop_________, Noop_________, Noop_________
     ), 
@@ -252,7 +250,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     // We manually patch those cases to have the intended behavior:
     if (record->tap.count && record->event.pressed)
     {
-        if (keycode == Undo_A_______) { tap_code16(Undo_________); return false; }
+        if (keycode == MagicLayer___) { layer_move(0); return false; }
     }    
                     
     return true;
@@ -269,6 +267,15 @@ bool achordion_eager_mod(uint8_t mod) {
         case MOD_LSFT:
         case MOD_LCTL:
         case MOD_LALT:
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case MagicLayer___:
             return true;
         default:
             return false;
