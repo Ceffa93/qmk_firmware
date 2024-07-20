@@ -54,6 +54,7 @@
 #define F12__________ KC_F12
 
 #define AltL_________ KC_LALT
+#define AltTab_______ A(KC_TAB)
 #define And__________ S(KC_7)
 #define ArrowDown____ KC_DOWN
 #define ArrowLeft____ KC_LEFT
@@ -69,6 +70,7 @@
 #define CapsLock_____ KC_CAPS_LOCK
 #define Comma________ KC_COMM
 #define ControlL_____ KC_LCTL
+#define ControlTab___ C(KC_TAB)
 #define Copy_________ C(KC_C)
 #define CurlyBrackL__ S(KC_LBRC)
 #define CurlyBrackR__ S(KC_RBRC)
@@ -139,49 +141,70 @@
 #define F2_A_________ MT(MOD_LALT, F2___________)
 #define F3_G_________ MT(MOD_LGUI, F3___________)
 
-#define ParentL_S____ MT(MOD_LSFT, ParentL______)
-#define ParentR_C____ MT(MOD_LCTL, ParentR______)
-#define CurlyBrackL_A MT(MOD_LALT, CurlyBrackL__)
-#define CurlyBrackR_G MT(MOD_LGUI, CurlyBrackR__)
-#define SemiColumn_S_ MT(MOD_LSFT, SemiColumn___)
-#define Column_C_____ MT(MOD_LCTL, Column_______)
-#define UnderScore_A_ MT(MOD_LALT, UnderScore___)
-#define Backslash_G__ MT(MOD_LGUI, Backslash____)
-
-#define Paste_S______ MT(MOD_LSFT, Paste________)
-#define Copy_C_______ MT(MOD_LCTL, Copy_________)
 #define Undo_A_______ MT(MOD_LALT, Undo_________)
 
-#define Del_M1_______ LT(MO(1), Del__________)
-#define Enter_M2_____ LT(MO(2), Enter________)
-#define Backspace_M3_ LT(MO(3), Backspace____)
+#define Backspace_S__ MT(MOD_LSFT, Backspace____)
+#define Enter_C______ MT(MOD_LCTL, Enter________)
 
-const uint16_t PROGMEM keymaps[4][MATRIX_ROWS][MATRIX_COLS] = 
+
+
+#define LayerAlpha___ TO(0)
+#define LayerSymbol__ TO(1)
+#define LayerNumber__ TO(2)
+#define LayerFuncs___ TO(3)
+#define LayerOneHand_ TO(4)
+#define MagicLayer___ MO(5)
+
+
+enum {
+    eLayerAlpha,
+    eLayerSymbol,
+    eLayerNumber,
+    eLayerFuncs,
+    eLayerOneHand,
+    eMagicLayer,
+};
+
+
+
+const uint16_t PROGMEM keymaps[6][MATRIX_ROWS][MATRIX_COLS] = 
 {
-    [0] = LAYOUT(
-        AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____,    
-        AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______, AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____,    
-        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, Comma________, Dot__________, DoubQuote____,    
-                                                     Del_M1_______, Backspace_M3_, Space________, Enter_M2_____
+    [eLayerAlpha] = LAYOUT(
+        AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, Backspace____,    
+        AlphaA_G_____, AlphaR_A_____, AlphaS_______, AlphaT_______, AlphaG_______, AlphaM_______, AlphaN_______, AlphaE_______, AlphaI_A_____, AlphaO_G_____,    
+        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, Comma________, Dot__________, Enter________,    
+                                                     ShiftL_______, MagicLayer___, Space________, ControlL_____
     ),
-    [1] = LAYOUT(
-        Esc__________, Noop_________, Enter________, Space________, Translate____, CapsLock_____, F11__________, F12__________, PrintScreen__, Boot_________,     
-        Num3_G_______, Num2_A_______, Num1_C_______, Num0_S_______, Num4_________, F4___________, F10_S________, F1_C_________, F2_A_________, F3_G_________, 
-        Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, F9___________, F5___________, F6___________, F7___________, F8___________,  
-                                                     Del__________, Backspace____, Space________, Enter________
+    [eLayerNumber] = LAYOUT(
+        Backspace____, Space________, Tab__________, Enter________, Esc__________, Noop_________, Noop_________, Noop_________, Noop_________, Backspace____,     
+        Num1_________, Num2_________, Num3_________, Num4_________, Num5_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, 
+        Num6_________, Num7_________, Num8_________, Num9_________, Num0_________, Noop_________, Noop_________, Noop_________, Noop_________, Enter________,  
+                                                     ShiftL_______, MagicLayer___, Space________, AltL_________
     ),
-    [2] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, At___________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__,    
-        Backslash_G__, UnderScore_A_, Column_C_____, SemiColumn_S_, Modulo_______, Sharp________, ParentL_S____, ParentR_C____, CurlyBrackL_A, CurlyBrackR_G,    
-        BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, QuestMark____, Comma________, Dot__________, Dollar_______,    
-                                                     Del__________, Backspace____, Space________, Enter________
+    [eLayerFuncs] = LAYOUT(
+        Backspace____, Space________, Tab__________, F11__________, F12__________, CapsLock_____, Noop_________, Noop_________, PrintScreen__, Backspace____,     
+        F1___________, F2___________, F3___________, F4___________, F5___________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, 
+        F6___________, F7___________, F8___________, F9___________, F10__________, Noop_________, Noop_________, Noop_________, Noop_________, Enter________,  
+                                                     ShiftL_______, MagicLayer___, Space________, AltL_________
     ),
-    [3] = LAYOUT(
-        F10__________, F11__________, F12__________, Find_________, FindShifted__, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
-        GuiL_________, Undo_A_______, Copy_C_______, Paste_S______, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
-        Noop_________, Redo_________, Cut__________, Save_________, ShiftedTab___, Romaji_______, Hiragana_____, Noop_________, Noop_________, Katakana_____,
-                                                     Del__________, Backspace____, Space________, Enter________
-    )
+    [eLayerOneHand] = LAYOUT(
+        Backspace____, Space________, Tab__________, Enter________, Find_________, PageUp_______, Home_________, ArrowUp______, End__________, Backspace____,       
+        GuiL_________, Undo_A_______, Copy_________, Paste________, AltTab_______, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
+        Noop_________, Redo_________, Cut__________, Save_________, ControlTab___, Romaji_______, Hiragana_____, Noop_________, Katakana_____, Enter________,
+                                                     ShiftL_______, MagicLayer___, Space________, AltL_________
+    ), 
+    [eLayerSymbol] = LAYOUT(
+        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, At___________, SqareBrackL__, SqareBrackR__, Dollar_______, Backspace____,    
+        Backslash____, UnderScore___, Column_______, SemiColumn___, Modulo_______, Sharp________, ParentL______, ParentR______, CurlyBrackL__, CurlyBrackR__,    
+        BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, QuestMark____, SinQuote_____, DoubQuote____, Enter________,    
+                                                     ShiftL_______, MagicLayer___, Space________, AltL_________
+    ),
+    [eMagicLayer] = LAYOUT(
+        Noop_________, Noop_________, Noop_________, Noop_________, Boot_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,       
+        LayerAlpha___, LayerNumber__, LayerFuncs___, LayerOneHand_, LayerSymbol__, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,   
+        Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,
+                                                     Noop_________, Noop_________, Noop_________, Noop_________
+    ), 
 };
 
 void matrix_scan_user(void) 
@@ -192,9 +215,7 @@ void matrix_scan_user(void)
 // Function that decides whether a hold should be disabled, depending on input-output key
 bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) 
 {
-    if (tap_hold_keycode == Del_M1_______) return true;
-    if (tap_hold_keycode == Enter_M2_____) return true;
-    if (tap_hold_keycode == Backspace_M3_) return true;
+    if (tap_hold_keycode == MagicLayer___) return true;
     return achordion_opposite_hands(tap_hold_record, other_record);
 }
 
@@ -231,14 +252,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     // We manually patch those cases to have the intended behavior:
     if (record->tap.count && record->event.pressed)
     {
-        if (keycode == ParentL_S____) { tap_code16(ParentL______); return false; }
-        if (keycode == ParentR_C____) { tap_code16(ParentR______); return false; }
-        if (keycode == CurlyBrackL_A) { tap_code16(CurlyBrackL__); return false; }
-        if (keycode == CurlyBrackR_G) { tap_code16(CurlyBrackR__); return false; }
-        if (keycode == UnderScore_A_) { tap_code16(UnderScore___); return false; }
-        if (keycode == Column_C_____) { tap_code16(Column_______); return false; }
-        if (keycode == Paste_S______) { tap_code16(Paste________); return false; }
-        if (keycode == Copy_C_______) { tap_code16(Copy_________); return false; }
         if (keycode == Undo_A_______) { tap_code16(Undo_________); return false; }
     }    
                     

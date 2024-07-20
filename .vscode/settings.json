@@ -20,7 +20,8 @@
         "utility": "c",
         "ranges": "c",
         "iosfwd": "c",
-        "xlocbuf": "c"
+        "xlocbuf": "c",
+        "random": "c"
     },
     "[markdown]": {
         "editor.trimAutoWhitespace": false,
