@@ -98,6 +98,7 @@
 #define Not__________ S(KC_GRV)
 #define Or___________ S(KC_BSLS)
 #define PageDown_____ KC_PGDN
+#define Trns_________ KC_TRNS
 #define PageUp_______ KC_PGUP
 #define ParentL______ S(KC_9)
 #define ParentR______ S(KC_0)
@@ -140,70 +141,105 @@
 #define F1_C_________ MT(MOD_LCTL, F1___________)
 #define F2_A_________ MT(MOD_LALT, F2___________)
 #define F3_G_________ MT(MOD_LGUI, F3___________)
-
-#define Backspace_S__ MT(MOD_LSFT, Backspace____)
-#define Enter_C______ MT(MOD_LCTL, Enter________)
-
+#define Find_A_______ MT(MOD_LALT, Find_________)
+#define Copy_C_______ MT(MOD_LCTL, Copy_________)
 
 
-#define LayerAlpha___ TO(0)
-#define LayerSymbol__ TO(1)
-#define LayerNumber__ TO(2)
-#define LayerFuncs___ TO(3)
-#define LayerOneHand_ TO(4)
-#define MagicLayer___ LT(MO(5),TO(0)) 
+#define Space_C______ MT(MOD_LCTL, Space________)
+#define Enter_S______ MT(MOD_LSFT, Enter________)
+
 
 
 enum {
     eLayerAlpha,
+    eLayerAlphaJP,
     eLayerSymbol,
+    eLayerSymbolJP,
     eLayerNumber,
+    eLayerNumberJP,
     eLayerFuncs,
     eLayerOneHand,
     eMagicLayer,
+    eCount
 };
 
+#define LayerAlpha___ TO(eLayerAlpha)
+#define LayerAlphaJP_ TO(eLayerAlphaJP)
+#define LayerSymbol__ TO(eLayerSymbol)
+#define LayerSymbolJP TO(eLayerSymbolJP)
+#define LayerNumber__ TO(eLayerNumber)
+#define LayerNumberJP TO(eLayerNumberJP)
+#define LayerFuncs___ TO(eLayerFuncs)
+#define LayerOneHand_ TO(eLayerOneHand)
+#define MagicLayer___ LT(MO(eMagicLayer),LayerAlpha___) 
 
 
-const uint16_t PROGMEM keymaps[6][MATRIX_ROWS][MATRIX_COLS] = 
+const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] = 
 {
     [eLayerAlpha] = LAYOUT(
-        AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, Backspace____,    
-        AlphaA_G_____, AlphaR_A_____, AlphaS_______, AlphaT_______, AlphaG_______, AlphaM_______, AlphaN_______, AlphaE_______, AlphaI_A_____, AlphaO_G_____,    
-        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, Comma________, Dot__________, Enter________,    
-                                                     ShiftL_______, MagicLayer___, Space________, ControlL_____
+        AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____,    
+        AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______, AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____,    
+        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, Comma________, Dot__________, DoubQuote____,    
+                                                     Enter_S______, MagicLayer___, Space_C______, Backspace____ 
+    ),
+    [eLayerAlphaJP] = LAYOUT(
+        Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, ArrowDown____,    
+        Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________,    
+        Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Minus________,    
+                                                     Trns_________, Trns_________, Trns_________, Trns_________ 
+    ),
+    [eLayerSymbol] = LAYOUT(
+        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, At___________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__,    
+        Backslash____, UnderScore___, Column_______, SemiColumn___, Modulo_______, Sharp________, ParentL______, ParentR______, CurlyBrackL__, CurlyBrackR__,    
+        BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, QuestMark____, Comma________, Dot__________, Dollar_______,    
+                                                     Trns_________, Trns_________, Trns_________, Trns_________
+    ),
+    [eLayerSymbolJP] = LAYOUT(
+        Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________,    
+        Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________,    
+        Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________,    
+                                                     Trns_________, Trns_________, Trns_________, Trns_________
     ),
     [eLayerNumber] = LAYOUT(
-        Backspace____, Space________, Tab__________, Enter________, Esc__________, Noop_________, Noop_________, Noop_________, Noop_________, Backspace____,     
-        Num1_________, Num2_________, Num3_________, Num4_________, Num5_________, Noop_________, ShiftL_______, ControlL_____, AltL_________, Del__________, 
-        Num6_________, Num7_________, Num8_________, Num9_________, Num0_________, Noop_________, Noop_________, Noop_________, Noop_________, Enter________,  
-                                                     ShiftL_______, MagicLayer___, Space________, AltL_________
+        Backspace____, Del__________, Space________, Tab__________, Esc__________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,     
+        Num3_G_______, Num2_A_______, Num1_C_______, Num0_________, Num4_________, Noop_________, ShiftL_______, ControlL_____, AltL_________, GuiL_________, 
+        Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,  
+                                                     Trns_________, Trns_________, Trns_________, Trns_________
+    ),
+    [eLayerNumberJP] = LAYOUT(
+        Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________,    
+        Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________,    
+        Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________, Trns_________,    
+                                                     Trns_________, Trns_________, Trns_________, Trns_________
     ),
     [eLayerFuncs] = LAYOUT(
-        Backspace____, Space________, Tab__________, F11__________, F12__________, CapsLock_____, Noop_________, Noop_________, PrintScreen__, Backspace____,     
-        F1___________, F2___________, F3___________, F4___________, F5___________, Noop_________, ShiftL_______, ControlL_____, AltL_________, Del__________, 
-        F6___________, F7___________, F8___________, F9___________, F10__________, Noop_________, Noop_________, Noop_________, Noop_________, Enter________,  
-                                                     ShiftL_______, MagicLayer___, Space________, AltL_________
+        CapsLock_____, PrintScreen__, Translate____, F11__________, F12__________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,     
+        F3_G_________, F2_A_________, F1_C_________, F10__________, F4___________, Noop_________, ShiftL_______, ControlL_____, AltL_________, GuiL_________, 
+        F8___________, F7___________, F6___________, F5___________, F9___________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,  
+                                                     Trns_________, Trns_________, Trns_________, Trns_________ 
     ),
     [eLayerOneHand] = LAYOUT(
-        Backspace____, Space________, Tab__________, Enter________, Find_________, PageUp_______, Home_________, ArrowUp______, End__________, Backspace____,       
-        GuiL_________, Undo_________, Copy_________, Paste________, AltTab_______, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Del__________,   
-        Translate____, Redo_________, Cut__________, Save_________, ControlTab___, Romaji_______, Hiragana_____, Noop_________, Katakana_____, Enter________,
-                                                     ShiftL_______, MagicLayer___, Space________, AltL_________
+        Backspace____, Del__________, Space________, Tab__________, Esc__________, PageUp_______, Home_________, ArrowUp______, End__________, Noop_________,       
+        GuiL_________, Find_A_______, Copy_C_______, Paste________, AltTab_______, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Noop_________,   
+        Redo_________, Undo_________, Cut__________, Save_________, ControlTab___, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,
+                                                     Trns_________, Trns_________, Trns_________, Trns_________
     ), 
-    [eLayerSymbol] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, At___________, SqareBrackL__, SqareBrackR__, Dollar_______, Backspace____,    
-        Backslash____, UnderScore___, Column_______, SemiColumn___, Modulo_______, Sharp________, ParentL______, ParentR______, CurlyBrackL__, CurlyBrackR__,    
-        BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, QuestMark____, SinQuote_____, DoubQuote____, Enter________,    
-                                                     ShiftL_______, MagicLayer___, Space________, AltL_________
-    ),
     [eMagicLayer] = LAYOUT(
         Noop_________, Noop_________, Noop_________, Noop_________, Boot_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,       
-        LayerSymbol__, LayerNumber__, LayerFuncs___, LayerOneHand_, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,   
+        LayerFuncs___, LayerNumber__, LayerSymbol__, LayerOneHand_, Noop_________, Noop_________, LayerAlphaJP_, LayerSymbolJP, LayerNumberJP, Noop_________,   
         Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,
                                                      Noop_________, Noop_________, Noop_________, Noop_________
     ), 
 };
+
+// // In JP mode, replace down arrow with up arrow when shift is enabled
+// const key_override_t jp_arrow_override = ko_make_with_layers_negmods_and_options(MOD_MASK_SHIFT, ArrowDown____, ArrowUp______, eLayerAlphaJP, MOD_MASK_CA, ko_option_no_reregister_trigger);
+
+// const key_override_t **key_overrides = (const key_override_t *[])
+// {
+// 	&jp_arrow_override,
+// 	NULL
+// };
 
 void matrix_scan_user(void) 
 {
@@ -213,7 +249,9 @@ void matrix_scan_user(void)
 // Function that decides whether a hold should be disabled, depending on input-output key
 bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) 
 {
+    if (tap_hold_keycode == Space_C______) return true;
     if (tap_hold_keycode == MagicLayer___) return true;
+    if (tap_hold_keycode == Enter_S______) return true;
     return achordion_opposite_hands(tap_hold_record, other_record);
 }
 
@@ -226,31 +264,49 @@ uint16_t achordion_timeout(uint16_t tap_hold_keycode)
 // We cannot disable retrotapping altoghether as it is required for mods neutralization
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) 
 {
-    return false; 
+    return false;
+}
+
+void setLayer(uint8_t layer)
+{
+    tap_code16(Hiragana_____);
+    tap_code16(Romaji_______);
+    layer_move(layer);
+}
+
+void setLayerJP(uint8_t layer)
+{
+    tap_code16(Hiragana_____);
+    layer_move(layer);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
 {
-    if (!process_achordion(keycode, record)) return false;
+    if (!process_achordion(keycode, record)) return false;  
 
-    // There is no key to set romaji, only toggle.
-    // We simulate set romaji behavior by first setting hiragana, and then toggling.
-    if (keycode == Romaji_______)
-    {
-        if (record->event.pressed)
-        {
-            tap_code16(Hiragana_____);
-            tap_code16(Romaji_______);
-            return false;
-        }
-    }
-    
-    // MT only supports basic keycodes for tap action, and this is limiting.
-    // For example, we cannot have a hold-tap key on a parenthesis, as parenthesis is S(9).
-    // We manually patch those cases to have the intended behavior:
     if (record->tap.count && record->event.pressed)
     {
-        if (keycode == MagicLayer___) { layer_move(0); return false; }
+        switch(keycode)
+        {
+            // Tapping magic layer resets to main alpha layer
+            case MagicLayer___: setLayer(eLayerAlpha); return false;  
+
+            // Set input language for every level
+            case LayerAlpha___: setLayer(eLayerAlpha); return false;  
+            case LayerAlphaJP_: setLayerJP(eLayerAlphaJP); return false;  
+            case LayerSymbol__: setLayer(eLayerSymbol); return false;  
+            case LayerSymbolJP: setLayerJP(eLayerSymbolJP); return false;  
+            case LayerNumber__: setLayer(eLayerNumber); return false;  
+            case LayerNumberJP: setLayerJP(eLayerNumberJP); return false;  
+            case LayerFuncs___: setLayer(eLayerFuncs); return false;  
+            case LayerOneHand_: setLayer(eLayerOneHand); return false;  
+            
+            // MT only supports basic keycodes for tap action, and this is limiting.
+            // For example, we cannot have a hold-tap key on a parenthesis, as parenthesis is S(9).
+            // We manually patch those cases to have the intended behavior:
+            case Copy_C_______: tap_code16(Copy_________); return false;
+            case Find_A_______: tap_code16(Find_________); return false;
+        }
     }    
                     
     return true;
@@ -273,8 +329,12 @@ bool achordion_eager_mod(uint8_t mod) {
     }
 }
 
+// In case of tap hold, this keys aggressively select hold action even if release of the tap happens earlier than the second key.
+// This is not recommended for keys that are rolled, but for thumb modifiers it is no issue, and makes them activate more reliably.
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case Space_C______:
+        case Enter_S______:
         case MagicLayer___:
             return true;
         default:
