@@ -201,7 +201,7 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
                                                      Trns_________, Trns_________, Trns_________, Trns_________
     ),
     [eLayerNumber] = LAYOUT(
-        Backspace____, Del__________, Space________, Tab__________, Esc__________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,     
+        Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,     
         Num3_G_______, Num2_A_______, Num1_C_______, Num0_________, Num4_________, Noop_________, ShiftL_______, ControlL_____, AltL_________, GuiL_________, 
         Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,  
                                                      Trns_________, Trns_________, Trns_________, Trns_________
@@ -225,21 +225,12 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
                                                      Trns_________, Trns_________, Trns_________, Trns_________
     ), 
     [eMagicLayer] = LAYOUT(
-        Noop_________, Noop_________, Noop_________, Noop_________, Boot_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,       
+        Backspace____, Del__________, Space________, Tab__________, Esc__________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,       
         LayerFuncs___, LayerNumber__, LayerSymbol__, LayerOneHand_, Noop_________, Noop_________, LayerAlphaJP_, LayerSymbolJP, LayerNumberJP, Noop_________,   
-        Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,
+        Boot_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________, Noop_________,
                                                      Noop_________, Noop_________, Noop_________, Noop_________
     ), 
 };
-
-// // In JP mode, replace down arrow with up arrow when shift is enabled
-// const key_override_t jp_arrow_override = ko_make_with_layers_negmods_and_options(MOD_MASK_SHIFT, ArrowDown____, ArrowUp______, eLayerAlphaJP, MOD_MASK_CA, ko_option_no_reregister_trigger);
-
-// const key_override_t **key_overrides = (const key_override_t *[])
-// {
-// 	&jp_arrow_override,
-// 	NULL
-// };
 
 void matrix_scan_user(void) 
 {
@@ -283,6 +274,30 @@ void setLayerJP(uint8_t layer)
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
 {
     if (!process_achordion(keycode, record)) return false;  
+
+    // In JP mode, replace down arrow with up arrow when shift is enabled
+    if (layer_state_is(eLayerAlphaJP) && keycode == ArrowDown____)
+    {
+        uint8_t mod_state = get_mods();
+        static bool key_registered;
+        if (record->event.pressed)
+        {
+            if (mod_state & MOD_MASK_SHIFT) 
+            {
+                del_mods(MOD_MASK_SHIFT);
+                register_code(ArrowUp______);
+                key_registered = true;
+                set_mods(mod_state);
+                return false;
+            }
+        } 
+        else if (key_registered) 
+        {
+            unregister_code(ArrowUp______);
+            key_registered = false;
+            return false;
+        }
+    }
 
     if (record->tap.count && record->event.pressed)
     {
