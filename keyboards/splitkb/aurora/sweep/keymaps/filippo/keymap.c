@@ -141,7 +141,7 @@
 #define F1_C_________ MT(MOD_LCTL, F1___________)
 #define F2_A_________ MT(MOD_LALT, F2___________)
 #define F3_G_________ MT(MOD_LGUI, F3___________)
-#define Find_A_______ MT(MOD_LALT, Find_________)
+#define Save_A_______ MT(MOD_LALT, Save_________)
 #define Copy_C_______ MT(MOD_LCTL, Copy_________)
 
 
@@ -159,6 +159,12 @@ enum
   TD_BRACKET_LR,
   TD_CURLY_LR,
   TD_LT_GT,
+  TD_SLASH_MODULO,
+  TD_TILDE_DOLLAR,
+  TD_XOR_BACKTICK,
+  TD_SHARP_AT,
+  TD_QUEST_EXCLAM,
+  TD_UNDER_BSLASH,
 };
 
 #define TdCommaSemic_ TD(TD_COMMA_SEMICOL)
@@ -169,6 +175,13 @@ enum
 #define TdBrackLR____ TD(TD_BRACKET_LR)
 #define TdCurlyLR____ TD(TD_CURLY_LR)
 #define TdLtGt_______ TD(TD_LT_GT)
+#define TdSlashModulo TD(TD_SLASH_MODULO)
+#define TdTildeDollar TD(TD_TILDE_DOLLAR)
+#define TdXorBacktick TD(TD_XOR_BACKTICK)
+#define TdSharpAt____ TD(TD_SHARP_AT)
+#define TdQuestExclam TD(TD_QUEST_EXCLAM)
+#define TdUnderBslash TD(TD_UNDER_BSLASH)
+
 
 enum 
 {
@@ -176,20 +189,16 @@ enum
     eLayerAlphaJP,
     eLayerSymbol,
     eLayerSymbolJP,
-    eLayerNumber,
-    eLayerNumberJP,
     eLayerFuncs,
     eLayerOneHand,
     eMagicLayer,
-    eCount
+    eCount,
 };
 
 #define LayerAlpha___ TO(eLayerAlpha)
 #define LayerAlphaJP_ TO(eLayerAlphaJP)
 #define LayerSymbol__ TO(eLayerSymbol)
 #define LayerSymbolJP TO(eLayerSymbolJP)
-#define LayerNumber__ TO(eLayerNumber)
-#define LayerNumberJP TO(eLayerNumberJP)
 #define LayerFuncs___ TO(eLayerFuncs)
 #define LayerOneHand_ TO(eLayerOneHand)
 #define MagicLayer___ LT(MO(eMagicLayer),LayerAlpha___) 
@@ -211,27 +220,15 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______ 
     ),
     [eLayerSymbol] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Dash_________, Plus_________, At___________, TdBrackLR____, TdLtGt_______, _____________, TdQuotDquot__,    
-        Backslash____, UnderScore___, Column_______, SemiColumn___, Modulo_______, Sharp________, TdParenLR____, TdCurlyLR____, _____________, _____________,    
-        BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, _____________, TdCommaSemic_, TdDotColumn__, TdDashSlash__,    
+        Asterisk_____, TdSlashModulo, Dash_________, Equal________, Plus_________, TdTildeDollar, TdBrackLR____, TdLtGt_______, TdSharpAt____, TdQuotDquot__,    
+        Num3_G_______, Num2_A_______, Num1_C_______, Num0_________, Num4_________, And__________, TdParenLR____, TdCurlyLR____, TdQuestExclam, TdUnderBslash,    
+        Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, TdXorBacktick, Or___________, TdCommaSemic_, TdDotColumn__, TdDashSlash__,    
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______
     ),
     [eLayerSymbolJP] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Dash_________, Plus_________, At___________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__,    
-        Backslash____, UnderScore___, Column_______, SemiColumn___, Modulo_______, Sharp________, ParentL______, ParentR______, CurlyBrackL__, CurlyBrackR__,    
-        BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, QuestMark____, Comma________, Dot__________, Dollar_______,    
-                                                     Backspace_S__, MagicLayer___, Space_C______, Enter_A______
-    ),
-    [eLayerNumber] = LAYOUT(
-        _____________, _____________, _____________, _____________, _____________, _____________, _____________, _____________, _____________, _____________,     
-        Num3_G_______, Num2_A_______, Num1_C_______, Num0_________, Num4_________, _____________, ShiftL_______, ControlL_____, AltL_________, GuiL_________, 
-        Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, _____________, _____________, _____________, _____________, _____________,  
-                                                     Backspace_S__, MagicLayer___, Space_C______, Enter_A______
-    ),
-    [eLayerNumberJP] = LAYOUT(
-        _____________, _____________, _____________, _____________, _____________, _____________, _____________, _____________, _____________, _____________,     
-        Num3_G_______, Num2_A_______, Num1_C_______, Num0_________, Num4_________, _____________, ShiftL_______, ControlL_____, AltL_________, GuiL_________, 
-        Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, _____________, _____________, _____________, _____________, _____________,   
+        Asterisk_____, TdSlashModulo, Dash_________, Equal________, Plus_________, TdTildeDollar, TdBrackLR____, TdLtGt_______, TdSharpAt____, TdQuotDquot__,    
+        Num3_G_______, Num2_A_______, Num1_C_______, Num0_________, Num4_________, And__________, TdParenLR____, TdCurlyLR____, TdQuestExclam, TdUnderBslash,    
+        Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, TdXorBacktick, Or___________, TdCommaSemic_, TdDotColumn__, TdDashSlash__,    
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______
     ),
     [eLayerFuncs] = LAYOUT(
@@ -241,15 +238,15 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______ 
     ),
     [eLayerOneHand] = LAYOUT(
-        Backspace____, Del__________, Space________, Tab__________, Esc__________, PageUp_______, Home_________, ArrowUp______, End__________, _____________,       
-        GuiL_________, Find_A_______, Copy_C_______, Paste________, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, _____________,   
-        Redo_________, Undo_________, Cut__________, Save_________, ShiftedTab___, _____________, _____________, _____________, _____________, _____________,
+        Backspace____, Del__________, Space________, Undo_________, Redo_________, PageUp_______, Home_________, ArrowUp______, End__________, _____________,       
+        GuiL_________, Save_A_______, Copy_C_______, Paste________, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, _____________,   
+        Enter________, _____________, Cut__________, Find_________, ShiftedTab___, _____________, _____________, _____________, _____________, _____________,
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______
     ), 
     [eMagicLayer] = LAYOUT(
-        Backspace____, Del__________, Space________, Tab__________, Esc__________, Boot_________, _____________, _____________, _____________, _____________,       
-        LayerFuncs___, LayerNumber__, LayerSymbol__, LayerOneHand_, _____________, _____________, ShiftL_______, ControlL_____, AltL_________, GuiL_________,   
-        _____________, LayerNumberJP, LayerSymbolJP, LayerAlphaJP_, _____________, _____________, _____________, _____________, _____________, _____________,
+        Backspace____, Del__________, Space________, _____________, Esc__________, Boot_________, _____________, _____________, _____________, _____________,       
+        _____________, LayerFuncs___, LayerSymbol__, LayerOneHand_, Tab__________, _____________, ShiftL_______, ControlL_____, AltL_________, GuiL_________,   
+        Enter________, _____________, LayerSymbolJP, LayerAlphaJP_, ShiftedTab___, _____________, _____________, _____________, _____________, _____________,
                                                      _____________, _____________, _____________, _____________
     ), 
 };
@@ -333,8 +330,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             case LayerAlphaJP_: setLayerJP(eLayerAlphaJP); return false;  
             case LayerSymbol__: setLayer(eLayerSymbol); return false;  
             case LayerSymbolJP: setLayerJP(eLayerSymbolJP); return false;  
-            case LayerNumber__: setLayer(eLayerNumber); return false;  
-            case LayerNumberJP: setLayerJP(eLayerNumberJP); return false;  
             case LayerFuncs___: setLayer(eLayerFuncs); return false;  
             case LayerOneHand_: setLayer(eLayerOneHand); return false;  
         }
@@ -351,7 +346,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             // For example, we cannot have a hold-tap key on a parenthesis, as parenthesis is S(9).
             // We manually patch those cases to have the intended behavior:
             case Copy_C_______: tap_code16(Copy_________); return false;
-            case Find_A_______: tap_code16(Find_________); return false;
+            case Save_A_______: tap_code16(Find_________); return false;
         }
     }    
                     
@@ -389,7 +384,7 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-static const int tdDelay = 20; // Necessary to avoid clogging the input queue of the device, and having unreliable input
+static const int tdDelay = 50; // Necessary to avoid clogging the input queue of the device, and having unreliable input
 
 // N taps followed by 0-1 hold
 void multi_tap_single_hold_td(tap_dance_state_t *state, uint16_t tap_code, uint16_t hold_code)
@@ -405,15 +400,6 @@ void multi_tap_multi_hold_td(tap_dance_state_t *state, uint16_t tap_code, uint16
 }
 
 
-#define TdCommaSemic_ TD(TD_COMMA_SEMICOL)
-#define TdDotColumn__ TD(TD_DOT_COLUMN)
-#define TdQuotDquot__ TD(TD_QUOT_DQUOT)
-#define TdDashSlash__ TD(TD_DASH_SLASH)
-#define TdParenLR____ TD(TD_PARENT_LR)
-#define TdBrackLR____ TD(TD_BRACKET_LR)
-#define TdCurlyLR____ TD(TD_CURLY_LR)
-#define TdLtGt_______ TD(TD_LT_GT)
-
 void comma_semicolumn_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Comma________, SemiColumn___); }
 void dot_column_td(tap_dance_state_t *state, void *user_data) { multi_tap_multi_hold_td(state, Dot__________, Column_______); }
 void quot_dquot_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, SinQuote_____, DoubQuote____); }
@@ -422,6 +408,12 @@ void parent_lr_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_
 void bracket_lr_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, SqareBrackL__, SqareBrackR__); }
 void curly_lr_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, CurlyBrackL__, CurlyBrackR__); }
 void lt_gt_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, LessThan_____, GreaterThan__); }
+void lt_slash_modulo(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Slash________, Modulo_______); }
+void lt_tilde_dollar(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, TdTildeDollar, Dollar_______); }
+void lt_xor_backtick(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Xor__________, BackTick_____); }
+void lt_sharp_at(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Sharp________, At___________); }
+void lt_quest_exclaim(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, QuestMark____, ExclamMark___); }
+void lt_underscore_backslash(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, UnderScore___, Backslash____); }
 
 tap_dance_action_t tap_dance_actions[] = 
 {
@@ -433,5 +425,11 @@ tap_dance_action_t tap_dance_actions[] =
     [TD_BRACKET_LR] = ACTION_TAP_DANCE_FN(bracket_lr_td),
     [TD_CURLY_LR] = ACTION_TAP_DANCE_FN(curly_lr_td),
     [TD_LT_GT] = ACTION_TAP_DANCE_FN(lt_gt_td),
+    [TD_SLASH_MODULO] = ACTION_TAP_DANCE_FN(lt_slash_modulo),
+    [TD_TILDE_DOLLAR] = ACTION_TAP_DANCE_FN(lt_tilde_dollar),
+    [TD_XOR_BACKTICK] = ACTION_TAP_DANCE_FN(lt_xor_backtick),
+    [TD_SHARP_AT] = ACTION_TAP_DANCE_FN(lt_sharp_at),
+    [TD_QUEST_EXCLAM] = ACTION_TAP_DANCE_FN(lt_quest_exclaim),
+    [TD_UNDER_BSLASH] = ACTION_TAP_DANCE_FN(lt_underscore_backslash),
 };
 
