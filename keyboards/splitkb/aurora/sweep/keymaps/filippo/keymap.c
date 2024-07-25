@@ -246,13 +246,13 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
     [eLayerOneHand] = LAYOUT(
         Space________, Del__________, Backspace____, Undo_________, Redo_________, PageUp_______, Home_________, ArrowUp______, End__________, _____________,       
         GuiL_________, Save_A_______, Copy_C_______, Paste________, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, _____________,   
-        Enter________, _____________, Cut__________, Find_________, ShiftedTab___, ToRomaji_HW__, ToKatakana_FW, ToHiragana___, ToRomaji_FW__, ToKatakana_HW,
+        Enter________, _____________, Cut__________, Find_________, ShiftedTab___, _____________, _____________, _____________, _____________, _____________, 
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______
     ), 
     [eMagicLayer] = LAYOUT(
         Space________, Del__________, Backspace____, _____________, Esc__________, Boot_________, _____________, _____________, _____________, _____________,       
         _____________, LayerFuncs___, LayerSymbol__, LayerOneHand_, Tab__________, _____________, ShiftL_______, ControlL_____, AltL_________, GuiL_________,   
-        Enter________, _____________, LayerSymbolJP, LayerAlphaJP_, ShiftedTab___, _____________, _____________, _____________, _____________, _____________,
+        Enter________, _____________, LayerSymbolJP, LayerAlphaJP_, ShiftedTab___, ToRomaji_HW__, ToKatakana_FW, ToHiragana___, ToRomaji_FW__, ToKatakana_HW,
                                                      _____________, _____________, _____________, _____________
     ), 
 };
