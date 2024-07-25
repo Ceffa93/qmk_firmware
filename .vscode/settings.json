@@ -21,7 +21,13 @@
         "ranges": "c",
         "iosfwd": "c",
         "xlocbuf": "c",
-        "random": "c"
+        "random": "c",
+        "future": "c",
+        "regex": "c",
+        "system_error": "c",
+        "iterator": "c",
+        "xhash": "c",
+        "xtree": "c"
     },
     "[markdown]": {
         "editor.trimAutoWhitespace": false,

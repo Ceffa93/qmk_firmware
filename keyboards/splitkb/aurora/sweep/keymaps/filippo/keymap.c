@@ -2,6 +2,7 @@
 
 #include "features/achordion.h"
 
+
 #define _____________ KC_NO
 
 #define AlphaA_______ KC_A
@@ -92,7 +93,7 @@
 #define Home_________ KC_HOME
 #define Katakana_____ LALT(KC_CAPS_LOCK)
 #define LessThan_____ S(KC_COMM)
-#define Minus________ KC_MINS
+#define Dash_________ KC_MINS
 #define Modulo_______ S(KC_5)
 #define Not__________ S(KC_GRV)
 #define Or___________ S(KC_BSLS)
@@ -144,12 +145,33 @@
 #define Copy_C_______ MT(MOD_LCTL, Copy_________)
 
 
-#define Enter_S______ MT(MOD_LSFT, Enter________)
+#define Backspace_S__ MT(MOD_LSFT, Backspace____)
 #define Space_C______ MT(MOD_LCTL, Space________)
-#define Backspace_A__ MT(MOD_LALT, Backspace____)
+#define Enter_A______ MT(MOD_LALT, Enter________)
 
+enum 
+{
+  TD_COMMA_SEMICOL,
+  TD_DOT_COLUMN,
+  TD_QUOT_DQUOT,
+  TD_DASH_SLASH,
+  TD_PARENT_LR,
+  TD_BRACKET_LR,
+  TD_CURLY_LR,
+  TD_LT_GT,
+};
 
-enum {
+#define TdCommaSemic_ TD(TD_COMMA_SEMICOL)
+#define TdDotColumn__ TD(TD_DOT_COLUMN)
+#define TdQuotDquot__ TD(TD_QUOT_DQUOT)
+#define TdDashSlash__ TD(TD_DASH_SLASH)
+#define TdParenLR____ TD(TD_PARENT_LR)
+#define TdBrackLR____ TD(TD_BRACKET_LR)
+#define TdCurlyLR____ TD(TD_CURLY_LR)
+#define TdLtGt_______ TD(TD_LT_GT)
+
+enum 
+{
     eLayerAlpha,
     eLayerAlphaJP,
     eLayerSymbol,
@@ -173,55 +195,56 @@ enum {
 #define MagicLayer___ LT(MO(eMagicLayer),LayerAlpha___) 
 
 
+
 const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] = 
 {
     [eLayerAlpha] = LAYOUT(
-        AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____,    
+        AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, TdQuotDquot__,    
         AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______, AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____,    
-        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, Comma________, Dot__________, DoubQuote____,    
-                                                     Enter_S______, MagicLayer___, Space_C______, Backspace_A__ 
+        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, TdCommaSemic_, TdDotColumn__, TdDashSlash__,    
+                                                     Backspace_S__, MagicLayer___, Space_C______, Enter_A______ 
     ),
     [eLayerAlphaJP] = LAYOUT(
         AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, ArrowDown____,    
         AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______, AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____,   
-        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, Comma________, Dot__________, Minus________,    
-                                                     Enter_S______, MagicLayer___, Space_C______, Backspace_A__ 
+        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, TdCommaSemic_, TdDotColumn__, TdDashSlash__,    
+                                                     Backspace_S__, MagicLayer___, Space_C______, Enter_A______ 
     ),
     [eLayerSymbol] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, At___________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__,    
-        Backslash____, UnderScore___, Column_______, SemiColumn___, Modulo_______, Sharp________, ParentL______, ParentR______, CurlyBrackL__, CurlyBrackR__,    
-        BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, QuestMark____, Comma________, Dot__________, Dollar_______,    
-                                                     Enter_S______, MagicLayer___, Space_C______, Backspace_A__
+        Asterisk_____, Slash________, Equal________, Dash_________, Plus_________, At___________, TdBrackLR____, TdLtGt_______, _____________, TdQuotDquot__,    
+        Backslash____, UnderScore___, Column_______, SemiColumn___, Modulo_______, Sharp________, TdParenLR____, TdCurlyLR____, _____________, _____________,    
+        BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, _____________, TdCommaSemic_, TdDotColumn__, TdDashSlash__,    
+                                                     Backspace_S__, MagicLayer___, Space_C______, Enter_A______
     ),
     [eLayerSymbolJP] = LAYOUT(
-        Asterisk_____, Slash________, Equal________, Minus________, Plus_________, At___________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__,    
+        Asterisk_____, Slash________, Equal________, Dash_________, Plus_________, At___________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__,    
         Backslash____, UnderScore___, Column_______, SemiColumn___, Modulo_______, Sharp________, ParentL______, ParentR______, CurlyBrackL__, CurlyBrackR__,    
         BackTick_____, Not__________, And__________, Or___________, Xor__________, ExclamMark___, QuestMark____, Comma________, Dot__________, Dollar_______,    
-                                                     Enter_S______, MagicLayer___, Space_C______, Backspace_A__
+                                                     Backspace_S__, MagicLayer___, Space_C______, Enter_A______
     ),
     [eLayerNumber] = LAYOUT(
         _____________, _____________, _____________, _____________, _____________, _____________, _____________, _____________, _____________, _____________,     
         Num3_G_______, Num2_A_______, Num1_C_______, Num0_________, Num4_________, _____________, ShiftL_______, ControlL_____, AltL_________, GuiL_________, 
         Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, _____________, _____________, _____________, _____________, _____________,  
-                                                     Enter_S______, MagicLayer___, Space_C______, Backspace_A__
+                                                     Backspace_S__, MagicLayer___, Space_C______, Enter_A______
     ),
     [eLayerNumberJP] = LAYOUT(
         _____________, _____________, _____________, _____________, _____________, _____________, _____________, _____________, _____________, _____________,     
         Num3_G_______, Num2_A_______, Num1_C_______, Num0_________, Num4_________, _____________, ShiftL_______, ControlL_____, AltL_________, GuiL_________, 
         Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, _____________, _____________, _____________, _____________, _____________,   
-                                                     Enter_S______, MagicLayer___, Space_C______, Backspace_A__
+                                                     Backspace_S__, MagicLayer___, Space_C______, Enter_A______
     ),
     [eLayerFuncs] = LAYOUT(
         CapsLock_____, PrintScreen__, Translate____, F11__________, F12__________, _____________, _____________, _____________, _____________, _____________,     
         F3_G_________, F2_A_________, F1_C_________, F10__________, F4___________, _____________, ShiftL_______, ControlL_____, AltL_________, GuiL_________, 
         F8___________, F7___________, F6___________, F5___________, F9___________, _____________, _____________, _____________, _____________, _____________,  
-                                                     Enter_S______, MagicLayer___, Space_C______, Backspace_A__ 
+                                                     Backspace_S__, MagicLayer___, Space_C______, Enter_A______ 
     ),
     [eLayerOneHand] = LAYOUT(
         Backspace____, Del__________, Space________, Tab__________, Esc__________, PageUp_______, Home_________, ArrowUp______, End__________, _____________,       
         GuiL_________, Find_A_______, Copy_C_______, Paste________, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, _____________,   
         Redo_________, Undo_________, Cut__________, Save_________, ShiftedTab___, _____________, _____________, _____________, _____________, _____________,
-                                                     Enter_S______, MagicLayer___, Space_C______, Backspace_A__
+                                                     Backspace_S__, MagicLayer___, Space_C______, Enter_A______
     ), 
     [eMagicLayer] = LAYOUT(
         Backspace____, Del__________, Space________, Tab__________, Esc__________, Boot_________, _____________, _____________, _____________, _____________,       
@@ -241,9 +264,10 @@ bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, ui
 {
     if (layer_state_is(eLayerOneHand)) return true;
     if (layer_state_is(eLayerFuncs)) return true;
-    if (tap_hold_keycode == Space_C______) return true;
     if (tap_hold_keycode == MagicLayer___) return true;
-    if (tap_hold_keycode == Enter_S______) return true;
+    if (tap_hold_keycode == Backspace_S__) return true;
+    if (tap_hold_keycode == Space_C______) return true;
+    if (tap_hold_keycode == Enter_A______) return true;
     return achordion_opposite_hands(tap_hold_record, other_record);
 }
 
@@ -355,9 +379,9 @@ bool achordion_eager_mod(uint8_t mod) {
 // This is not recommended for keys that are rolled, but for thumb modifiers it is no issue, and makes them activate more reliably.
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case Enter_S______:
+        case Backspace_S__:
         case Space_C______:
-        case Backspace_A__:
+        case Enter_A______:
         case MagicLayer___:
             return true;
         default:
@@ -365,6 +389,49 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+static const int tdDelay = 20; // Necessary to avoid clogging the input queue of the device, and having unreliable input
+
+// N taps followed by 0-1 hold
+void multi_tap_single_hold_td(tap_dance_state_t *state, uint16_t tap_code, uint16_t hold_code)
+{
+    for (int t = 0; t < state->count - 1; t++) tap_code16_delay(tap_code, tdDelay);
+    tap_code16_delay(!state->interrupted && state->pressed ? hold_code : tap_code, tdDelay);
+}
+
+// 0-N taps or 0-N holds
+void multi_tap_multi_hold_td(tap_dance_state_t *state, uint16_t tap_code, uint16_t hold_code)
+{
+    for (int t = 0; t < state->count; t++) tap_code16_delay(!state->interrupted && state->pressed ? hold_code : tap_code, tdDelay);
+}
+
+
+#define TdCommaSemic_ TD(TD_COMMA_SEMICOL)
+#define TdDotColumn__ TD(TD_DOT_COLUMN)
+#define TdQuotDquot__ TD(TD_QUOT_DQUOT)
+#define TdDashSlash__ TD(TD_DASH_SLASH)
+#define TdParenLR____ TD(TD_PARENT_LR)
+#define TdBrackLR____ TD(TD_BRACKET_LR)
+#define TdCurlyLR____ TD(TD_CURLY_LR)
+#define TdLtGt_______ TD(TD_LT_GT)
+
+void comma_semicolumn_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Comma________, SemiColumn___); }
+void dot_column_td(tap_dance_state_t *state, void *user_data) { multi_tap_multi_hold_td(state, Dot__________, Column_______); }
+void quot_dquot_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, SinQuote_____, DoubQuote____); }
+void dash_slash_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Dash_________, Slash________); }
+void parent_lr_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, ParentL______, ParentR______); }
+void bracket_lr_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, SqareBrackL__, SqareBrackR__); }
+void curly_lr_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, CurlyBrackL__, CurlyBrackR__); }
+void lt_gt_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, LessThan_____, GreaterThan__); }
+
 tap_dance_action_t tap_dance_actions[] = 
 {
+    [TD_COMMA_SEMICOL] = ACTION_TAP_DANCE_FN(comma_semicolumn_td),
+    [TD_DOT_COLUMN] = ACTION_TAP_DANCE_FN(dot_column_td),
+    [TD_QUOT_DQUOT] = ACTION_TAP_DANCE_FN(quot_dquot_td),
+    [TD_DASH_SLASH] = ACTION_TAP_DANCE_FN(dash_slash_td),
+    [TD_PARENT_LR] = ACTION_TAP_DANCE_FN(parent_lr_td),
+    [TD_BRACKET_LR] = ACTION_TAP_DANCE_FN(bracket_lr_td),
+    [TD_CURLY_LR] = ACTION_TAP_DANCE_FN(curly_lr_td),
+    [TD_LT_GT] = ACTION_TAP_DANCE_FN(lt_gt_td),
 };
+
