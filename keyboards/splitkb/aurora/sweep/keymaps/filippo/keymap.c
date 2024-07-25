@@ -124,6 +124,12 @@
 #define Undo_________ C(KC_Z)
 #define Xor__________ S(KC_6)
 
+#define ToHiragana___ KC_F6
+#define ToKatakana_HW KC_F8
+#define ToKatakana_FW KC_F6
+#define ToRomaji_HW__ KC_F9
+#define ToRomaji_FW__ KC_F10
+
 #define AlphaT_S_____ MT(MOD_LSFT, AlphaT_______)
 #define AlphaS_C_____ MT(MOD_LCTL, AlphaS_______)
 #define AlphaR_A_____ MT(MOD_LALT, AlphaR_______)
@@ -238,13 +244,13 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______ 
     ),
     [eLayerOneHand] = LAYOUT(
-        Backspace____, Del__________, Space________, Undo_________, Redo_________, PageUp_______, Home_________, ArrowUp______, End__________, _____________,       
+        Space________, Del__________, Backspace____, Undo_________, Redo_________, PageUp_______, Home_________, ArrowUp______, End__________, _____________,       
         GuiL_________, Save_A_______, Copy_C_______, Paste________, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, _____________,   
-        Enter________, _____________, Cut__________, Find_________, ShiftedTab___, _____________, _____________, _____________, _____________, _____________,
+        Enter________, _____________, Cut__________, Find_________, ShiftedTab___, ToRomaji_HW__, ToKatakana_FW, ToHiragana___, ToRomaji_FW__, ToKatakana_HW,
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______
     ), 
     [eMagicLayer] = LAYOUT(
-        Backspace____, Del__________, Space________, _____________, Esc__________, Boot_________, _____________, _____________, _____________, _____________,       
+        Space________, Del__________, Backspace____, _____________, Esc__________, Boot_________, _____________, _____________, _____________, _____________,       
         _____________, LayerFuncs___, LayerSymbol__, LayerOneHand_, Tab__________, _____________, ShiftL_______, ControlL_____, AltL_________, GuiL_________,   
         Enter________, _____________, LayerSymbolJP, LayerAlphaJP_, ShiftedTab___, _____________, _____________, _____________, _____________, _____________,
                                                      _____________, _____________, _____________, _____________
@@ -346,7 +352,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             // For example, we cannot have a hold-tap key on a parenthesis, as parenthesis is S(9).
             // We manually patch those cases to have the intended behavior:
             case Copy_C_______: tap_code16(Copy_________); return false;
-            case Save_A_______: tap_code16(Find_________); return false;
+            case Save_A_______: tap_code16(Save_________); return false;
         }
     }    
                     
