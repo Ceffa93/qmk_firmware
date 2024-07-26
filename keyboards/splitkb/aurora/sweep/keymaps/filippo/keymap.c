@@ -157,8 +157,8 @@
 
 enum 
 {
-  TD_COMMA_SEMICOL,
-  TD_DOT_COLUMN,
+  TD_COMMA_QUEST,
+  TD_DOT_EXCLAM,
   TD_QUOT_DQUOT,
   TD_DASH_SLASH,
   TD_PARENT_LR,
@@ -169,12 +169,12 @@ enum
   TD_TILDE_DOLLAR,
   TD_XOR_BACKTICK,
   TD_SHARP_AT,
-  TD_QUEST_EXCLAM,
+  TD_SEMICOL_COL,
   TD_UNDER_BSLASH,
 };
 
-#define TdCommaSemic_ TD(TD_COMMA_SEMICOL)
-#define TdDotColumn__ TD(TD_DOT_COLUMN)
+#define TdCommaQuest_ TD(TD_COMMA_QUEST)
+#define TdDotExclam__ TD(TD_DOT_EXCLAM)
 #define TdQuotDquot__ TD(TD_QUOT_DQUOT)
 #define TdDashSlash__ TD(TD_DASH_SLASH)
 #define TdParenLR____ TD(TD_PARENT_LR)
@@ -185,7 +185,7 @@ enum
 #define TdTildeDollar TD(TD_TILDE_DOLLAR)
 #define TdXorBacktick TD(TD_XOR_BACKTICK)
 #define TdSharpAt____ TD(TD_SHARP_AT)
-#define TdQuestExclam TD(TD_QUEST_EXCLAM)
+#define TdSemicolCol_ TD(TD_SEMICOL_COL)
 #define TdUnderBslash TD(TD_UNDER_BSLASH)
 
 
@@ -216,25 +216,25 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
     [eLayerAlpha] = LAYOUT(
         AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, TdQuotDquot__,    
         AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______, AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____,    
-        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, TdCommaSemic_, TdDotColumn__, TdDashSlash__,    
+        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, TdCommaQuest_, TdDotExclam__, TdDashSlash__,    
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______ 
     ),
     [eLayerAlphaJP] = LAYOUT(
         AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______, AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, ArrowDown____,    
         AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______, AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____,   
-        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, TdCommaSemic_, TdDotColumn__, TdDashSlash__,    
+        AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______, AlphaK_______, AlphaH_______, TdCommaQuest_, TdDotExclam__, TdDashSlash__,    
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______ 
     ),
     [eLayerSymbol] = LAYOUT(
         Asterisk_____, TdSlashModulo, Dash_________, Equal________, Plus_________, TdTildeDollar, TdBrackLR____, TdLtGt_______, TdSharpAt____, TdQuotDquot__,    
-        Num3_G_______, Num2_A_______, Num1_C_______, Num0_________, Num4_________, And__________, TdParenLR____, TdCurlyLR____, TdQuestExclam, TdUnderBslash,    
-        Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, TdXorBacktick, Or___________, TdCommaSemic_, TdDotColumn__, TdDashSlash__,    
+        Num3_G_______, Num2_A_______, Num1_C_______, Num0_________, Num4_________, And__________, TdParenLR____, TdCurlyLR____, TdSemicolCol_, TdUnderBslash,    
+        Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, TdXorBacktick, Or___________, TdCommaQuest_, TdDotExclam__, TdDashSlash__,    
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______
     ),
     [eLayerSymbolJP] = LAYOUT(
         Asterisk_____, TdSlashModulo, Dash_________, Equal________, Plus_________, TdTildeDollar, TdBrackLR____, TdLtGt_______, TdSharpAt____, TdQuotDquot__,    
-        Num3_G_______, Num2_A_______, Num1_C_______, Num0_________, Num4_________, And__________, TdParenLR____, TdCurlyLR____, TdQuestExclam, TdUnderBslash,    
-        Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, TdXorBacktick, Or___________, TdCommaSemic_, TdDotColumn__, TdDashSlash__,    
+        Num3_G_______, Num2_A_______, Num1_C_______, Num0_________, Num4_________, And__________, TdParenLR____, TdCurlyLR____, TdSemicolCol_, TdUnderBslash,    
+        Num8_________, Num7_________, Num6_________, Num5_________, Num9_________, TdXorBacktick, Or___________, TdCommaQuest_, TdDotExclam__, TdDashSlash__,    
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______
     ),
     [eLayerFuncs] = LAYOUT(
@@ -269,8 +269,8 @@ bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, ui
     {
         if (other_keycode == TdQuotDquot__) return false;
         if (other_keycode == TdDashSlash__) return false;
-        if (other_keycode == TdCommaSemic_) return false;
-        if (other_keycode == TdDotColumn__) return false;
+        if (other_keycode == TdCommaQuest_) return false;
+        if (other_keycode == TdDotExclam__) return false;
     }
 
     if (layer_state_is(eLayerOneHand)) return true;
@@ -416,25 +416,25 @@ void multi_tap_multi_hold_td(tap_dance_state_t *state, uint16_t tap_code, uint16
 }
 
 
-void comma_semicolumn_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Comma________, SemiColumn___); }
-void dot_column_td(tap_dance_state_t *state, void *user_data) { multi_tap_multi_hold_td(state, Dot__________, Column_______); }
+void comma_quest_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Comma________, QuestMark____); }
+void dot_exclam_td(tap_dance_state_t *state, void *user_data) { multi_tap_multi_hold_td(state, Dot__________, ExclamMark___); }
 void quot_dquot_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, SinQuote_____, DoubQuote____); }
 void dash_slash_td(tap_dance_state_t *state, void *user_data) { multi_tap_multi_hold_td(state, Dash_________, Slash________); }
 void parent_lr_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, ParentL______, ParentR______); }
 void bracket_lr_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, SqareBrackL__, SqareBrackR__); }
 void curly_lr_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, CurlyBrackL__, CurlyBrackR__); }
-void lt_gt_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, LessThan_____, GreaterThan__); }
+void lt_gt_td(tap_dance_state_t *state, void *user_data) { multi_tap_multi_hold_td(state, LessThan_____, GreaterThan__); }
 void lt_slash_modulo(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Slash________, Modulo_______); }
 void lt_tilde_dollar(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Not__________, Dollar_______); }
 void lt_xor_backtick(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Xor__________, BackTick_____); }
 void lt_sharp_at(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Sharp________, At___________); }
-void lt_quest_exclaim(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, QuestMark____, ExclamMark___); }
+void lt_semicolumn_column(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, SemiColumn___, Column_______); }
 void lt_underscore_backslash(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, UnderScore___, Backslash____); }
 
 tap_dance_action_t tap_dance_actions[] = 
 {
-    [TD_COMMA_SEMICOL] = ACTION_TAP_DANCE_FN(comma_semicolumn_td),
-    [TD_DOT_COLUMN] = ACTION_TAP_DANCE_FN(dot_column_td),
+    [TD_COMMA_QUEST] = ACTION_TAP_DANCE_FN(comma_quest_td),
+    [TD_DOT_EXCLAM] = ACTION_TAP_DANCE_FN(dot_exclam_td),
     [TD_QUOT_DQUOT] = ACTION_TAP_DANCE_FN(quot_dquot_td),
     [TD_DASH_SLASH] = ACTION_TAP_DANCE_FN(dash_slash_td),
     [TD_PARENT_LR] = ACTION_TAP_DANCE_FN(parent_lr_td),
@@ -445,7 +445,7 @@ tap_dance_action_t tap_dance_actions[] =
     [TD_TILDE_DOLLAR] = ACTION_TAP_DANCE_FN(lt_tilde_dollar),
     [TD_XOR_BACKTICK] = ACTION_TAP_DANCE_FN(lt_xor_backtick),
     [TD_SHARP_AT] = ACTION_TAP_DANCE_FN(lt_sharp_at),
-    [TD_QUEST_EXCLAM] = ACTION_TAP_DANCE_FN(lt_quest_exclaim),
+    [TD_SEMICOL_COL] = ACTION_TAP_DANCE_FN(lt_semicolumn_column),
     [TD_UNDER_BSLASH] = ACTION_TAP_DANCE_FN(lt_underscore_backslash),
 };
 
