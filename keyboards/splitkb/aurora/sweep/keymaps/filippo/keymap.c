@@ -246,8 +246,8 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______ 
     ),
     [eLayerOneHand] = LAYOUT(
-        Space________, Del__________, Backspace____, Undo_________, Redo_________, _____________, Home_________, ArrowUp______, End__________, App__________,       
-        GuiL_________, Save_A_______, Copy_C_______, Paste________, Tab__________, PageUp_______, ArrowLeft____, ArrowDown____, ArrowRight___, PageDown_____,   
+        Space________, Del__________, Backspace____, Undo_________, Redo_________, PageUp_______, Home_________, ArrowUp______, End__________, App__________,       
+        GuiL_________, Save_A_______, Copy_C_______, Paste________, Tab__________, PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, _____________,   
         Enter________, _____________, Cut__________, Find_________, ShiftedTab___, _____________, _____________, _____________, _____________, _____________, 
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______
     ), 
