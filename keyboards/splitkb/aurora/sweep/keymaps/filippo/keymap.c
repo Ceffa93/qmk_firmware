@@ -126,7 +126,7 @@
 
 #define ToHiragana___ KC_F6
 #define ToKatakana_HW KC_F8
-#define ToKatakana_FW KC_F6
+#define ToKatakana_FW KC_F7
 #define ToRomaji_HW__ KC_F9
 #define ToRomaji_FW__ KC_F10
 
@@ -265,12 +265,22 @@ void matrix_scan_user(void)
 // Function that decides whether a hold should be disabled, depending on input-output key
 bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) 
 {
+    if (layer_state_is(eLayerAlpha) || layer_state_is(eLayerAlphaJP))
+    {
+        if (other_keycode == TdQuotDquot__) return false;
+        if (other_keycode == TdDashSlash__) return false;
+        if (other_keycode == TdCommaSemic_) return false;
+        if (other_keycode == TdDotColumn__) return false;
+    }
+
     if (layer_state_is(eLayerOneHand)) return true;
-    if (layer_state_is(eLayerFuncs)) return true;
+    if (layer_state_is(eLayerFuncs)) return true; 
+    
     if (tap_hold_keycode == MagicLayer___) return true;
     if (tap_hold_keycode == Backspace_S__) return true;
     if (tap_hold_keycode == Space_C______) return true;
     if (tap_hold_keycode == Enter_A______) return true;
+    
     return achordion_opposite_hands(tap_hold_record, other_record);
 }
 
@@ -409,13 +419,13 @@ void multi_tap_multi_hold_td(tap_dance_state_t *state, uint16_t tap_code, uint16
 void comma_semicolumn_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Comma________, SemiColumn___); }
 void dot_column_td(tap_dance_state_t *state, void *user_data) { multi_tap_multi_hold_td(state, Dot__________, Column_______); }
 void quot_dquot_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, SinQuote_____, DoubQuote____); }
-void dash_slash_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Dash_________, Slash________); }
+void dash_slash_td(tap_dance_state_t *state, void *user_data) { multi_tap_multi_hold_td(state, Dash_________, Slash________); }
 void parent_lr_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, ParentL______, ParentR______); }
 void bracket_lr_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, SqareBrackL__, SqareBrackR__); }
 void curly_lr_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, CurlyBrackL__, CurlyBrackR__); }
 void lt_gt_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, LessThan_____, GreaterThan__); }
 void lt_slash_modulo(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Slash________, Modulo_______); }
-void lt_tilde_dollar(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, TdTildeDollar, Dollar_______); }
+void lt_tilde_dollar(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Not__________, Dollar_______); }
 void lt_xor_backtick(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Xor__________, BackTick_____); }
 void lt_sharp_at(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Sharp________, At___________); }
 void lt_quest_exclaim(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, QuestMark____, ExclamMark___); }
