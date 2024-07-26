@@ -73,6 +73,7 @@
 #define CapsLock_____ KC_CAPS_LOCK
 #define Comma________ KC_COMM
 #define ControlL_____ KC_LCTL
+#define ControlR_____ KC_RCTL
 #define Copy_________ C(KC_C)
 #define CurlyBrackL__ S(KC_LBRC)
 #define CurlyBrackR__ S(KC_RBRC)
@@ -241,7 +242,7 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
     [eLayerFuncs] = LAYOUT(
         CapsLock_____, PrintScreen__, Translate____, F11__________, F12__________, _____________, _____________, _____________, _____________, _____________,     
         F3_G_________, F2_A_________, F1_C_________, F10__________, F4___________, _____________, ShiftL_______, ControlL_____, AltL_________, GuiL_________, 
-        F8___________, F7___________, F6___________, F5___________, F9___________, _____________, _____________, _____________, _____________, _____________,  
+        F8___________, F7___________, F6___________, F5___________, F9___________, _____________, _____________, ControlR_____, _____________, _____________,  
                                                      Backspace_S__, MagicLayer___, Space_C______, Enter_A______ 
     ),
     [eLayerOneHand] = LAYOUT(
