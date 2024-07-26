@@ -31,4 +31,4 @@
 
 // Neutralization is done by passing a special key between the Hold press and Hold release event. 
 // We pick KC_F18 as it is not used for anything else:
-#define DUMMY_MOD_NEUTRALIZER_KEYCODE KC_RIGHT_CTRL 
+#define DUMMY_MOD_NEUTRALIZER_KEYCODE KC_F18 
