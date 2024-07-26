@@ -416,7 +416,7 @@ void multi_tap_multi_hold_td(tap_dance_state_t *state, uint16_t tap_code, uint16
 }
 
 
-void comma_quest_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Comma________, QuestMark____); }
+void comma_quest_td(tap_dance_state_t *state, void *user_data) { multi_tap_multi_hold_td(state, Comma________, QuestMark____); }
 void dot_exclam_td(tap_dance_state_t *state, void *user_data) { multi_tap_multi_hold_td(state, Dot__________, ExclamMark___); }
 void quot_dquot_td(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, SinQuote_____, DoubQuote____); }
 void dash_slash_td(tap_dance_state_t *state, void *user_data) { multi_tap_multi_hold_td(state, Dash_________, Slash________); }
@@ -428,7 +428,7 @@ void lt_slash_modulo(tap_dance_state_t *state, void *user_data) { multi_tap_sing
 void lt_tilde_dollar(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Not__________, Dollar_______); }
 void lt_xor_backtick(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Xor__________, BackTick_____); }
 void lt_sharp_at(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, Sharp________, At___________); }
-void lt_semicolumn_column(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, SemiColumn___, Column_______); }
+void lt_semicolumn_column(tap_dance_state_t *state, void *user_data) { multi_tap_multi_hold_td(state, SemiColumn___, Column_______); }
 void lt_underscore_backslash(tap_dance_state_t *state, void *user_data) { multi_tap_single_hold_td(state, UnderScore___, Backslash____); }
 
 tap_dance_action_t tap_dance_actions[] = 
