@@ -1,55 +1,187 @@
-/*
-Copyright 2022 @Yowkees
-Copyright 2022 MURAOKA Taro (aka KoRoN, @kaoriya)
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #include QMK_KEYBOARD_H
 
+#include "features/oneshot.h"
 #include "quantum.h"
 
-// clang-format off
-const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  // keymap for default
-  [0] = LAYOUT_universal(
-    KC_ESC   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                        KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_DEL   ,
-    KC_TAB   , KC_A     , KC_S     , KC_D     , KC_F     , KC_G     ,                                        KC_H     , KC_J     , KC_K     , KC_L     , KC_SCLN  , S(KC_7)  ,
-    KC_LSFT  , KC_Z     , KC_X     , KC_C     , KC_V     , KC_B     ,                                        KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , KC_INT1  ,
-              KC_LALT,KC_LGUI,LCTL_T(KC_LNG2)     ,LT(1,KC_SPC),LT(3,KC_LNG1),                  KC_BSPC,LT(2,KC_ENT), RCTL_T(KC_LNG2),     KC_RALT  , KC_PSCR
-  ),
+#define xxxxxxxxxxxxx KC_NO
+#define _____________ KC_TRANSPARENT
 
-  [1] = LAYOUT_universal(
-    SSNP_FRE ,  KC_F1   , KC_F2    , KC_F3   , KC_F4    , KC_F5    ,                                         KC_F6    , KC_F7    , KC_F8    , KC_F9    , KC_F10   , KC_F11   ,
-    SSNP_VRT ,  _______ , _______  , KC_UP   , KC_ENT   , KC_DEL   ,                                         KC_PGUP  , KC_BTN1  , KC_UP    , KC_BTN2  , KC_BTN3  , KC_F12   ,
-    SSNP_HOR ,  _______ , KC_LEFT  , KC_DOWN , KC_RGHT  , KC_BSPC  ,                                         KC_PGDN  , KC_LEFT  , KC_DOWN  , KC_RGHT  , _______  , _______  ,
-                  _______  , _______ , _______  ,         _______  , _______  ,                   _______  , _______  , _______       , _______  , _______
-  ),
+#define AlphaA_______ KC_A
+#define AlphaB_______ KC_B
+#define AlphaC_______ KC_C
+#define AlphaD_______ KC_D
+#define AlphaE_______ KC_E
+#define AlphaF_______ KC_F
+#define AlphaG_______ KC_G
+#define AlphaH_______ KC_H
+#define AlphaI_______ KC_I
+#define AlphaJ_______ KC_J
+#define AlphaK_______ KC_K
+#define AlphaL_______ KC_L
+#define AlphaM_______ KC_M
+#define AlphaN_______ KC_N
+#define AlphaO_______ KC_O
+#define AlphaP_______ KC_P
+#define AlphaQ_______ KC_Q
+#define AlphaR_______ KC_R
+#define AlphaS_______ KC_S
+#define AlphaT_______ KC_T
+#define AlphaU_______ KC_U
+#define AlphaV_______ KC_V
+#define AlphaW_______ KC_W
+#define AlphaX_______ KC_X
+#define AlphaY_______ KC_Y
+#define AlphaZ_______ KC_Z
 
-  [2] = LAYOUT_universal(
-    _______  ,S(KC_QUOT), KC_7     , KC_8    , KC_9     , S(KC_8)  ,                                         S(KC_9)  , S(KC_1)  , S(KC_6)  , KC_LBRC  , S(KC_4)  , _______  ,
-    _______  ,S(KC_SCLN), KC_4     , KC_5    , KC_6     , KC_RBRC  ,                                         KC_NUHS  , KC_MINS  , S(KC_EQL), S(KC_3)  , KC_QUOT  , S(KC_2)  ,
-    _______  ,S(KC_MINS), KC_1     , KC_2    , KC_3     ,S(KC_RBRC),                                        S(KC_NUHS),S(KC_INT1), KC_EQL   ,S(KC_LBRC),S(KC_SLSH),S(KC_INT3),
-                  KC_0     , KC_DOT  , _______  ,         _______  , _______  ,                   KC_DEL   , _______  , _______       , _______  , _______
-  ),
+#define Num0_________ KC_0
+#define Num1_________ KC_1
+#define Num2_________ KC_2
+#define Num3_________ KC_3
+#define Num4_________ KC_4
+#define Num5_________ KC_5
+#define Num6_________ KC_6
+#define Num7_________ KC_7
+#define Num8_________ KC_8
+#define Num9_________ KC_9
 
-  [3] = LAYOUT_universal(
-    RGB_TOG  , AML_TO   , AML_I50  , AML_D50  , _______  , _______  ,                                        RGB_M_P  , RGB_M_B  , RGB_M_R  , RGB_M_SW , RGB_M_SN , RGB_M_K  ,
-    RGB_MOD  , RGB_HUI  , RGB_SAI  , RGB_VAI  , _______  , SCRL_DVI ,                                        RGB_M_X  , RGB_M_G  , RGB_M_T  , RGB_M_TW , _______  , _______  ,
-    RGB_RMOD , RGB_HUD  , RGB_SAD  , RGB_VAD  , _______  , SCRL_DVD ,                                        CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , _______  , KBC_SAVE ,
-                  QK_BOOT  , KBC_RST  , _______  ,        _______  , _______  ,                   _______  , _______  , _______       , KBC_RST  , QK_BOOT
-  ),
+#define F1___________ KC_F1
+#define F2___________ KC_F2
+#define F3___________ KC_F3
+#define F4___________ KC_F4
+#define F5___________ KC_F5
+#define F6___________ KC_F6
+#define F7___________ KC_F7
+#define F8___________ KC_F8
+#define F9___________ KC_F9
+#define F10__________ KC_F10
+#define F11__________ KC_F11
+#define F12__________ KC_F12
+
+#define AltL_________ KC_LALT
+#define AltR_________ KC_RALT
+#define App__________ KC_APP
+#define And__________ S(KC_7)
+#define ArrowDown____ KC_DOWN
+#define ArrowLeft____ KC_LEFT
+#define ArrowRight___ KC_RIGHT
+#define ArrowUp______ KC_UP
+#define At___________ S(KC_2)
+#define Asterisk_____ S(KC_8)
+#define Backslash____ KC_BSLS
+#define Backspace____ KC_BSPC
+#define BackTick_____ KC_GRV
+#define Boot_________ QK_BOOT
+#define Column_______ S(KC_SCLN)
+#define CapsLock_____ KC_CAPS_LOCK
+#define Comma________ KC_COMM
+#define ControlL_____ KC_LCTL
+#define ControlR_____ KC_RCTL
+#define Copy_________ C(KC_C)
+#define CurlyBrackL__ S(KC_LBRC)
+#define CurlyBrackR__ S(KC_RBRC)
+#define Cut__________ C(KC_X)
+#define Del__________ KC_DEL
+#define Dollar_______ S(KC_4)
+#define Dot__________ KC_DOT
+#define DoubQuote____ S(KC_QUOT)
+#define Enter________ KC_ENT
+#define End__________ KC_END
+#define Equal________ KC_EQL
+#define Esc__________ KC_ESC
+#define ExclamMark___ S(KC_1)
+#define Find_________ C(KC_F)
+#define FindShifted__ C(S(KC_F))
+#define GreaterThan__ S(KC_DOT)
+#define GuiL_________ KC_LGUI
+#define GuiR_________ KC_RGUI
+#define Hiragana_____ C(KC_CAPS_LOCK)
+#define Home_________ KC_HOME
+#define Katakana_____ LALT(KC_CAPS_LOCK)
+#define LessThan_____ S(KC_COMM)
+#define Dash_________ KC_MINS
+#define Modulo_______ S(KC_5)
+#define Not__________ S(KC_GRV)
+#define Or___________ S(KC_BSLS)
+#define PageDown_____ KC_PGDN
+#define PageUp_______ KC_PGUP
+#define ParentL______ S(KC_9)
+#define ParentR______ S(KC_0)
+#define Paste________ C(KC_V)
+#define Pause________ KC_PAUSE
+#define Plus_________ S(KC_EQL)
+#define PrintScreen__ KC_PRINT_SCREEN
+#define QuestMark____ S(KC_SLSH)
+#define Redo_________ C(KC_Y)
+#define Romaji_______ LALT(KC_GRV)
+#define SemiColumn___ KC_SCLN
+#define Save_________ C(KC_S)
+#define Sharp________ S(KC_3)
+#define ShiftL_______ KC_LSFT
+#define ShiftR_______ KC_RSFT
+#define ShiftTab_____ S(KC_TAB)
+#define SinQuote_____ KC_QUOT
+#define Slash________ KC_SLSH
+#define Space________ KC_SPC
+#define SqareBrackL__ KC_LBRC
+#define SqareBrackR__ KC_RBRC
+#define Tab__________ KC_TAB
+#define ShiftedTab___ S(KC_TAB)
+#define Translate____ C(KC_F9)
+#define UnderScore___ S(KC_MINS)
+#define Undo_________ C(KC_Z)
+#define Xor__________ S(KC_6)
+
+enum CustomKeycodes {
+    ShiftL_OS____ = SAFE_RANGE,
+    ControlL_OS__,
+    AltL_OS______,
+    GuiL_OS______,
+    Reset________,
+    ToHiragana___,
+}; 
+
+enum 
+{
+    eLayerAlpha,
+    eLayerSymbol,
+    eLayerOneHand,
+    eMagicLayer,
+    eCount,
+};
+
+#define LayerMagic___ LT(eMagicLayer, Reset________)
+#define LayerSymbol__ LT(eLayerSymbol, Space________)
+#define LayerOneHand_ LT(eLayerOneHand, Backspace____)
+#define ShiftEnter___ MT(MOD_BIT_LSHIFT, Enter________) 
+#define AltBack______ MT(MOD_BIT_LALT, Backspace____) 
+#define ControlSpace_ MT(MOD_BIT_LCTRL, Space________) 
+
+const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =  
+{
+    [eLayerAlpha] = LAYOUT(
+        xxxxxxxxxxxxx, AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______,       AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, AlphaA_______, AlphaR_______, AlphaS_______, AlphaT_______, AlphaG_______,       AlphaM_______, AlphaN_______, AlphaE_______, AlphaI_______, AlphaO_______, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______,       AlphaK_______, AlphaH_______, Comma________, Dot__________, Dash_________, xxxxxxxxxxxxx,
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, LayerOneHand_, LayerMagic___, xxxxxxxxxxxxx,       LayerSymbol__, ShiftEnter___, xxxxxxxxxxxxx 
+    ),
+    [eLayerSymbol] = LAYOUT(
+        xxxxxxxxxxxxx, Backslash____, Slash________, Plus_________, Equal________, Modulo_______,       Not__________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, Or___________, UnderScore___, Column_______, SemiColumn___, Asterisk_____,       Xor__________, ParentL______, ParentR______, CurlyBrackL__, CurlyBrackR__, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, And__________, At___________, DoubQuote____, QuestMark____, ExclamMark___,       BackTick_____, Sharp________, Comma________, Dot__________, Dollar_______, xxxxxxxxxxxxx,
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, AltBack______, ControlSpace_, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx 
+    ),
+    [eLayerOneHand] = LAYOUT(
+        xxxxxxxxxxxxx, Num0_________, Num1_________, Num2_________, Num3_________, Num4_________,       Num5_________, Num6_________, Num7_________, Num8_________, Num9_________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, Undo_________, Cut__________, Copy_________, Paste________, Redo_________,       F1___________, F2___________, F3___________, PrintScreen__, CapsLock_____, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, F12__________, F11__________, F10__________, F5___________, F4___________,       F6___________, F7___________, F8___________, F9___________, Pause________, xxxxxxxxxxxxx,
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       ControlSpace_, ShiftEnter___, xxxxxxxxxxxxx 
+    ), 
+    [eMagicLayer] = LAYOUT(
+        xxxxxxxxxxxxx, GuiL_OS______, AltL_OS______, ControlL_OS__, ShiftL_OS____, GuiL_________,       PageUp_______, Home_________, ArrowUp______, End__________, ToHiragana___, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, Esc__________, Enter________, Backspace____, Del__________, Tab__________,       PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, Space________, Translate____, xxxxxxxxxxxxx, ControlR_____, ShiftedTab___,       App__________, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, Boot_________, xxxxxxxxxxxxx,
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       ControlSpace_, ShiftEnter___, xxxxxxxxxxxxx
+    ), 
 };
 // clang-format on
 
@@ -57,6 +189,104 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     // Auto enable scroll mode when the highest layer is 3
     keyball_set_scroll_mode(get_highest_layer(state) == 3);
     return state;
+}
+
+void to_romaji(void)
+{
+    tap_code16(Hiragana_____);
+    tap_code16(Romaji_______);
+}
+
+void to_hiragana(void)
+{
+    tap_code16(Hiragana_____);
+}
+
+// We disable Tap action of retrotapping always. 
+// We cannot disable retrotapping altoghether as it is required for mods neutralization
+bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) 
+{
+    return false;
+}
+
+
+bool is_oneshot_ignore_key(uint16_t keycode) 
+{
+    switch (keycode) 
+    {
+    case ShiftL_OS____:
+    case ShiftL_______:
+    case ControlL_OS__:
+    case ControlL_____:
+    case AltL_OS______:
+    case AltL_________:
+    case GuiL_OS______:
+    case GuiL_________:
+    case ShiftR_______:
+    case ControlR_____:
+    case AltR_________:
+    case GuiR_________:
+    case LayerMagic___:
+    case LayerSymbol__:
+    case ShiftEnter___:
+    case AltBack______:
+    case ControlSpace_:
+        return true;
+    default:
+        return false;
+    }
+}  
+
+mod_state os_shft_state = {os_unqueued, 0};
+mod_state os_ctrl_state = {os_unqueued, 0};
+mod_state os_alt_state = {os_unqueued, 0};
+mod_state os_gui_state = {os_unqueued, 0};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) 
+{
+    bool deactivate_mods = false;
+
+    if (record->event.pressed && keycode == LayerMagic___ && record->tap.count)
+    {
+        deactivate_mods = true;
+    } 
+
+    update_oneshot(&os_shft_state, ShiftL_______, ShiftL_OS____, keycode, record, deactivate_mods);
+    update_oneshot(&os_ctrl_state, ControlL_____, ControlL_OS__, keycode, record, deactivate_mods);
+    update_oneshot(&os_alt_state, AltL_________, AltL_OS______, keycode, record, deactivate_mods);
+    update_oneshot(&os_gui_state, GuiL_________, GuiL_OS______, keycode, record, deactivate_mods);
+
+    if (deactivate_mods) 
+    { 
+        to_romaji();
+        return false;
+    }
+
+    if (record->event.pressed)
+    {
+        switch(keycode)
+        {
+            case ToHiragana___: to_hiragana(); return false; 
+        }
+    } 
+
+    return true;
+};
+
+// In case of tap hold, this keys aggressively select hold action even if release of the tap happens earlier than the second key.
+// This is not recommended for keys that are rolled, but for thumb modifiers it is no issue, and makes them activate more reliably.
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LayerMagic___:
+        case LayerSymbol__:
+        case LayerOneHand_:
+        case ShiftEnter___:
+        case AltBack______:
+        case ControlSpace_:
+            return true;
+        default:
+            return false;
+    }
 }
 
 #ifdef OLED_ENABLE

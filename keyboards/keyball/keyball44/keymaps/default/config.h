@@ -1,39 +1,40 @@
-/*
-This is the c configuration file for the keymap
-
-Copyright 2022 @Yowkees
-Copyright 2022 MURAOKA Taro (aka KoRoN, @kaoriya)
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #pragma once
 
-#ifdef RGBLIGHT_ENABLE
-#    define RGBLIGHT_EFFECT_BREATHING
-#    define RGBLIGHT_EFFECT_RAINBOW_MOOD
-#    define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-#    define RGBLIGHT_EFFECT_SNAKE
-#    define RGBLIGHT_EFFECT_KNIGHT
-#    define RGBLIGHT_EFFECT_CHRISTMAS
-#    define RGBLIGHT_EFFECT_STATIC_GRADIENT
-#    define RGBLIGHT_EFFECT_RGB_TEST
-#    define RGBLIGHT_EFFECT_ALTERNATING
-#    define RGBLIGHT_EFFECT_TWINKLE
-#endif
 
 #define TAP_CODE_DELAY 5
 
 #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
 #define AUTO_MOUSE_DEFAULT_LAYER 1
+
+
+// Hold following a tap on a mod key activates holds:
+#define QUICK_TAP_TERM 0 
+
+// Time before a key is considere held:
+#define TAPPING_TERM 175
+
+// Immediately activate holds if another key is pressed after
+#define PERMISSIVE_HOLD
+
+#define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
+
+// When releasing a long-pressed modifier without pressing other keys:
+// - First do Hold release action
+// - Then add Tap action
+#define RETRO_TAPPING 
+
+// It is possible to disable the tap action of RETRO_TAPPING on a per-key level with this flag and get_retro_tapping() function.
+// If get_retro_tapping() always returns false, the behavior is identical of having RETRO_TAPPING disabled,
+// but both flags are still required because they enable mods neutralization with MODS_TO_NEUTRALIZE.
+#define RETRO_TAPPING_PER_KEY
+
+ // Some modifiers have associated a release action by OS/app (e.g. GUI opens win menu, ALT open app menu).
+ // We don't want it to avoid triggering those while typing alphas.
+ // Retrotapping does not prevent the Hold release action to be triggered.
+ // We can manually neutralize the Hold release action of mods with this flag.
+ // Note that this flag does not work if RETRO_TAPPING is disabled, which is very confusing as it should not be related.
+#define MODS_TO_NEUTRALIZE { MOD_BIT(KC_LGUI), MOD_BIT(KC_LALT) } 
+
+// Neutralization is done by passing a special key between the Hold press and Hold release event. 
+// We pick KC_F18 as it is not used for anything else:
+#define DUMMY_MOD_NEUTRALIZER_KEYCODE KC_F18 

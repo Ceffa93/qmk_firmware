@@ -1,3 +1,6 @@
+BOOTLOADER = caterina
+SRC += features/oneshot.c
+
 # MCU name
 MCU = atmega32u4
 
