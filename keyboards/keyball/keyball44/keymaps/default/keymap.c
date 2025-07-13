@@ -3,6 +3,8 @@
 #include "features/oneshot.h"
 #include "quantum.h"
 
+#define OLED_ENABLE 1 // already defined in .mk, but added here to help syntax highlighting
+
 #define xxxxxxxxxxxxx KC_NO
 #define _____________ KC_TRANSPARENT
 
@@ -100,6 +102,8 @@
 #define LessThan_____ S(KC_COMM)
 #define Dash_________ KC_MINS
 #define Modulo_______ S(KC_5)
+#define MouseLeft____ KC_BTN1
+#define MouseRight___ KC_BTN2
 #define Not__________ S(KC_GRV)
 #define Or___________ S(KC_BSLS)
 #define PageDown_____ KC_PGDN
@@ -146,12 +150,14 @@ enum
     eLayerSymbol,
     eLayerOneHand,
     eMagicLayer,
+    eLayerFuncs,
     eCount,
 };
 
 #define LayerMagic___ LT(eMagicLayer, Reset________)
 #define LayerSymbol__ LT(eLayerSymbol, Space________)
 #define LayerOneHand_ LT(eLayerOneHand, Backspace____)
+#define LayerFuncs___ LT(eLayerFuncs, Del__________)
 #define ShiftEnter___ MT(MOD_BIT_LSHIFT, Enter________) 
 #define AltBack______ MT(MOD_BIT_LALT, Backspace____) 
 #define ControlSpace_ MT(MOD_BIT_LCTRL, Space________) 
@@ -159,35 +165,41 @@ enum
 const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =  
 {
     [eLayerAlpha] = LAYOUT(
-        xxxxxxxxxxxxx, AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______,       AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, AlphaA_______, AlphaR_______, AlphaS_______, AlphaT_______, AlphaG_______,       AlphaM_______, AlphaN_______, AlphaE_______, AlphaI_______, AlphaO_______, xxxxxxxxxxxxx,
+        ExclamMark___, AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______,       AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____, DoubQuote____,
+        QuestMark____, AlphaA_______, AlphaR_______, AlphaS_______, AlphaT_______, AlphaG_______,       AlphaM_______, AlphaN_______, AlphaE_______, AlphaI_______, AlphaO_______, UnderScore___,
         xxxxxxxxxxxxx, AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______,       AlphaK_______, AlphaH_______, Comma________, Dot__________, Dash_________, xxxxxxxxxxxxx,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, LayerOneHand_, LayerMagic___, xxxxxxxxxxxxx,       LayerSymbol__, ShiftEnter___, xxxxxxxxxxxxx 
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, LayerOneHand_, LayerMagic___, LayerFuncs___,       LayerSymbol__, ShiftEnter___, xxxxxxxxxxxxx 
     ),
     [eLayerSymbol] = LAYOUT(
         xxxxxxxxxxxxx, Backslash____, Slash________, Plus_________, Equal________, Modulo_______,       Not__________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, Or___________, UnderScore___, Column_______, SemiColumn___, Asterisk_____,       Xor__________, ParentL______, ParentR______, CurlyBrackL__, CurlyBrackR__, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, And__________, At___________, DoubQuote____, QuestMark____, ExclamMark___,       BackTick_____, Sharp________, Comma________, Dot__________, Dollar_______, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, Or___________, xxxxxxxxxxxxx, Column_______, SemiColumn___, Asterisk_____,       Xor__________, ParentL______, ParentR______, CurlyBrackL__, CurlyBrackR__, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, And__________, At___________, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       BackTick_____, Sharp________, Comma________, Dot__________, Dollar_______, xxxxxxxxxxxxx,
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, AltBack______, ControlSpace_, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx 
     ),
     [eLayerOneHand] = LAYOUT(
-        xxxxxxxxxxxxx, Num0_________, Num1_________, Num2_________, Num3_________, Num4_________,       Num5_________, Num6_________, Num7_________, Num8_________, Num9_________, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, Undo_________, Cut__________, Copy_________, Paste________, Redo_________,       F1___________, F2___________, F3___________, PrintScreen__, CapsLock_____, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, F12__________, F11__________, F10__________, F5___________, F4___________,       F6___________, F7___________, F8___________, F9___________, Pause________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, Num1_________, Num4_________, Num7_________, Num0_________, PrintScreen__,
+        xxxxxxxxxxxxx, Undo_________, Cut__________, Copy_________, Paste________, Redo_________,       xxxxxxxxxxxxx, Num2_________, Num5_________, Num8_________, xxxxxxxxxxxxx, CapsLock_____,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, Num3_________, Num6_________, Num9_________, xxxxxxxxxxxxx, Pause________,
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       ControlSpace_, ShiftEnter___, xxxxxxxxxxxxx 
     ), 
     [eMagicLayer] = LAYOUT(
-        xxxxxxxxxxxxx, GuiL_OS______, AltL_OS______, ControlL_OS__, ShiftL_OS____, GuiL_________,       PageUp_______, Home_________, ArrowUp______, End__________, ToHiragana___, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, Esc__________, Enter________, Backspace____, Del__________, Tab__________,       PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, Space________, Translate____, xxxxxxxxxxxxx, ControlR_____, ShiftedTab___,       App__________, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, Boot_________, xxxxxxxxxxxxx,
+        Backspace____, GuiL_OS______, AltL_OS______, ControlL_OS__, ShiftL_OS____, GuiL_________,       PageUp_______, Home_________, ArrowUp______, End__________, ToHiragana___, xxxxxxxxxxxxx,
+        Del__________, Esc__________, Enter________, MouseRight___, MouseLeft____, Tab__________,       PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Tab__________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, Space________, Translate____, xxxxxxxxxxxxx, ControlR_____, ShiftedTab___,       App__________, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, ShiftedTab___, Boot_________,
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       ControlSpace_, ShiftEnter___, xxxxxxxxxxxxx
+    ), 
+    [eLayerFuncs] = LAYOUT(
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, F1___________, F4___________, F7___________, F10__________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, F2___________, F5___________, F8___________, F11__________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, F3___________, F6___________, F9___________, F12__________, xxxxxxxxxxxxx,
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       ControlSpace_, ShiftEnter___, xxxxxxxxxxxxx 
     ), 
 };
 // clang-format on
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    // Auto enable scroll mode when the highest layer is 3
-    keyball_set_scroll_mode(get_highest_layer(state) == 3);
+    //keyball_set_scroll_mode(get_highest_layer(state) == 3);
+    //keyball_set_cpi(get_highest_layer(state) == eMagicLayer ? 1 : 4);
     return state;
 }
 
@@ -250,6 +262,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     {
         deactivate_mods = true;
     } 
+    if (keycode == LayerMagic___)
+    {
+        keyball_set_cpi(record->event.pressed ? 1 : 4);
+    } 
 
     update_oneshot(&os_shft_state, ShiftL_______, ShiftL_OS____, keycode, record, deactivate_mods);
     update_oneshot(&os_ctrl_state, ControlL_____, ControlL_OS__, keycode, record, deactivate_mods);
@@ -280,6 +296,7 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
         case LayerMagic___:
         case LayerSymbol__:
         case LayerOneHand_:
+        case LayerFuncs___:
         case ShiftEnter___:
         case AltBack______:
         case ControlSpace_:
