@@ -177,9 +177,9 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, AltBack______, ControlSpace_, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx 
     ),
     [eLayerOneHand] = LAYOUT(
-        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, Num1_________, Num4_________, Num7_________, Num0_________, PrintScreen__,
-        xxxxxxxxxxxxx, Undo_________, Cut__________, Copy_________, Paste________, Redo_________,       xxxxxxxxxxxxx, Num2_________, Num5_________, Num8_________, xxxxxxxxxxxxx, CapsLock_____,
-        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, Num3_________, Num6_________, Num9_________, xxxxxxxxxxxxx, Pause________,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       Num0_________, Num1_________, Num2_________, Num3_________, Num4_________, PrintScreen__,
+        xxxxxxxxxxxxx, Undo_________, Cut__________, Copy_________, Paste________, Redo_________,       Num5_________, Num6_________, Num7_________, Num8_________, Num9_________, CapsLock_____,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, Pause________,
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       ControlSpace_, ShiftEnter___, xxxxxxxxxxxxx 
     ), 
     [eMagicLayer] = LAYOUT(
@@ -189,18 +189,17 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       ControlSpace_, ShiftEnter___, xxxxxxxxxxxxx
     ), 
     [eLayerFuncs] = LAYOUT(
-        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, F1___________, F4___________, F7___________, F10__________, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, F2___________, F5___________, F8___________, F11__________, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, F3___________, F6___________, F9___________, F12__________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, F1___________, F2___________, F3___________, F4___________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       F5___________, F6___________, F7___________, F8___________, F9___________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       F10__________, F11__________, F12__________, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       ControlSpace_, ShiftEnter___, xxxxxxxxxxxxx 
     ), 
 };
 // clang-format on
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-    //keyball_set_scroll_mode(get_highest_layer(state) == 3);
-    //keyball_set_cpi(get_highest_layer(state) == eMagicLayer ? 1 : 4);
-    return state;
+void keyboard_post_init_user(void)
+{
+    keyball_set_cpi(1);
 }
 
 void to_romaji(void)
@@ -261,16 +260,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     if (record->event.pressed && keycode == LayerMagic___ && record->tap.count)
     {
         deactivate_mods = true;
-    } 
-    if (keycode == LayerMagic___)
-    {
-        keyball_set_cpi(record->event.pressed ? 1 : 4);
-    } 
+    }
 
     update_oneshot(&os_shft_state, ShiftL_______, ShiftL_OS____, keycode, record, deactivate_mods);
     update_oneshot(&os_ctrl_state, ControlL_____, ControlL_OS__, keycode, record, deactivate_mods);
     update_oneshot(&os_alt_state, AltL_________, AltL_OS______, keycode, record, deactivate_mods);
     update_oneshot(&os_gui_state, GuiL_________, GuiL_OS______, keycode, record, deactivate_mods);
+
+    if (keycode == LayerMagic___)
+    {
+        keyball_set_speed_mul(record->event.pressed ? 1 : 4);
+    }
+    if (keycode == LayerOneHand_)
+    {
+        keyball_set_scroll_mode(record->event.pressed);
+    }
 
     if (deactivate_mods) 
     { 

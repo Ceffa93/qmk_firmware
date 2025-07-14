@@ -177,6 +177,8 @@ typedef struct {
     keypos_t       last_pos;
     report_mouse_t last_mouse;
 
+    uint8_t speed_mul;
+
     // Buffer to indicate pressing keys.
     char pressing_keys[KEYBALL_OLED_MAX_PRESSING_KEYCODES + 1];
 } keyball_t;
@@ -270,3 +272,6 @@ uint8_t keyball_get_cpi(void);
 /// In addition, if you do not upload SROM, the maximum value will be limited
 /// to 35 (3500CPI).
 void keyball_set_cpi(uint8_t cpi);
+
+void keyball_set_speed_mul(uint8_t speed);
+

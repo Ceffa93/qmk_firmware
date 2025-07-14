@@ -52,6 +52,8 @@ keyball_t keyball = {
     .scroll_div  = 0,
 
     .pressing_keys = { BL, BL, BL, BL, BL, BL, 0 },
+
+    .speed_mul = 1,
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -168,8 +170,8 @@ void pointing_device_driver_set_cpi(uint16_t cpi) {
 
 __attribute__((weak)) void keyball_on_apply_motion_to_mouse_move(keyball_motion_t *m, report_mouse_t *r, bool is_left) {
 #if KEYBALL_MODEL == 61 || KEYBALL_MODEL == 39 || KEYBALL_MODEL == 147 || KEYBALL_MODEL == 44
-    r->x = clip2int8(m->y);
-    r->y = clip2int8(m->x);
+    r->x = clip2int8(m->y * keyball.speed_mul);
+    r->y = clip2int8(m->x * keyball.speed_mul);
     if (is_left) {
         r->x = -r->x;
         r->y = -r->y;
@@ -560,6 +562,10 @@ void keyball_set_cpi(uint8_t cpi) {
     if (keyball.this_have_ball) {
         pmw3360_cpi_set(cpi == 0 ? CPI_DEFAULT - 1 : cpi - 1);
     }
+}
+
+void keyball_set_speed_mul(uint8_t mul) {
+    keyball.speed_mul = mul;
 }
 
 //////////////////////////////////////////////////////////////////////////////
