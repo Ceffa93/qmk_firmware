@@ -1,6 +1,7 @@
 #include QMK_KEYBOARD_H
 
 #include "features/oneshot.h"
+#include "features/achordion.h"
 #include "quantum.h"
 
 #define OLED_ENABLE 1 // already defined in .mk, but added here to help syntax highlighting
@@ -98,6 +99,7 @@
 #define GuiR_________ KC_RGUI
 #define Hiragana_____ C(KC_CAPS_LOCK)
 #define Home_________ KC_HOME
+#define Ins__________ KC_INS
 #define Katakana_____ LALT(KC_CAPS_LOCK)
 #define LessThan_____ S(KC_COMM)
 #define Dash_________ KC_MINS
@@ -154,6 +156,21 @@ enum
     eCount,
 };
 
+// Home-row mods
+#define AlphaT_S_____ MT(MOD_LSFT, AlphaT_______)
+#define AlphaN_S_____ MT(MOD_LSFT, AlphaN_______)
+#define AlphaS_C_____ MT(MOD_LCTL, AlphaS_______)
+#define AlphaE_C_____ MT(MOD_LCTL, AlphaE_______)
+#define AlphaR_A_____ MT(MOD_LALT, AlphaR_______)
+#define AlphaI_A_____ MT(MOD_LALT, AlphaI_______)
+#define AlphaA_G_____ MT(MOD_LGUI, AlphaA_______)
+#define AlphaO_G_____ MT(MOD_LGUI, AlphaO_______)
+#define Num4_S_______ MT(MOD_LSFT, Num4_________)
+#define Num5_C_______ MT(MOD_LCTL, Num5_________)
+#define Num6_A_______ MT(MOD_LALT, Num6_________)
+#define Enter_A______ MT(MOD_LALT, Enter________)
+#define Esc___G______ MT(MOD_LGUI, Esc__________)
+
 #define LayerMagic___ LT(eMagicLayer, Reset________)
 #define LayerSymbol__ LT(eLayerSymbol, Space________)
 #define LayerOneHand_ LT(eLayerOneHand, Backspace____)
@@ -165,41 +182,42 @@ enum
 const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =  
 {
     [eLayerAlpha] = LAYOUT(
-        ExclamMark___, AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______,       AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____, DoubQuote____,
-        QuestMark____, AlphaA_______, AlphaR_______, AlphaS_______, AlphaT_______, AlphaG_______,       AlphaM_______, AlphaN_______, AlphaE_______, AlphaI_______, AlphaO_______, UnderScore___,
+        xxxxxxxxxxxxx, AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______,       AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______,       AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______,       AlphaK_______, AlphaH_______, Comma________, Dot__________, Dash_________, xxxxxxxxxxxxx,
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, LayerOneHand_, LayerMagic___, LayerFuncs___,       LayerSymbol__, ShiftEnter___, xxxxxxxxxxxxx 
     ),
     [eLayerSymbol] = LAYOUT(
         xxxxxxxxxxxxx, Backslash____, Slash________, Plus_________, Equal________, Modulo_______,       Not__________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, Or___________, xxxxxxxxxxxxx, Column_______, SemiColumn___, Asterisk_____,       Xor__________, ParentL______, ParentR______, CurlyBrackL__, CurlyBrackR__, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, And__________, At___________, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       BackTick_____, Sharp________, Comma________, Dot__________, Dollar_______, xxxxxxxxxxxxx,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, AltBack______, ControlSpace_, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx 
+        xxxxxxxxxxxxx, Or___________, UnderScore___, Column_______, SemiColumn___, Asterisk_____,       Xor__________, ParentL______, ParentR______, CurlyBrackL__, CurlyBrackR__, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, And__________, At___________, DoubQuote____, QuestMark____, ExclamMark___,       BackTick_____, Sharp________, Comma________, Dot__________, Dollar_______, xxxxxxxxxxxxx,
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, ControlSpace_, Del__________,       Space________, Enter________, xxxxxxxxxxxxx 
     ),
     [eLayerOneHand] = LAYOUT(
-        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       Num0_________, Num1_________, Num2_________, Num3_________, Num4_________, PrintScreen__,
-        xxxxxxxxxxxxx, Undo_________, Cut__________, Copy_________, Paste________, Redo_________,       Num5_________, Num6_________, Num7_________, Num8_________, Num9_________, CapsLock_____,
-        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, Pause________,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       ControlSpace_, ShiftEnter___, xxxxxxxxxxxxx 
+        xxxxxxxxxxxxx, Ins__________, F10__________, F11__________, F12__________, F1___________,       xxxxxxxxxxxxx, Num1_________, Num2_________, Num3_________, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, Pause________, F4___________, F5___________, F6___________, F2___________,       Num0_________, Num4_S_______, Num5_C_______, Num6_A_______, GuiL_________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, PrintScreen__, F7___________, F8___________, F9___________, F3___________,       xxxxxxxxxxxxx, Num7_________, Num8_________, Num9_________, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, xxxxxxxxxxxxx, Del__________,       Space________, Enter________, xxxxxxxxxxxxx 
     ), 
     [eMagicLayer] = LAYOUT(
-        Backspace____, GuiL_OS______, AltL_OS______, ControlL_OS__, ShiftL_OS____, GuiL_________,       PageUp_______, Home_________, ArrowUp______, End__________, ToHiragana___, xxxxxxxxxxxxx,
-        Del__________, Esc__________, Enter________, MouseRight___, MouseLeft____, Tab__________,       PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Tab__________, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, Space________, Translate____, xxxxxxxxxxxxx, ControlR_____, ShiftedTab___,       App__________, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, ShiftedTab___, Boot_________,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       ControlSpace_, ShiftEnter___, xxxxxxxxxxxxx
+        xxxxxxxxxxxxx, GuiL_OS______, AltL_OS______, ControlL_OS__, ShiftL_OS____, GuiL_________,       PageUp_______, Home_________, ArrowUp______, End__________, ToHiragana___, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, Esc___G______, Enter_A______, ControlL_____, ShiftL_______, Tab__________,       PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Tab__________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, Translate____, xxxxxxxxxxxxx, ControlR_____, ShiftedTab___,       App__________, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, ShiftedTab___, xxxxxxxxxxxxx,
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, xxxxxxxxxxxxx, Del__________,       Space________, Enter________, xxxxxxxxxxxxx
     ), 
     [eLayerFuncs] = LAYOUT(
-        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, F1___________, F2___________, F3___________, F4___________, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       F5___________, F6___________, F7___________, F8___________, F9___________, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       F10__________, F11__________, F12__________, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       ControlSpace_, ShiftEnter___, xxxxxxxxxxxxx 
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, Cut__________, Copy_________, Paste________, xxxxxxxxxxxxx,       CapsLock_____, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, Undo_________, MouseRight___, MouseLeft____, Redo_________,       xxxxxxxxxxxxx, ShiftL_______, ControlL_____, AltL_________, GuiL_________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       Boot_________, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, xxxxxxxxxxxxx, Del__________,       Space________, Enter________, xxxxxxxxxxxxx 
     ), 
 };
+
 // clang-format on
 
 void keyboard_post_init_user(void)
 {
-    keyball_set_cpi(1);
+    keyball_set_cpi(2);
 }
 
 void to_romaji(void)
@@ -267,13 +285,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     update_oneshot(&os_alt_state, AltL_________, AltL_OS______, keycode, record, deactivate_mods);
     update_oneshot(&os_gui_state, GuiL_________, GuiL_OS______, keycode, record, deactivate_mods);
 
+    if (keycode == LayerFuncs___)
+    {
+        keyball_set_speed_mul(record->event.pressed ? 1 : 2);
+    }
     if (keycode == LayerMagic___)
     {
-        keyball_set_speed_mul(record->event.pressed ? 1 : 4);
-    }
-    if (keycode == LayerOneHand_)
-    {
         keyball_set_scroll_mode(record->event.pressed);
+        keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
     }
 
     if (deactivate_mods) 
@@ -309,6 +328,38 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
             return false;
     }
 }
+// Function that decides whether a hold should be disabled, depending on input-output key
+bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) 
+{
+    if (tap_hold_keycode == LayerMagic___) return true;
+    if (tap_hold_keycode == LayerSymbol__) return true;
+    if (tap_hold_keycode == LayerOneHand_) return true;
+    if (tap_hold_keycode == LayerFuncs___) return true;
+    return achordion_opposite_hands(tap_hold_record, other_record);
+}
+
+uint16_t achordion_timeout(uint16_t tap_hold_keycode)
+{
+    return 800;
+}
+
+// Achordion has a long timeout in which it waits for a tap-key to be pressed, so it can take a decision.
+// When using a mouse this is an issue, because combinations like Ctrl+Click do not trigger accordion function, 
+// and Ctrl is considered held only after the timeout is expired (QMK timeout + Accordion timeout).
+// The following function specifies modifiers that immediately triggered (after QMK timeout only).
+// If a tap occurs, the held action is either released or nulled according to neutralization rules.  
+bool achordion_eager_mod(uint8_t mod) {
+    switch (mod) 
+    {
+        case MOD_LSFT:
+        case MOD_LCTL:
+        case MOD_LALT:
+            return true;
+        default:
+            return false;
+    }
+}
+
 
 #ifdef OLED_ENABLE
 
@@ -320,3 +371,4 @@ void oledkit_render_info_user(void) {
     keyball_oled_render_layerinfo();
 }
 #endif
+
