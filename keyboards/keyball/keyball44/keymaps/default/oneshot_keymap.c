@@ -1,5 +1,6 @@
 #include QMK_KEYBOARD_H
 
+#include "features/oneshot.h"
 #include "features/achordion.h"
 #include "quantum.h"
 
@@ -137,16 +138,21 @@
 #define Xor__________ S(KC_6)
 
 enum CustomKeycodes {
-    ToHiragana___ = SAFE_RANGE,
-    ToRomaji_____,
+    ShiftL_OS____ = SAFE_RANGE,
+    ControlL_OS__,
+    AltL_OS______,
+    GuiL_OS______,
+    Reset________,
+    ToHiragana___,
 }; 
 
 enum 
 {
     eLayerAlpha,
     eLayerSymbol,
-    eLayerNumbers,
-    eLayerNav,
+    eLayerOneHand,
+    eMagicLayer,
+    eLayerFuncs,
     eCount,
 };
 
@@ -165,9 +171,10 @@ enum
 #define Enter_A______ MT(MOD_LALT, Enter________)
 #define Esc___G______ MT(MOD_LGUI, Esc__________)
 
-#define LayerNav_____ LT(eLayerNav, Del__________)
+#define LayerMagic___ LT(eMagicLayer, Reset________)
 #define LayerSymbol__ LT(eLayerSymbol, Space________)
-#define LayerNumbers_ LT(eLayerNumbers, Esc__________)
+#define LayerOneHand_ LT(eLayerOneHand, Backspace____)
+#define LayerFuncs___ LT(eLayerFuncs, Del__________)
 #define ShiftEnter___ MT(MOD_BIT_LSHIFT, Enter________) 
 #define AltBack______ MT(MOD_BIT_LALT, Backspace____) 
 #define ControlSpace_ MT(MOD_BIT_LCTRL, Space________) 
@@ -178,26 +185,32 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
         xxxxxxxxxxxxx, AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______,       AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______,       AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______,       AlphaK_______, AlphaH_______, Comma________, Dot__________, Dash_________, xxxxxxxxxxxxx,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, LayerNav_____, LayerNumbers_,       LayerSymbol__, ShiftEnter___, xxxxxxxxxxxxx 
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, LayerOneHand_, LayerMagic___, LayerFuncs___,       LayerSymbol__, ShiftEnter___, xxxxxxxxxxxxx 
     ),
     [eLayerSymbol] = LAYOUT(
         xxxxxxxxxxxxx, Backslash____, Slash________, Plus_________, Equal________, Modulo_______,       Not__________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, Or___________, UnderScore___, Column_______, SemiColumn___, Asterisk_____,       Xor__________, ParentL______, ParentR______, CurlyBrackL__, CurlyBrackR__, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, And__________, At___________, DoubQuote____, QuestMark____, ExclamMark___,       BackTick_____, Sharp________, Comma________, Dot__________, Dollar_______, xxxxxxxxxxxxx,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, Del__________, Esc__________,       Space________, Enter________, xxxxxxxxxxxxx 
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, ControlSpace_, Del__________,       Space________, Enter________, xxxxxxxxxxxxx 
     ),
-    [eLayerNav] = LAYOUT(
-        xxxxxxxxxxxxx, CapsLock_____, Translate____, ToHiragana___, ToRomaji_____, xxxxxxxxxxxxx,       PageUp_______, Home_________, ArrowUp______, End__________, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, GuiL_________, AltL_________, ControlL_____, ShiftL_______, Tab__________,       PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Tab__________, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, ControlR_____, xxxxxxxxxxxxx, ShiftedTab___,       MouseRight___, MouseLeft____, xxxxxxxxxxxxx, Boot_________, ShiftedTab___, xxxxxxxxxxxxx,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, Del__________, Esc__________,                      Space________, Enter________, xxxxxxxxxxxxx
-    ),
-    [eLayerNumbers] = LAYOUT(
-        xxxxxxxxxxxxx, Ins__________, F10__________, F11__________, F12__________, F1___________,       xxxxxxxxxxxxx, Num1_________, Num2_________, Num3_________, CapsLock_____, xxxxxxxxxxxxx,
+    [eLayerOneHand] = LAYOUT(
+        xxxxxxxxxxxxx, Ins__________, F10__________, F11__________, F12__________, F1___________,       xxxxxxxxxxxxx, Num1_________, Num2_________, Num3_________, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, Pause________, F4___________, F5___________, F6___________, F2___________,       Num0_________, Num4_S_______, Num5_C_______, Num6_A_______, GuiL_________, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, PrintScreen__, F7___________, F8___________, F9___________, F3___________,       xxxxxxxxxxxxx, Num7_________, Num8_________, Num9_________, App__________, xxxxxxxxxxxxx,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, Del__________, Esc__________,       Space________, Enter________, xxxxxxxxxxxxx 
-    )
+        xxxxxxxxxxxxx, PrintScreen__, F7___________, F8___________, F9___________, F3___________,       xxxxxxxxxxxxx, Num7_________, Num8_________, Num9_________, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, xxxxxxxxxxxxx, Del__________,       Space________, Enter________, xxxxxxxxxxxxx 
+    ), 
+    [eMagicLayer] = LAYOUT(
+        xxxxxxxxxxxxx, GuiL_OS______, AltL_OS______, ControlL_OS__, ShiftL_OS____, GuiL_________,       PageUp_______, Home_________, ArrowUp______, End__________, ToHiragana___, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, Esc___G______, Enter_A______, ControlL_____, ShiftL_______, Tab__________,       PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Tab__________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, Translate____, xxxxxxxxxxxxx, ControlR_____, ShiftedTab___,       App__________, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, ShiftedTab___, xxxxxxxxxxxxx,
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, xxxxxxxxxxxxx, Del__________,       Space________, Enter________, xxxxxxxxxxxxx
+    ), 
+    [eLayerFuncs] = LAYOUT(
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, Cut__________, Copy_________, Paste________, xxxxxxxxxxxxx,       CapsLock_____, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, Undo_________, MouseRight___, MouseLeft____, Redo_________,       xxxxxxxxxxxxx, ShiftL_______, ControlL_____, AltL_________, GuiL_________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       Boot_________, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, xxxxxxxxxxxxx, Del__________,       Space________, Enter________, xxxxxxxxxxxxx 
+    ), 
 };
 
 // clang-format on
@@ -207,17 +220,16 @@ void keyboard_post_init_user(void)
     keyball_set_cpi(2);
 }
 
+void to_romaji(void)
+{
+    tap_code16(Hiragana_____);
+    tap_code16(Romaji_______);
+}
+
 void to_hiragana(void)
 {
     tap_code16(Hiragana_____);
 }
-
-void to_romaji(void)
-{
-    to_hiragana();
-    tap_code16(Romaji_______);
-}
-
 
 // We disable Tap action of retrotapping always. 
 // We cannot disable retrotapping altoghether as it is required for mods neutralization
@@ -226,16 +238,69 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record)
     return false;
 }
 
+
+bool is_oneshot_ignore_key(uint16_t keycode) 
+{
+    switch (keycode) 
+    {
+    case ShiftL_OS____:
+    case ShiftL_______:
+    case ControlL_OS__:
+    case ControlL_____:
+    case AltL_OS______:
+    case AltL_________:
+    case GuiL_OS______:
+    case GuiL_________:
+    case ShiftR_______:
+    case ControlR_____:
+    case AltR_________:
+    case GuiR_________:
+    case LayerMagic___:
+    case LayerSymbol__:
+    case ShiftEnter___:
+    case AltBack______:
+    case ControlSpace_:
+        return true;
+    default:
+        return false;
+    }
+}  
+
+mod_state os_shft_state = {os_unqueued, 0};
+mod_state os_ctrl_state = {os_unqueued, 0};
+mod_state os_alt_state = {os_unqueued, 0};
+mod_state os_gui_state = {os_unqueued, 0};
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
-{      
-    if (keycode == LayerNav_____)
+{
+    if (!process_achordion(keycode, record)) return false;
+
+    bool deactivate_mods = false;
+
+    if (record->event.pressed && keycode == LayerMagic___ && record->tap.count)
+    {
+        deactivate_mods = true;
+    }
+
+    update_oneshot(&os_shft_state, ShiftL_______, ShiftL_OS____, keycode, record, deactivate_mods);
+    update_oneshot(&os_ctrl_state, ControlL_____, ControlL_OS__, keycode, record, deactivate_mods);
+    update_oneshot(&os_alt_state, AltL_________, AltL_OS______, keycode, record, deactivate_mods);
+    update_oneshot(&os_gui_state, GuiL_________, GuiL_OS______, keycode, record, deactivate_mods);
+
+    if (keycode == LayerFuncs___)
     {
         keyball_set_speed_mul(record->event.pressed ? 1 : 2);
     }
-    if (keycode == LayerNumbers_)
+    if (keycode == LayerMagic___)
     {
         keyball_set_scroll_mode(record->event.pressed);
         keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
+    }
+
+    if (deactivate_mods) 
+    { 
+        to_romaji();
+        return false;
     }
 
     if (record->event.pressed)
@@ -243,11 +308,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
         switch(keycode)
         {
             case ToHiragana___: to_hiragana(); return false; 
-            case ToRomaji_____: to_romaji(); return false; 
         }
-    }
-
-    if (!process_achordion(keycode, record)) return false;
+    } 
 
     return true;
 };
@@ -256,9 +318,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 // This is not recommended for keys that are rolled, but for thumb modifiers it is no issue, and makes them activate more reliably.
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LayerNav_____:
+        case LayerMagic___:
         case LayerSymbol__:
-        case LayerNumbers_:
+        case LayerOneHand_:
+        case LayerFuncs___:
         case ShiftEnter___:
         case AltBack______:
         case ControlSpace_:
@@ -278,17 +341,13 @@ bool is_same_home_row(keyrecord_t* a, keyrecord_t* b)
     return true;
 }
 
-void matrix_scan_user(void) 
-{
-    achordion_task();
-} 
-
 // Function that decides whether a hold should be disabled, depending on input-output key
 bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) 
 {
-    if (tap_hold_keycode == LayerNav_____) return true;
+    if (tap_hold_keycode == LayerMagic___) return true;
     if (tap_hold_keycode == LayerSymbol__) return true;
-    if (tap_hold_keycode == LayerNumbers_) return true;
+    if (tap_hold_keycode == LayerOneHand_) return true;
+    if (tap_hold_keycode == LayerFuncs___) return true;
 
     return is_same_home_row(tap_hold_record, other_record);
 }
