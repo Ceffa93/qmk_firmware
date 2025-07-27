@@ -139,6 +139,7 @@
 enum CustomKeycodes {
     ToHiragana___ = SAFE_RANGE,
     ToRomaji_____,
+    ToNumberLayer
 }; 
 
 enum 
@@ -178,7 +179,7 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
         xxxxxxxxxxxxx, AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______,       AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______,       AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______,       AlphaK_______, AlphaH_______, Comma________, Dot__________, Dash_________, xxxxxxxxxxxxx,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, LayerNav_____, LayerNumbers_,       LayerSymbol__, ShiftEnter___, xxxxxxxxxxxxx 
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, LayerNav_____, ToNumberLayer,       LayerSymbol__, ShiftEnter___, xxxxxxxxxxxxx 
     ),
     [eLayerSymbol] = LAYOUT(
         xxxxxxxxxxxxx, Backslash____, Slash________, Plus_________, Equal________, Modulo_______,       Not__________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__, xxxxxxxxxxxxx,
@@ -205,6 +206,7 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
 void keyboard_post_init_user(void)
 {
     keyball_set_cpi(2);
+    keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
 }
 
 void to_hiragana(void)
@@ -226,8 +228,40 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record)
     return false;
 }
 
+static uint32_t start_time = 0;
+static bool number_layer_active = false;
+static bool activate_hold = false;
+
+void activate_hold_funcs(void)
+{
+    if (number_layer_active && (activate_hold || timer_elapsed(start_time) > TAPPING_TERM))
+    {
+        layer_on(eLayerNumbers);
+        number_layer_active = false;
+        activate_hold = false;
+    }
+}
+
+void matrix_scan_user()
+{
+    achordion_task();
+
+    activate_hold_funcs();
+} 
+
+bool should_immediately_hold(uint16_t keycode) {
+    switch (keycode) {
+        case ToNumberLayer:
+            return false;
+        default:
+            return true;
+    }
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
 {      
+    activate_hold = true;
+
     if (keycode == LayerNav_____)
     {
         keyball_set_speed_mul(record->event.pressed ? 1 : 2);
@@ -246,6 +280,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             case ToRomaji_____: to_romaji(); return false; 
         }
     }
+
+    if (keycode == ToNumberLayer)
+    {
+        if (record->event.pressed)
+        {
+            start_time = timer_read();
+            number_layer_active = true;
+            keyball_set_scroll_mode(true);
+            activate_hold = false;
+        }
+        else
+        {
+            if (number_layer_active)
+            {
+                tap_code(Esc__________);
+            }
+            number_layer_active = false;
+            keyball_set_scroll_mode(false);
+            layer_off(eLayerNumbers);
+        }
+        return false;
+    }
+    
+    activate_hold_funcs();
 
     if (!process_achordion(keycode, record)) return false;
 
@@ -277,11 +335,6 @@ bool is_same_home_row(keyrecord_t* a, keyrecord_t* b)
     if (same_side && same_row) return false;
     return true;
 }
-
-void matrix_scan_user(void) 
-{
-    achordion_task();
-} 
 
 // Function that decides whether a hold should be disabled, depending on input-output key
 bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) 
