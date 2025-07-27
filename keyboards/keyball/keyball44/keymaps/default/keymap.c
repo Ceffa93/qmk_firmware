@@ -203,10 +203,25 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
 
 // clang-format on
 
+struct three_action_button
+{
+    uint16_t hold_start_time;
+    bool waiting_for_hold;
+    uint16_t layer;
+    uint16_t action;
+};
+
+static struct three_action_button bNumberButton;
+
 void keyboard_post_init_user(void)
 {
     keyball_set_cpi(2);
     keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
+
+    bNumberButton.hold_start_time = 0;
+    bNumberButton.waiting_for_hold = false;
+    bNumberButton.layer = eLayerNumbers;
+    bNumberButton.action = Esc__________;
 }
 
 void to_hiragana(void)
@@ -228,17 +243,12 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record)
     return false;
 }
 
-static uint32_t start_time = 0;
-static bool number_layer_active = false;
-static bool activate_hold = false;
-
 void activate_hold_funcs(void)
 {
-    if (number_layer_active && (activate_hold || timer_elapsed(start_time) > TAPPING_TERM))
+    if (bNumberButton.waiting_for_hold)
     {
         layer_on(eLayerNumbers);
-        number_layer_active = false;
-        activate_hold = false;
+        bNumberButton.waiting_for_hold = false;
     }
 }
 
@@ -246,7 +256,11 @@ void matrix_scan_user()
 {
     achordion_task();
 
-    activate_hold_funcs();
+ if (bNumberButton.waiting_for_hold && timer_elapsed(bNumberButton.hold_start_time) > TAPPING_TERM)
+    {
+        layer_on(bNumberButton.layer);
+        bNumberButton.waiting_for_hold = false;
+    }
 } 
 
 bool should_immediately_hold(uint16_t keycode) {
@@ -260,7 +274,7 @@ bool should_immediately_hold(uint16_t keycode) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
 {      
-    activate_hold = true;
+    bool actevate_hold_on_three_action_button = true;
 
     if (keycode == LayerNav_____)
     {
@@ -285,25 +299,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     {
         if (record->event.pressed)
         {
-            start_time = timer_read();
-            number_layer_active = true;
+            bNumberButton.hold_start_time = timer_read();
+            bNumberButton.waiting_for_hold = true;
             keyball_set_scroll_mode(true);
-            activate_hold = false;
+            actevate_hold_on_three_action_button = false;
         }
         else
         {
-            if (number_layer_active)
+            if (bNumberButton.waiting_for_hold)
             {
-                tap_code(Esc__________);
+                tap_code(bNumberButton.action);
             }
-            number_layer_active = false;
+            bNumberButton.waiting_for_hold = false;
             keyball_set_scroll_mode(false);
-            layer_off(eLayerNumbers);
+            layer_off(bNumberButton.layer);
         }
         return false;
     }
     
-    activate_hold_funcs();
+    if (actevate_hold_on_three_action_button) activate_hold_funcs();
 
     if (!process_achordion(keycode, record)) return false;
 
