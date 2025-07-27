@@ -139,7 +139,8 @@
 enum CustomKeycodes {
     ToHiragana___ = SAFE_RANGE,
     ToRomaji_____,
-    ToNumberLayer
+    ToNumberLayer,
+    ToNavLayer___
 }; 
 
 enum 
@@ -179,7 +180,7 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
         xxxxxxxxxxxxx, AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______,       AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______,       AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______,       AlphaK_______, AlphaH_______, Comma________, Dot__________, Dash_________, xxxxxxxxxxxxx,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, LayerNav_____, ToNumberLayer,       LayerSymbol__, ShiftEnter___, xxxxxxxxxxxxx 
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, ToNavLayer___, ToNumberLayer,       LayerSymbol__, ShiftEnter___, xxxxxxxxxxxxx 
     ),
     [eLayerSymbol] = LAYOUT(
         xxxxxxxxxxxxx, Backslash____, Slash________, Plus_________, Equal________, Modulo_______,       Not__________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__, xxxxxxxxxxxxx,
@@ -207,21 +208,56 @@ struct three_action_button
 {
     uint16_t hold_start_time;
     bool waiting_for_hold;
+    uint16_t keycode;
     uint16_t layer;
     uint16_t action;
+    void (*long_action_start)(void);
+    void (*long_action_end)(void);
 };
 
 static struct three_action_button bNumberButton;
+static struct three_action_button bNavButton;
+#define kThreeActionButtonCount 2
+static struct three_action_button* bThreeActionButtons[kThreeActionButtonCount]; 
+
+void activate_scrollwheel(void)
+{
+    keyball_set_scroll_mode(true);
+}
+void deactivate_scrollwheel(void)
+{
+    keyball_set_scroll_mode(false);
+}
+void speedup_pointer(void)
+{
+    keyball_set_speed_mul(2);
+}
+void speeddown_pointer(void)
+{
+    keyball_set_speed_mul(1);
+}
+
+void init_three_action_button(struct three_action_button* button, uint16_t keycode, uint16_t layer, uint16_t action, void (*long_action_start)(void), void (*long_action_end)(void))
+{
+    button->hold_start_time = 0;
+    button->waiting_for_hold = false;
+    button->keycode = keycode;
+    button->layer = layer;
+    button->action = action;
+    button->long_action_start = long_action_start;
+    button->long_action_end = long_action_end;
+}
 
 void keyboard_post_init_user(void)
 {
     keyball_set_cpi(2);
     keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
 
-    bNumberButton.hold_start_time = 0;
-    bNumberButton.waiting_for_hold = false;
-    bNumberButton.layer = eLayerNumbers;
-    bNumberButton.action = Esc__________;
+    bThreeActionButtons[0] = &bNumberButton;
+    bThreeActionButtons[1] = &bNavButton;
+
+    init_three_action_button(&bNumberButton, ToNumberLayer, eLayerNumbers, Esc__________, activate_scrollwheel, deactivate_scrollwheel);
+    init_three_action_button(&bNavButton, ToNavLayer___, eLayerNav, Del__________, speeddown_pointer, speedup_pointer);
 }
 
 void to_hiragana(void)
@@ -243,12 +279,39 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record)
     return false;
 }
 
-void activate_hold_funcs(void)
+void activate_hold_on_three_action_button(struct three_action_button* button)
 {
-    if (bNumberButton.waiting_for_hold)
+    if (button->waiting_for_hold)
     {
-        layer_on(eLayerNumbers);
-        bNumberButton.waiting_for_hold = false;
+        layer_on(button->layer);
+        button->waiting_for_hold = false;
+    }
+}
+void activate_hold_on_three_action_button_when_timer_elapsed(struct three_action_button* button)
+{
+    if (timer_elapsed(button->hold_start_time) > TAPPING_TERM)
+    {
+        activate_hold_on_three_action_button(button);
+    }
+}
+
+void process_three_action_button_record(keyrecord_t *record, struct three_action_button* button)
+{
+    if (record->event.pressed)
+    {
+        button->hold_start_time = timer_read();
+        button->waiting_for_hold = true;
+        button->long_action_start();
+    }
+    else
+    {
+        if (button->waiting_for_hold)
+        {
+            tap_code(button->action);
+        }
+        button->waiting_for_hold = false;
+        button->long_action_end();
+        layer_off(button->layer);
     }
 }
 
@@ -256,12 +319,11 @@ void matrix_scan_user()
 {
     achordion_task();
 
- if (bNumberButton.waiting_for_hold && timer_elapsed(bNumberButton.hold_start_time) > TAPPING_TERM)
+    for (int i = 0; i < kThreeActionButtonCount; i++)
     {
-        layer_on(bNumberButton.layer);
-        bNumberButton.waiting_for_hold = false;
+        activate_hold_on_three_action_button_when_timer_elapsed(bThreeActionButtons[i]);
     }
-} 
+}
 
 bool should_immediately_hold(uint16_t keycode) {
     switch (keycode) {
@@ -274,18 +336,6 @@ bool should_immediately_hold(uint16_t keycode) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
 {      
-    bool actevate_hold_on_three_action_button = true;
-
-    if (keycode == LayerNav_____)
-    {
-        keyball_set_speed_mul(record->event.pressed ? 1 : 2);
-    }
-    if (keycode == LayerNumbers_)
-    {
-        keyball_set_scroll_mode(record->event.pressed);
-        keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
-    }
-
     if (record->event.pressed)
     {
         switch(keycode)
@@ -297,27 +347,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 
     if (keycode == ToNumberLayer)
     {
-        if (record->event.pressed)
-        {
-            bNumberButton.hold_start_time = timer_read();
-            bNumberButton.waiting_for_hold = true;
-            keyball_set_scroll_mode(true);
-            actevate_hold_on_three_action_button = false;
-        }
-        else
-        {
-            if (bNumberButton.waiting_for_hold)
-            {
-                tap_code(bNumberButton.action);
-            }
-            bNumberButton.waiting_for_hold = false;
-            keyball_set_scroll_mode(false);
-            layer_off(bNumberButton.layer);
-        }
+        process_three_action_button_record(record, &bNumberButton);
+        return false;
+    }
+    if (keycode == ToNavLayer___)
+    {
+        process_three_action_button_record(record, &bNavButton);
         return false;
     }
     
-    if (actevate_hold_on_three_action_button) activate_hold_funcs();
+    for (int i = 0; i < kThreeActionButtonCount; i++)
+    { 
+        struct three_action_button* button = bThreeActionButtons[i];
+        if (keycode == button->keycode)
+        {
+            process_three_action_button_record(record, button);
+            return false;
+        }
+    }
+
+    for (int i = 0; i < kThreeActionButtonCount; i++)
+    {
+        activate_hold_on_three_action_button( bThreeActionButtons[i]);
+    }
 
     if (!process_achordion(keycode, record)) return false;
 
