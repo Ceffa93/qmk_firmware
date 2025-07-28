@@ -140,7 +140,8 @@ enum CustomKeycodes {
     ToHiragana___ = SAFE_RANGE,
     ToRomaji_____,
     ToNumberLayer,
-    ToNavLayer___
+    ToNavLayer___,
+    ToSymbolLayer
 }; 
 
 enum 
@@ -167,9 +168,6 @@ enum
 #define Enter_A______ MT(MOD_LALT, Enter________)
 #define Esc___G______ MT(MOD_LGUI, Esc__________)
 
-#define LayerNav_____ LT(eLayerNav, Del__________)
-#define LayerSymbol__ LT(eLayerSymbol, Space________)
-#define LayerNumbers_ LT(eLayerNumbers, Esc__________)
 #define ShiftEnter___ MT(MOD_BIT_LSHIFT, Enter________) 
 #define AltBack______ MT(MOD_BIT_LALT, Backspace____) 
 #define ControlSpace_ MT(MOD_BIT_LCTRL, Space________) 
@@ -180,7 +178,7 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
         xxxxxxxxxxxxx, AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______,       AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______,       AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______,       AlphaK_______, AlphaH_______, Comma________, Dot__________, Dash_________, xxxxxxxxxxxxx,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, ToNavLayer___, ToNumberLayer,       LayerSymbol__, ShiftEnter___, xxxxxxxxxxxxx 
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, ToNavLayer___, ToNumberLayer,       ToSymbolLayer, ShiftEnter___, xxxxxxxxxxxxx 
     ),
     [eLayerSymbol] = LAYOUT(
         xxxxxxxxxxxxx, Backslash____, Slash________, Plus_________, Equal________, Modulo_______,       Not__________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__, xxxxxxxxxxxxx,
@@ -191,11 +189,11 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
     [eLayerNav] = LAYOUT(
         xxxxxxxxxxxxx, CapsLock_____, Translate____, ToHiragana___, ToRomaji_____, xxxxxxxxxxxxx,       PageUp_______, Home_________, ArrowUp______, End__________, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, GuiL_________, AltL_________, ControlL_____, ShiftL_______, Tab__________,       PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Tab__________, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, ControlR_____, xxxxxxxxxxxxx, ShiftedTab___,       MouseRight___, MouseLeft____, xxxxxxxxxxxxx, Boot_________, ShiftedTab___, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, ControlR_____, xxxxxxxxxxxxx, ShiftedTab___,       xxxxxxxxxxxxx, MouseLeft____, MouseRight___, xxxxxxxxxxxxx, ShiftedTab___, xxxxxxxxxxxxx,
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, Del__________, Esc__________,                      Space________, Enter________, xxxxxxxxxxxxx
     ),
     [eLayerNumbers] = LAYOUT(
-        xxxxxxxxxxxxx, Ins__________, F10__________, F11__________, F12__________, F1___________,       xxxxxxxxxxxxx, Num1_________, Num2_________, Num3_________, CapsLock_____, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, Ins__________, F10__________, F11__________, F12__________, F1___________,       Boot_________, Num1_________, Num2_________, Num3_________, CapsLock_____, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, Pause________, F4___________, F5___________, F6___________, F2___________,       Num0_________, Num4_S_______, Num5_C_______, Num6_A_______, GuiL_________, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, PrintScreen__, F7___________, F8___________, F9___________, F3___________,       xxxxxxxxxxxxx, Num7_________, Num8_________, Num9_________, App__________, xxxxxxxxxxxxx,
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, Del__________, Esc__________,       Space________, Enter________, xxxxxxxxxxxxx 
@@ -217,8 +215,9 @@ struct three_action_button
 
 static struct three_action_button bNumberButton;
 static struct three_action_button bNavButton;
-#define kThreeActionButtonCount 2
-static struct three_action_button* bThreeActionButtons[kThreeActionButtonCount]; 
+static struct three_action_button bSymbolButton;
+#define kThreeActionButtonCount 3
+static struct three_action_button* bThreeActionButtons[kThreeActionButtonCount] = {&bNumberButton, &bNavButton, &bSymbolButton};
 
 void activate_scrollwheel(void)
 {
@@ -235,6 +234,9 @@ void speedup_pointer(void)
 void speeddown_pointer(void)
 {
     keyball_set_speed_mul(1);
+}
+void nop_func(void)
+{
 }
 
 void init_three_action_button(struct three_action_button* button, uint16_t keycode, uint16_t layer, uint16_t action, void (*long_action_start)(void), void (*long_action_end)(void))
@@ -253,11 +255,9 @@ void keyboard_post_init_user(void)
     keyball_set_cpi(2);
     keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
 
-    bThreeActionButtons[0] = &bNumberButton;
-    bThreeActionButtons[1] = &bNavButton;
-
     init_three_action_button(&bNumberButton, ToNumberLayer, eLayerNumbers, Esc__________, activate_scrollwheel, deactivate_scrollwheel);
     init_three_action_button(&bNavButton, ToNavLayer___, eLayerNav, Del__________, speeddown_pointer, speedup_pointer);
+    init_three_action_button(&bSymbolButton, ToSymbolLayer, eLayerSymbol, Space________, nop_func, nop_func);
 }
 
 void to_hiragana(void)
@@ -325,37 +325,8 @@ void matrix_scan_user()
     }
 }
 
-bool should_immediately_hold(uint16_t keycode) {
-    switch (keycode) {
-        case ToNumberLayer:
-            return false;
-        default:
-            return true;
-    }
-}
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
-{      
-    if (record->event.pressed)
-    {
-        switch(keycode)
-        {
-            case ToHiragana___: to_hiragana(); return false; 
-            case ToRomaji_____: to_romaji(); return false; 
-        }
-    }
-
-    if (keycode == ToNumberLayer)
-    {
-        process_three_action_button_record(record, &bNumberButton);
-        return false;
-    }
-    if (keycode == ToNavLayer___)
-    {
-        process_three_action_button_record(record, &bNavButton);
-        return false;
-    }
-    
+{   
     for (int i = 0; i < kThreeActionButtonCount; i++)
     { 
         struct three_action_button* button = bThreeActionButtons[i];
@@ -371,6 +342,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
         activate_hold_on_three_action_button( bThreeActionButtons[i]);
     }
 
+    if (!record->event.pressed)
+    {
+        switch(keycode)
+        {
+            case ToHiragana___: to_hiragana(); break;
+            case ToRomaji_____: to_romaji(); break;
+        }
+    }
+
     if (!process_achordion(keycode, record)) return false;
 
     return true;
@@ -380,9 +360,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 // This is not recommended for keys that are rolled, but for thumb modifiers it is no issue, and makes them activate more reliably.
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LayerNav_____:
-        case LayerSymbol__:
-        case LayerNumbers_:
         case ShiftEnter___:
         case AltBack______:
         case ControlSpace_:
@@ -405,10 +382,6 @@ bool is_same_home_row(keyrecord_t* a, keyrecord_t* b)
 // Function that decides whether a hold should be disabled, depending on input-output key
 bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) 
 {
-    if (tap_hold_keycode == LayerNav_____) return true;
-    if (tap_hold_keycode == LayerSymbol__) return true;
-    if (tap_hold_keycode == LayerNumbers_) return true;
-
     return is_same_home_row(tap_hold_record, other_record);
 }
 
