@@ -141,7 +141,15 @@ enum CustomKeycodes {
     ToRomaji_____,
     ToNumberLayer,
     ToNavLayer___,
-    ToSymbolLayer
+    ToSymbolLayer,
+    Or__________e,
+    UnderScore__e, 
+    Column______e, 
+    SemiColumn__e, 
+    ParentL_____e, 
+    ParentR_____e, 
+    CurlyBrackL_e, 
+    CurlyBrackR_e
 }; 
 
 enum 
@@ -162,6 +170,16 @@ enum
 #define AlphaI_A_____ MT(MOD_LALT, AlphaI_______)
 #define AlphaA_G_____ MT(MOD_LGUI, AlphaA_______)
 #define AlphaO_G_____ MT(MOD_LGUI, AlphaO_______)
+
+#define Or_G_________ MT(MOD_LGUI, Or__________e)
+#define UnderScore_A_ MT(MOD_LALT, UnderScore__e) 
+#define Column_C_____ MT(MOD_LCTL, Column______e) 
+#define SemiColumn_S_ MT(MOD_LSFT, SemiColumn__e) 
+#define ParentL_S____ MT(MOD_LSFT, ParentL_____e) 
+#define ParentR_C____ MT(MOD_LCTL, ParentR_____e) 
+#define CurlyBrackL_A MT(MOD_LALT, CurlyBrackL_e) 
+#define CurlyBrackR_G MT(MOD_LGUI, CurlyBrackR_e)
+
 #define Num4_S_______ MT(MOD_LSFT, Num4_________)
 #define Num5_C_______ MT(MOD_LCTL, Num5_________)
 #define Num6_A_______ MT(MOD_LALT, Num6_________)
@@ -199,6 +217,7 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, Del__________, Esc__________,       Space________, Enter________, xxxxxxxxxxxxx 
     )
 };
+
 
 // clang-format on
 
@@ -342,12 +361,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
         activate_hold_on_three_action_button( bThreeActionButtons[i]);
     }
 
-    if (!record->event.pressed)
+    if (!record->event.pressed && record->tap.count > 0)
     {
         switch(keycode)
         {
             case ToHiragana___: to_hiragana(); break;
             case ToRomaji_____: to_romaji(); break;
+            case Or_G_________: tap_code16(Or___________); break; // does not work
+            case UnderScore_A_: tap_code16(UnderScore___); break; // does not work 
+            case Column_C_____: tap_code16(Column_______); break; // does not work 
+            case SemiColumn_S_: tap_code16(SemiColumn___); break; // does not work 
+            case ParentL_S____: tap_code16(ParentL______); break; // does not work 
+            case ParentR_C____: tap_code16(ParentR______); break; // does not work 
+            case CurlyBrackL_A: tap_code16(CurlyBrackL__); break; // does not work 
+            case CurlyBrackR_G: tap_code16(CurlyBrackR__); break; // does not work
         }
     }
 
