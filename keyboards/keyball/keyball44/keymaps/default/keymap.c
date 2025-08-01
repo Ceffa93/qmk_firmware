@@ -143,14 +143,6 @@ enum CustomKeycodes {
     ToNumberLayer,
     ToNavLayer___,
     ToFuncsLayer_,
-    Or__________e,
-    UnderScore__e, 
-    Column______e, 
-    SemiColumn__e, 
-    ParentL_____e, 
-    ParentR_____e, 
-    CurlyBrackL_e, 
-    CurlyBrackR_e
 }; 
 
 enum 
@@ -172,15 +164,6 @@ enum
 #define AlphaI_A_____ MT(MOD_LALT, AlphaI_______)
 #define AlphaA_G_____ MT(MOD_LGUI, AlphaA_______)
 #define AlphaO_G_____ MT(MOD_LGUI, AlphaO_______)
-
-#define Or_G_________ MT(MOD_LGUI, Or__________e)
-#define UnderScore_A_ MT(MOD_LALT, UnderScore__e) 
-#define Column_C_____ MT(MOD_LCTL, Column______e) 
-#define SemiColumn_S_ MT(MOD_LSFT, SemiColumn__e) 
-#define ParentL_S____ MT(MOD_LSFT, ParentL_____e) 
-#define ParentR_C____ MT(MOD_LCTL, ParentR_____e) 
-#define CurlyBrackL_A MT(MOD_LALT, CurlyBrackL_e) 
-#define CurlyBrackR_G MT(MOD_LGUI, CurlyBrackR_e)
 
 #define Num4_S_______ MT(MOD_LSFT, Num4_________)
 #define Num5_C_______ MT(MOD_LCTL, Num5_________)
@@ -204,7 +187,7 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
         xxxxxxxxxxxxx, Backslash____, Slash________, Plus_________, Equal________, Modulo_______,       Not__________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, Or___________, UnderScore___, Column_______, SemiColumn___, Asterisk_____,       Xor__________, ParentL______, ParentR______, CurlyBrackL__, CurlyBrackR__, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, And__________, At___________, DoubQuote____, QuestMark____, ExclamMark___,       BackTick_____, Sharp________, Comma________, Dot__________, Dollar_______, xxxxxxxxxxxxx,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, Del__________, Esc__________,       Space________, Enter________, xxxxxxxxxxxxx 
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, Del__________, ControlL_____,       Space________, Enter________, xxxxxxxxxxxxx 
     ),
     [eLayerNumbers] = LAYOUT(
         xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, Num1_________, Num2_________, Num3_________, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
@@ -238,7 +221,7 @@ struct three_action_button
     uint16_t action;
     void (*long_action_start)(void);
     void (*long_action_end)(void);
-};s
+};
 
 static struct three_action_button bSymbolButton;
 static struct three_action_button bNumberButton;
@@ -269,6 +252,7 @@ void keyboard_post_init_user(void)
 {
     keyball_set_cpi(1);
     keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
+    set_high_pointer_speed();
 
     init_three_action_button(&bSymbolButton, ToSymbolLayer, eLayerSymbol, Space________, nop_func, nop_func);
     init_three_action_button(&bNumberButton, ToNumberLayer, eLayerNumbers, Backspace____, set_low_pointer_speed, set_high_pointer_speed);
@@ -295,19 +279,18 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record)
     return false;
 }
 
-void activate_hold_on_three_action_button(struct three_action_button* button)
+void disable_tap_on_three_action_button(struct three_action_button* button)
 {
     if (button->waiting_for_hold)
     {
-        layer_on(button->layer);
         button->waiting_for_hold = false;
     }
 }
-void activate_hold_on_three_action_button_when_timer_elapsed(struct three_action_button* button)
+void disable_tap_on_three_action_button_when_timer_elapsed(struct three_action_button* button)
 {
     if (timer_elapsed(button->hold_start_time) > TAPPING_TERM)
     {
-        activate_hold_on_three_action_button(button);
+        disable_tap_on_three_action_button(button);
     }
 }
 
@@ -318,6 +301,9 @@ void process_three_action_button_record(keyrecord_t *record, struct three_action
         button->hold_start_time = timer_read();
         button->waiting_for_hold = true;
         button->long_action_start();
+        // Immediate layer activation, as an alternative to PERMISSIVE_HOLD, which is not available for custom keys.
+        // This means that layer is swictched immediately upon tap - but is that ever an issue?
+        layer_on(button->layer); 
     }
     else
     {
@@ -337,12 +323,21 @@ void matrix_scan_user()
 
     for (int i = 0; i < kThreeActionButtonCount; i++)
     {
-        activate_hold_on_three_action_button_when_timer_elapsed(bThreeActionButtons[i]);
+        disable_tap_on_three_action_button_when_timer_elapsed(bThreeActionButtons[i]);
     }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
 {   
+    for (int i = 0; i < kThreeActionButtonCount; i++)
+    {
+        struct three_action_button* button = bThreeActionButtons[i];
+        if (keycode != button->keycode)
+        {
+            disable_tap_on_three_action_button(button);
+        }
+    }
+
     for (int i = 0; i < kThreeActionButtonCount; i++)
     { 
         struct three_action_button* button = bThreeActionButtons[i];
@@ -353,25 +348,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
         }
     }
 
-    for (int i = 0; i < kThreeActionButtonCount; i++)
-    {
-        activate_hold_on_three_action_button( bThreeActionButtons[i]);
-    }
-
     if (!record->event.pressed)
     {
         switch(keycode)
         {
             case ToHiragana___: to_hiragana(); break;
             case ToRomaji_____: to_romaji(); break;
-            case Or_G_________: tap_code16(Or___________); break; // does not work
-            case UnderScore_A_: tap_code16(UnderScore___); break; // does not work 
-            case Column_C_____: tap_code16(Column_______); break; // does not work 
-            case SemiColumn_S_: tap_code16(SemiColumn___); break; // does not work 
-            case ParentL_S____: tap_code16(ParentL______); break; // does not work 
-            case ParentR_C____: tap_code16(ParentR______); break; // does not work 
-            case CurlyBrackL_A: tap_code16(CurlyBrackL__); break; // does not work 
-            case CurlyBrackR_G: tap_code16(CurlyBrackR__); break; // does not work
         }
     }
 
@@ -399,14 +381,23 @@ bool is_same_home_row(keyrecord_t* a, keyrecord_t* b)
     keypos_t pos_b = b->event.key;
     bool same_side = (pos_a.row < MATRIX_ROWS / 2) == (pos_b.row < MATRIX_ROWS / 2);
     bool same_row = pos_a.row == pos_b.row;
-    if (same_side && same_row) return false;
-    return true;
+    if (same_side && same_row) return true;
+    return false;
 }
+
+bool is_thumb_key(keyrecord_t* b)
+{
+    keypos_t pos_b = b->event.key;
+    return pos_b.row == 3 || pos_b.row == 7; 
+}
+
 
 // Function that decides whether a hold should be disabled, depending on input-output key
 bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) 
 {
-    return is_same_home_row(tap_hold_record, other_record);
+    if (is_thumb_key(other_record)) return true;
+    if (is_same_home_row(tap_hold_record, other_record)) return false;
+    return true;
 }
 
 uint16_t achordion_timeout(uint16_t tap_hold_keycode)
