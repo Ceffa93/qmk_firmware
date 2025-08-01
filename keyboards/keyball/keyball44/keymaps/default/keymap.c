@@ -139,9 +139,10 @@
 enum CustomKeycodes {
     ToHiragana___ = SAFE_RANGE,
     ToRomaji_____,
+    ToSymbolLayer,
     ToNumberLayer,
     ToNavLayer___,
-    ToSymbolLayer,
+    ToFuncsLayer_,
     Or__________e,
     UnderScore__e, 
     Column______e, 
@@ -158,6 +159,7 @@ enum
     eLayerSymbol,
     eLayerNumbers,
     eLayerNav,
+    eLayerFuncs,
     eCount,
 };
 
@@ -196,7 +198,7 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
         xxxxxxxxxxxxx, AlphaQ_______, AlphaW_______, AlphaF_______, AlphaP_______, AlphaB_______,       AlphaJ_______, AlphaL_______, AlphaU_______, AlphaY_______, SinQuote_____, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, AlphaA_G_____, AlphaR_A_____, AlphaS_C_____, AlphaT_S_____, AlphaG_______,       AlphaM_______, AlphaN_S_____, AlphaE_C_____, AlphaI_A_____, AlphaO_G_____, xxxxxxxxxxxxx,
         xxxxxxxxxxxxx, AlphaZ_______, AlphaX_______, AlphaC_______, AlphaD_______, AlphaV_______,       AlphaK_______, AlphaH_______, Comma________, Dot__________, Dash_________, xxxxxxxxxxxxx,
-                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, ToNavLayer___, ToNumberLayer,       ToSymbolLayer, ShiftEnter___, xxxxxxxxxxxxx 
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, ToNumberLayer, ToNavLayer___, ToFuncsLayer_,       ToSymbolLayer, ShiftEnter___, xxxxxxxxxxxxx 
     ),
     [eLayerSymbol] = LAYOUT(
         xxxxxxxxxxxxx, Backslash____, Slash________, Plus_________, Equal________, Modulo_______,       Not__________, SqareBrackL__, SqareBrackR__, LessThan_____, GreaterThan__, xxxxxxxxxxxxx,
@@ -204,16 +206,22 @@ const uint16_t PROGMEM keymaps[eCount][MATRIX_ROWS][MATRIX_COLS] =
         xxxxxxxxxxxxx, And__________, At___________, DoubQuote____, QuestMark____, ExclamMark___,       BackTick_____, Sharp________, Comma________, Dot__________, Dollar_______, xxxxxxxxxxxxx,
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, Del__________, Esc__________,       Space________, Enter________, xxxxxxxxxxxxx 
     ),
+    [eLayerNumbers] = LAYOUT(
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, Num1_________, Num2_________, Num3_________, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, Undo_________, Cut__________, Copy_________, Paste________, Redo_________,       Num0_________, Num4_S_______, Num5_C_______, Num6_A_______, GuiL_________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, Translate____, ToHiragana___, ToRomaji_____, xxxxxxxxxxxxx,       xxxxxxxxxxxxx, Num7_________, Num8_________, Num9_________, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
+                       xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, Del__________, Esc__________,       Space________, Num0_________, xxxxxxxxxxxxx 
+    ),
     [eLayerNav] = LAYOUT(
-        xxxxxxxxxxxxx, CapsLock_____, Translate____, ToHiragana___, ToRomaji_____, xxxxxxxxxxxxx,       PageUp_______, Home_________, ArrowUp______, End__________, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, GuiL_________, AltL_________, ControlL_____, ShiftL_______, Tab__________,       PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, Tab__________, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, ControlR_____, xxxxxxxxxxxxx, ShiftedTab___,       xxxxxxxxxxxxx, MouseLeft____, MouseRight___, xxxxxxxxxxxxx, ShiftedTab___, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,       PageUp_______, Home_________, ArrowUp______, End__________, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, GuiL_________, AltL_________, ControlL_____, ShiftL_______, Tab__________,       PageDown_____, ArrowLeft____, ArrowDown____, ArrowRight___, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, ControlR_____, xxxxxxxxxxxxx, ShiftedTab___,       xxxxxxxxxxxxx, MouseLeft____, MouseRight___, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, Del__________, Esc__________,                      Space________, Enter________, xxxxxxxxxxxxx
     ),
-    [eLayerNumbers] = LAYOUT(
-        xxxxxxxxxxxxx, Ins__________, F10__________, F11__________, F12__________, F1___________,       Boot_________, Num1_________, Num2_________, Num3_________, CapsLock_____, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, Pause________, F4___________, F5___________, F6___________, F2___________,       Num0_________, Num4_S_______, Num5_C_______, Num6_A_______, GuiL_________, xxxxxxxxxxxxx,
-        xxxxxxxxxxxxx, PrintScreen__, F7___________, F8___________, F9___________, F3___________,       xxxxxxxxxxxxx, Num7_________, Num8_________, Num9_________, App__________, xxxxxxxxxxxxx,
+    [eLayerFuncs] = LAYOUT(
+        xxxxxxxxxxxxx, Ins__________, F10__________, F11__________, F12__________, F1___________,       xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, Pause________, F4___________, F5___________, F6___________, F2___________,       xxxxxxxxxxxxx, ShiftL_______, ControlL_____, AltL_________, GuiL_________, xxxxxxxxxxxxx,
+        xxxxxxxxxxxxx, PrintScreen__, F7___________, F8___________, F9___________, F3___________,       xxxxxxxxxxxxx, xxxxxxxxxxxxx, App__________, CapsLock_____, Boot_________, xxxxxxxxxxxxx,
                        xxxxxxxxxxxxx, xxxxxxxxxxxxx, Backspace____, Del__________, Esc__________,       Space________, Enter________, xxxxxxxxxxxxx 
     )
 };
@@ -230,33 +238,21 @@ struct three_action_button
     uint16_t action;
     void (*long_action_start)(void);
     void (*long_action_end)(void);
-};
+};s
 
+static struct three_action_button bSymbolButton;
 static struct three_action_button bNumberButton;
 static struct three_action_button bNavButton;
-static struct three_action_button bSymbolButton;
-#define kThreeActionButtonCount 3
-static struct three_action_button* bThreeActionButtons[kThreeActionButtonCount] = {&bNumberButton, &bNavButton, &bSymbolButton};
+static struct three_action_button bFuncsButton;
+#define kThreeActionButtonCount 4
+static struct three_action_button* bThreeActionButtons[kThreeActionButtonCount] = {&bSymbolButton, &bNumberButton, &bNavButton, &bFuncsButton};
 
-void activate_scrollwheel(void)
-{
-    keyball_set_scroll_mode(true);
-}
-void deactivate_scrollwheel(void)
-{
-    keyball_set_scroll_mode(false);
-}
-void speedup_pointer(void)
-{
-    keyball_set_speed_mul(2);
-}
-void speeddown_pointer(void)
-{
-    keyball_set_speed_mul(1);
-}
-void nop_func(void)
-{
-}
+void activate_scrollwheel(void) { keyball_set_scroll_mode(true); }
+void deactivate_scrollwheel(void) { keyball_set_scroll_mode(false); }
+void set_low_pointer_speed(void) { keyball_set_speed_mul(1); }
+void set_medium_pointer_speed(void) { keyball_set_speed_mul(3); }
+void set_high_pointer_speed(void) { keyball_set_speed_mul(5); }
+void nop_func(void){}
 
 void init_three_action_button(struct three_action_button* button, uint16_t keycode, uint16_t layer, uint16_t action, void (*long_action_start)(void), void (*long_action_end)(void))
 {
@@ -271,12 +267,13 @@ void init_three_action_button(struct three_action_button* button, uint16_t keyco
 
 void keyboard_post_init_user(void)
 {
-    keyball_set_cpi(2);
+    keyball_set_cpi(1);
     keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
 
-    init_three_action_button(&bNumberButton, ToNumberLayer, eLayerNumbers, Esc__________, activate_scrollwheel, deactivate_scrollwheel);
-    init_three_action_button(&bNavButton, ToNavLayer___, eLayerNav, Del__________, speeddown_pointer, speedup_pointer);
     init_three_action_button(&bSymbolButton, ToSymbolLayer, eLayerSymbol, Space________, nop_func, nop_func);
+    init_three_action_button(&bNumberButton, ToNumberLayer, eLayerNumbers, Backspace____, set_low_pointer_speed, set_high_pointer_speed);
+    init_three_action_button(&bNavButton, ToNavLayer___, eLayerNav, Del__________, set_medium_pointer_speed, set_high_pointer_speed);
+    init_three_action_button(&bFuncsButton, ToFuncsLayer_, eLayerFuncs, Esc__________, activate_scrollwheel, deactivate_scrollwheel);
 }
 
 void to_hiragana(void)
